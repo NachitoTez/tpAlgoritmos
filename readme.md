@@ -21,3 +21,7 @@ Listas: Para manejar aviones en tránsito, aeropuertos y pilotos.
 Matrices: Para representar el espacio aéreo y la posición de los aviones en diferentes altitudes y zonas.
 Archivos: Para registrar vuelos, incidentes y rutas aéreas.
 Recursividad: Para coordinar las rutas de los aviones evitando colisiones y optimizando las trayectorias.
+
+## Idea 3 de tp
+## Poker
+
