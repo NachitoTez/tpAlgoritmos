@@ -32,6 +32,9 @@
     - def consultar_vuelos_partidas() -> Que permita ver un listado de todos los vuelos registrados que parten, filtrando por aerolinea/dia/aeropuerto.
     - def consultar_vuelos_asientos_disponibles() -> Una vez ingresados los datos aeropuertos de origen y destino y
                                                     dia de viaje el sistema muestre los vuelos que tenga asientos disponibles de compra. 
-    
+    - def consultar_estado_vuelo(numero_vuelo) -> Que devuelva el estado del mismo (En horario/Atrasado/Cancelado/Pre embarque/Embarcando/Despegado)
+    - def consultar_reserva(numero_reserva) -> Que permita ver los datos de la reserva realizada por el cliente.
+    - def cancelar_reserva(numero_reserva) -> Permite eliminar del sistema la reserva realizada, actualizando
+                                              el conteo de asientos del vuelo en la base de datos.
                             
 
