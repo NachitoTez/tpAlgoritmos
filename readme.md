@@ -1,6 +1,8 @@
 # Grupo 13 Sistema de Control de Tráfico Aéreo
 ## Integrantes:
 -   Guido Leonel Contartese L.U 1192909
+-   Ignacio Ramirez L.U 1172556
+  
 ### Contenido a implementar:
 - Listas: Para manejar aviones en tránsito, aeropuertos y pilotos.
 - Matrices/Diccionarios: Para representar el espacio aéreo y la posición de los aviones en diferentes altitudes y zonas.
