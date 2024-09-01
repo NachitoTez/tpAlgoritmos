@@ -22,7 +22,7 @@
         - def ingreso_vuelo() -> En el mismo el administrador podrá agregar en la base de datos existente de vuelos 
                                 registrados uno nuevo con su numero de vuelo, aerolinea, aeropuertos de origen, aeropuerto de destino, horario de salida y/o horario de llegada según corresponda.GUIDO
         - def validacion_numeroVuelo(numero) auxiliar validacion -> Devolverá un booleano segun el ingreso del 
-                                                                    numero de vuelo asistema del administrador verificando que arranque con 2 letras y consecuentemente 5 numeros EJ: (XX11111).
+                                                                    numero de vuelo asistema del administrador verificando que arranque con 2 letras y consecuentemente 5 numeros EJ: (XX11111). GUIDO
         - def modificacion_vuelo(numero_vuelo) -> En la misma una vez obteniendo los datos registrados en el sistema
                                                 del dicho numero de vuelo se podrán hacer los cambios necesarios segun requiera el administrador.
         - def eliminar_vuelo(numero_vuelo) - > En el caso de que sea necesaria la eliminacion del sistema un 
