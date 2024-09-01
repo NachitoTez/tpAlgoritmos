@@ -21,6 +21,12 @@ def registracion_usuarios(lista_usuarios):
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
   lista_usuarios.append([usuario, contrasenia])
 
+def administrador():
+  pass
+
+def consultante():
+  pass
+
 def main():
   usuarios_consultantes= [["guido", "holabebe"], ["matias", "123456"]]
   usuarios_admin = [["nacho", "playstation"], ["yiya", "654321"]]
@@ -50,7 +56,7 @@ def main():
         print("Código inválido, lo devolveremos al menu principal")
         main()
   elif(opcion == "2"):
-    admin()
+    administrador()
   else:
     consultante()
 main()
