@@ -24,11 +24,11 @@
         - def validacion_numeroVuelo(numero) auxiliar validacion -> Devolverá un booleano segun el ingreso del 
                                                                     numero de vuelo asistema del administrador verificando que arranque con 2 letras y consecuentemente 5 numeros EJ: (XX11111). GUIDO
         - def modificacion_vuelo(numero_vuelo) -> En la misma una vez obteniendo los datos registrados en el sistema
-                                                del dicho numero de vuelo se podrán hacer los cambios necesarios segun requiera el administrador.
+                                                del dicho numero de vuelo se podrán hacer los cambios necesarios segun requiera el administrador. NACHO
         - def eliminar_vuelo(numero_vuelo) - > En el caso de que sea necesaria la eliminacion del sistema un 
-                                            vuelo según corresponda.
+                                            vuelo según corresponda. NACHO
         - def consultar_vuelos() -> Que permita ver un listado de todos los vuelos registrados en el sistema. Y 
-                                    ademas permita las opciones si se quiere filtrar segun una aerolinea/dia/aeropuerto.
+                                    ademas permita las opciones si se quiere filtrar segun una aerolinea/dia/aeropuerto. NACHO
 - def consultante() -> en la misma se desplegará un listado de opciones que podra seleccionar/consultar el usuario.
 - def validar_usuario(consultante) -> Cotejara con un archivo json con toda la gente registrada como consultante    
                                       para validar que este en el sistema. GUIDO
