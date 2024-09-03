@@ -10,7 +10,6 @@ NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
 
-
 def validar_input(cantidad_de_opciones):
     opcion = input()
     opciones_validas = []
@@ -21,7 +20,6 @@ def validar_input(cantidad_de_opciones):
         opcion = input("Ingrese una opción válida: ")
     
     return opcion
-
 
 
 def modificacion_vuelo(current_user):
@@ -56,11 +54,26 @@ def modificacion_vuelo(current_user):
   return
 
 def eliminacion_vuelo(current_user):
-  vuelos = get_vuelos()
-  # if current_user != admin: return
-  print("""Ingrese el número de vuelo que quiere eliminar""")
-  opcion = input()
-  print("""¿Está segurisimo que quiere hacer esto?""")
+  # if current_user != admin: return // Al menos con los codigos ya es un poco mas seguro el código (igual no se si importa acá)
+  print("Ingrese el número de vuelo que quiere eliminar")
+  numero_vuelo = input()
+  print("""Estas seguro de que queres eliminar un vuelo? No se puede volver atrás:
+  -1) Estoy seguro, eliminar.
+  -2) Me arrepiento.""")
+  segundo_input = validar_input(NUMERO_DE_OPCIONES_2)
+  if segundo_input == 2:
+    return False
+  elif segundo_input == 1:
+    validacion_codigos = validar_codigos_admin()
+    if validacion_codigos == False:
+      return "EXCEPCION Usuario bloqueado" #A definir
+    return eliminacion_vuelo(numero_vuelo) #como no manejamos excepciones los returns son variados. Acá devuelve true -> si pudo eliminar ; false ->si no
+  else: return "EXCEPCION Error al eliminar vuelo"
+  
+
+  
+
+
 
   return
 def chequeo_usuario_existente(lista_usuarios, nuevo_usuario):
@@ -115,17 +128,14 @@ def main():
     if(opcion == "1"):
       registracion_usuarios(usuarios_consultantes) ##parece que pueden acceder a las variables sin el get -> preguntar a la profe
     else:
-      validacion = int(input("Ingrese el codigo de acceso para registrarse como nuevo administrador: "))
-      if validacion in codigos_admin:
-        registracion_usuarios(usuarios_admin)
-      else:
-        system("cls")
-        print("Código inválido, lo devolveremos al menu principal")
-        main()
+      validacion_codigos = validar_codigos_admin()
+      if validacion_codigos == False:
+        return "EXCEPCION Usuario bloqueado" #A definir
+      registracion_usuarios(usuarios_admin)
   elif(opcion == "2"):
     #se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
     #podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
     administrador()
   else:
     consultante()
-main()
+print(main())

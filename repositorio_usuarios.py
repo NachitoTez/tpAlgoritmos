@@ -16,3 +16,19 @@ def get_usuarios_admin():
 
 def get_codigos_admin():
     return codigos_admin
+
+def validar_codigos_admin():
+    MAXIMO_INTENTOS_CODIGOS_ADMIN = 5
+
+    validacion = int(input("Ingrese el código de administrador: "))
+    intentos = 1
+
+    while validacion not in codigos_admin and intentos < MAXIMO_INTENTOS_CODIGOS_ADMIN:
+        validacion = int(input("Código incorrecto, ingréselo nuevamente: "))
+        intentos += 1
+    
+    if intentos >= MAXIMO_INTENTOS_CODIGOS_ADMIN:
+        return False
+    
+    return True
+
