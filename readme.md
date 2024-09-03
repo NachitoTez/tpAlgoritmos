@@ -2,6 +2,7 @@
 ## Integrantes:
 -   Guido Leonel Contartese L.U 1192909
 -   Ignacio Ramirez L.U 1172556
+-   Frank Ali Lopez Jimenez L.U 1190169
   
 ### Contenido a implementar:
 - Listas: Para manejar aviones en tránsito, aeropuertos y pilotos.
@@ -32,12 +33,12 @@
 - def consultante() -> en la misma se desplegará un listado de opciones que podra seleccionar/consultar el usuario.
 - def validar_usuario(consultante) -> Cotejara con un archivo json con toda la gente registrada como consultante    
                                       para validar que este en el sistema. GUIDO
-    - def menu_opciones() -> contendra las opciones para poder ir a cualquiera de las funciones de debajo.
-        '- def consultar_vuelos_arribos() -> Que permita ver un listado de todos los vuelos registrados que ingresan, filtrando por aerolinea/dia/aeropuerto.
-        - def consultar_vuelos_partidas() -> Que permita ver un listado de todos los vuelos registrados que parten, filtrando por aerolinea/dia/aeropuerto.'
-        - def consultar_vuelos(criterio) -> Encontrar la manera de poder ingresarle el criterio segun nosotros queramos consultar los vuelos (arribos, partidas, a definir mas)
-        - def consultar_vuelos_asientos_disponibles() -> Una vez ingresados los datos aeropuertos de origen y destino y dia de viaje el sistema muestre los vuelos que tenga asientos disponibles de compra. 
-        - def consultar_estado_vuelo(numero_vuelo) -> Que devuelva el estado del mismo (En horario/Atrasado/Cancelado/Pre embarque/Embarcando/Despegado)
+    - def menu_opciones() -> contendra las opciones para poder ir a cualquiera de las funciones de debajo. Frank
+        '- def consultar_vuelos_arribos() -> Que permita ver un listado de todos los vuelos registrados que ingresan, filtrando por aerolinea/dia/aeropuerto. Frank 
+        - def consultar_vuelos_partidas() -> Que permita ver un listado de todos los vuelos registrados que parten, filtrando por aerolinea/dia/aeropuerto.' Frank 
+        - def consultar_vuelos(criterio) -> Encontrar la manera de poder ingresarle el criterio segun nosotros queramos consultar los vuelos (arribos, partidas, a definir mas) Frank
+        - def consultar_vuelos_asientos_disponibles() -> Una vez ingresados los datos aeropuertos de origen y destino y dia de viaje el sistema muestre los vuelos que tenga asientos disponibles de compra. Frank
+        - def consultar_estado_vuelo(numero_vuelo) -> Que devuelva el estado del mismo (En horario/Atrasado/Cancelado/Pre embarque/Embarcando/Despegado) Frank
         - def consultar_reserva(numero_reserva) -> Que permita ver los datos de la reserva realizada por el cliente.
         - def cancelar_reserva(numero_reserva) -> Permite eliminar del sistema la reserva realizada, actualizando
                                                 el conteo de asientos del vuelo en la base de datos.
