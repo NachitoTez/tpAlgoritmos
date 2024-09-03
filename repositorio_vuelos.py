@@ -11,7 +11,8 @@ vuelo1 = ["AA1234","Aerolineas Argentinas", "EZE","AEP","En horario", "11/11/202
 vuelo2 = ["BA4321", "British Airways", "EZE", "LHR", "Retrasado", "15/11/2024-18:00", "16/11/2024-09:00"]
 vuelo3 = ["AF5678", "Air France", "EZE", "CDG", "Cancelado", "20/11/2024-13:00", "20/11/2024-22:00"]
 vuelo4 = ["UA8765", "United Airlines", "EZE", "IAH", "En horario", "25/11/2024-23:30", "26/11/2024-07:30"]
-vuelos = [vuelo1, vuelo2, vuelo3, vuelo4]
+vuelo5 = ["UA8765", "United Airlines", "EZE", "IAH", "Arribado", "25/11/2024-23:30", "26/11/2024-07:30"]
+vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5]
 
 def get_vuelos():
     return vuelos

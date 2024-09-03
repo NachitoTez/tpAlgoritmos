@@ -104,6 +104,79 @@ def administrador():
 def consultante():
   pass
 
+#Mostrar el menu
+def listaDeOpciones():
+  print("OPCIONES")
+  print("1. Consultar vuelos arribados. \n"
+        "2. Consulta de vuelos partidos. \n"
+        "3. Consulta de vuelos. \n"
+        "4. Consulta de vuelos con asientos disponibles. \n"
+        "5. Consulta de estados de vuelos. \n"
+        "6. Consulta de reserva de vuelos. \n"
+        "7. Cancelar reserva. \n"
+        )
+  menu_opciones()
+  
+
+
+def menu_opciones():
+  #Selecciona la opccion deseada
+  bandera = False
+  while not bandera:
+    opcion = input("Ingrese la opcion que desee: ")
+    if opcion == "1":
+      consultarVuelosArribados()
+      bandera = True
+    elif opcion == "2":
+      consultarVuelosPartidos()
+      bandera = True
+    elif opcion == "3":
+      consultarVuelos()
+      bandera = True
+    elif opcion == "4":
+      consultarAsientosDisponibles()
+      bandera = True
+    elif opcion == "5":
+      consultarEstadoDeVuelo()
+      bandera = True
+    elif opcion == "6":
+      consultarReserva()
+      bandera = True
+    elif opcion == "7":
+      cancelarReserva()
+      bandera = True
+    else:
+      print("Ingrese una opcion valida")
+      bandera = False
+
+def consultarVuelosArribados():
+  vuelosAribados = get_vuelos()
+  for vuelo in vuelosAribados:
+    if vuelo[4] == "Arribado":
+      print("=================\n"
+        f"El vuelo {vuelo[0]} \n"
+        f"de la aerolinea {vuelo[1]} \n"
+        f"Esta {vuelo[4]} \n"
+        "=================\n"
+            )
+
+def consultarVuelosPartidos():
+  pass
+
+def consultarVuelos():
+  pass
+
+def consultarAsientosDisponibles():
+  pass
+
+def consultarEstadoDeVuelo():
+  pass
+
+def consultarReserva():
+  pass
+
+def cancelarReserva():
+  pass
 
 # Podríamos modularizar este código
 # Si modularizamos mucho el código podemos volver para atras (ejemplo, si hay un error  algo volvemos a llamar a la funcion y estamos parados en el mismo lugar que antes)
@@ -111,6 +184,7 @@ def main():
   usuarios_consultantes = get_usuarios_consultantes()
   codigos_admin = get_codigos_admin()
   usuarios_admin = get_usuarios_admin()
+  listaDeOpciones()
   print("""Ingrese la opción (numero) que quiera ejecutar:
   -1) Registración de usuario Consultante/Administrador.
   -2) Ingreso como Administrador.
