@@ -72,11 +72,6 @@ def eliminacion_vuelo(current_user):
   else: return "EXCEPCION Error al eliminar vuelo"
   
 
-  
-
-
-
-  return
 def chequeo_usuario_existente(lista_usuarios, nuevo_usuario):
   """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema"""
   bandera = False
@@ -88,7 +83,7 @@ def chequeo_usuario_existente(lista_usuarios, nuevo_usuario):
 def registracion_usuarios(lista_usuarios):
   """Funcion a utilizar para poder hacer la registracion de un nuevo usuario, mejoras a implementar a futuro,
    cuando falla el registro por usuario O contrasenia te diga mas especificamente el porque"""
-  system("cls")
+  # system("cls")
   usuario = ""
   contrasenia = ""
   usuario = input("Ingrese el usuario a utilizar en el sistema: ")
@@ -132,7 +127,7 @@ def menu_opciones():
       consultarVuelosPartidos()
       bandera = True
     elif opcion == "3":
-      consultarVuelos()
+      print(repositorio_vuelos.get_vuelos())
       bandera = True
     elif opcion == "4":
       consultarAsientosDisponibles()
@@ -150,6 +145,8 @@ def menu_opciones():
       print("Ingrese una opcion valida")
       bandera = False
 
+
+#Podríamos usar filter(lambda())
 def consultarVuelosArribados():
   vuelosAribados = repositorio_vuelos.get_vuelos()
   for vuelo in vuelosAribados:
