@@ -17,6 +17,9 @@ vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5]
 def get_vuelos():
     return vuelos
 
+def ingresar_vuelo():
+    """El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000"""
+    pass
 
 #Por ahora estos son los unicos atributos modificables de un vuelo.
 def modificar_estado_vuelos(id, estado):

@@ -91,36 +91,45 @@ def registracion_usuarios(lista_usuarios):
   system("cls")
   usuario = ""
   contrasenia = ""
-  usuario = input("Ingrese el usuario a utilizar en el sistema: ")
+  usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
   while usuario == "" or chequeo_usuario_existente(lista_usuarios, usuario):
-     usuario = input("Ingrese un usuario a utilizar en el sistema que sea correcto: ")
+     usuario = input("Ingrese un usuario a utilizar en el sistema que sea correcto: ").lower()
   contrasenia = input("Ingrese la contrasenia a utilizar en el sistema, debe tener minimo 6 digitos y un maximo de 12 digitos: \n")
   while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
   lista_usuarios.append([usuario, contrasenia])
+  main()
 
 def administrador():
-  pass
-
-def consultante():
-  pass
+  """Listado de funciones disponibles Exclusivo de Administradores"""
+  system("cls")
+  print("OPCIONES")
+  print("""
+        1. Ingresar vuelo al sistema.
+        2. Modificar vuelo.
+        3. Consulta de estados de vuelos.
+        """)
+  #modificar
 
 #Mostrar el menu
-def listaDeOpciones():
+def consultante():
+  """Listado de funciones disponibles Exclusivo de Consultante"""
+  system("cls")
   print("OPCIONES")
-  print("1. Consultar vuelos arribados. \n"
-        "2. Consulta de vuelos partidos. \n"
-        "3. Consulta de vuelos. \n"
-        "4. Consulta de vuelos con asientos disponibles. \n"
-        "5. Consulta de estados de vuelos. \n"
-        "6. Consulta de reserva de vuelos. \n"
-        "7. Cancelar reserva. \n"
-        )
-  menu_opciones()
+  print("""
+        1. Consultar vuelos arribados.
+        2. Consulta de vuelos partidos.
+        3. Consulta de vuelos.
+        4. Consulta de vuelos con asientos disponibles.
+        5. Consulta de estados de vuelos.
+        6. Consulta de reserva de vuelos.
+        7. Cancelar reserva.
+        """)
+  menu_opciones_consultante()
   
 
 
-def menu_opciones():
+def menu_opciones_consultante():
   #Selecciona la opccion deseada
   bandera = False
   while not bandera:
@@ -193,9 +202,7 @@ def main():
     print("""Ingrese la opción (numero) que quiera ejecutar:
     -1) Registración de usuario Consultante.
     -2) Registración de usuario Administrador.""")
-    opcion = input()
-    while opcion != "1" and opcion != "2" :
-      opcion = input("Ingrese una opción valida: ")
+    opcion = validar_input(NUMERO_DE_OPCIONES_2)
     if(opcion == "1"):
       registracion_usuarios(usuarios_consultantes) ##parece que pueden acceder a las variables sin el get -> preguntar a la profe
     else:
@@ -206,10 +213,18 @@ def main():
   elif(opcion == "2"):
     #se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
     #podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
-    administrador()
+    if(repositorio_usuarios.inicio_sesion("admin")):
+      administrador()
+    else:
+      system("cls")
+      print("Ha llegado al máximo de intentos posibles de inicio de sesion")
+      main()
   else:
-    consultante()
-
-    listaDeOpciones()
+    if(repositorio_usuarios.inicio_sesion("consultante")):
+      consultante()
+    else:
+      system("cls")
+      print("Ha llegado al máximo de intentos posibles de inicio de sesion")
+      main()
 
 print(main())
