@@ -83,7 +83,7 @@ def chequeo_usuario_existente(lista_usuarios, nuevo_usuario):
 def registracion_usuarios(lista_usuarios):
   """Funcion a utilizar para poder hacer la registracion de un nuevo usuario, mejoras a implementar a futuro,
    cuando falla el registro por usuario O contrasenia te diga mas especificamente el porque"""
-  # system("cls")
+  system("cls")
   usuario = ""
   contrasenia = ""
   usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
