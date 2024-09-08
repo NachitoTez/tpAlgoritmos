@@ -72,11 +72,6 @@ def eliminacion_vuelo(current_user):
   else: return "EXCEPCION Error al eliminar vuelo"
   
 
-  
-
-
-
-  return
 def chequeo_usuario_existente(lista_usuarios, nuevo_usuario):
   """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema"""
   bandera = False
