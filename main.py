@@ -1,7 +1,8 @@
 from os import system
-from repositorio_vuelos import *
-from repositorio_usuarios import *
-
+import repositorio_usuarios
+import repositorio_vuelos
+ 
+ 
 #Es solo para hacer mas legible el codigo y no tener magic numbers
 NUMERO_DE_OPCIONES_1 = 1
 NUMERO_DE_OPCIONES_2 = 2
@@ -48,7 +49,7 @@ def modificacion_vuelo(current_user):
      return "Error asignando estado" #Acá deberíamos volver a llamar a la funcion en realidad
     
     id = input("Inserte el numero de vuelo: ")
-    modificar_estado_vuelos(id, estado)
+    repositorio_vuelos.modificar_estado_vuelos(id, estado)
 
     ## Continuar con el resto de modificaciones
   return
@@ -64,7 +65,7 @@ def eliminacion_vuelo(current_user):
   if segundo_input == 2:
     return False
   elif segundo_input == 1:
-    validacion_codigos = validar_codigos_admin()
+    validacion_codigos = repositorio_usuarios.validar_codigos_admin()
     if validacion_codigos == False:
       return "EXCEPCION Usuario bloqueado" #A definir
     return eliminacion_vuelo(numero_vuelo) #como no manejamos excepciones los returns son variados. Acá devuelve true -> si pudo eliminar ; false ->si no
@@ -150,7 +151,7 @@ def menu_opciones():
       bandera = False
 
 def consultarVuelosArribados():
-  vuelosAribados = get_vuelos()
+  vuelosAribados = repositorio_vuelos.get_vuelos()
   for vuelo in vuelosAribados:
     if vuelo[4] == "Arribado":
       print("=================\n"
@@ -181,17 +182,13 @@ def cancelarReserva():
 # Podríamos modularizar este código
 # Si modularizamos mucho el código podemos volver para atras (ejemplo, si hay un error  algo volvemos a llamar a la funcion y estamos parados en el mismo lugar que antes)
 def main():
-  usuarios_consultantes = get_usuarios_consultantes()
-  codigos_admin = get_codigos_admin()
-  usuarios_admin = get_usuarios_admin()
-  listaDeOpciones()
+  usuarios_consultantes = repositorio_usuarios.get_usuarios_consultantes()
+  usuarios_admin = repositorio_usuarios.get_usuarios_admin()
   print("""Ingrese la opción (numero) que quiera ejecutar:
   -1) Registración de usuario Consultante/Administrador.
   -2) Ingreso como Administrador.
   -3) Ingreso como Consultante.""")
-  opcion = input()
-  while opcion != "1" and opcion != "2" and opcion != "3":
-    opcion = input("Ingrese una opción valida: ")
+  opcion = validar_input(NUMERO_DE_OPCIONES_3)
   if(opcion == "1"):
     print("""Ingrese la opción (numero) que quiera ejecutar:
     -1) Registración de usuario Consultante.
@@ -202,7 +199,7 @@ def main():
     if(opcion == "1"):
       registracion_usuarios(usuarios_consultantes) ##parece que pueden acceder a las variables sin el get -> preguntar a la profe
     else:
-      validacion_codigos = validar_codigos_admin()
+      validacion_codigos = repositorio_usuarios.validar_codigos_admin()
       if validacion_codigos == False:
         return "EXCEPCION Usuario bloqueado" #A definir
       registracion_usuarios(usuarios_admin)
@@ -212,4 +209,7 @@ def main():
     administrador()
   else:
     consultante()
+
+    listaDeOpciones()
+
 print(main())
