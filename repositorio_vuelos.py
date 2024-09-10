@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
-from repositorio_aeropuertos import get_aeropuerto_por_nombre
+from repositorio_aeropuertos import get_aeropuerto_por_nombre, ingresar_aeropuerto
+import re #regex
 #Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente
 #Para manipular los datos se van a llamar a funciones creadas en este repositorio, las cuales nos van a permitir no
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
@@ -20,9 +21,33 @@ vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5, vuelo6]
 def get_vuelos():
     return vuelos
 
+def validacion_aeropuerto(regex):
+    aeropuerto= input().upper()
+    while aeropuerto == "" or not re.match(regex, aeropuerto):
+        aeropuerto= input("Ingrese codigo de aeropuerto correctamente: ").upper()      
+    if(not get_aeropuerto_por_nombre(aeropuerto)): #si el aeropuerto no esta cargado al sistema, nos solicitará ingresarlo
+        print("Debera cargar un nuevo aeropuerto.")
+        ingresar_aeropuerto() #logica a desarrollar
+    return aeropuerto
+
 def ingresar_vuelo():
     """El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000"""
-    pass
+    regex_numero_vuelo = r'^[A-Z]{2}[0-9]{4}$' #REGEX QUE VALIDE 2 LETRAS AL PRINCIPIO Y 4 NUMEROS AL FINAL
+    regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
+    regex_codigo_aerupuerto = r'^[A-Z]{3}+$'
+    numero_vuelo = input("Ingrese el numero de vuelo en formato (XX1111): ").upper()
+    while not re.match(regex_numero_vuelo,numero_vuelo): #Si mi regex no matchea con el ingreso, vuelve a solicitarlo
+        numeroVuelo = input("Ingrese el numero de vuelo correctamente: ").upper()
+    aerolinea = input("Ingrese la Aerolinea prestadora del vuelo: ").capitalize() #al momento de mostrarla .capitalize()
+    while aerolinea == "" or re.match(regex_aerolinea,aerolinea):
+        aerolinea = input("Ingrese la Aerolinea prestadora del vuelo correctamente: ").capitalize()
+    print("Ingrese el codigo de aerppuerto de origen")
+    aeropuerto_origen= validacion_aeropuerto(regex_codigo_aerupuerto)
+    print("Ingrese el codigo de aerppuerto de destino")
+    aeropuerto_destino = validacion_aeropuerto(regex_codigo_aerupuerto)
+    estado = "En horario" #Los vuelos ingresados al sistema siempre estan en horario
+    fecha_hora_despegue= input("Ingrese fecha y hora de despegue en el siguiente formato: 2024-11-11 12:00:00")
+ingresar_vuelo()
 
 #Por ahora estos son los unicos atributos modificables de un vuelo.
 def modificar_estado_vuelos(id, estado):

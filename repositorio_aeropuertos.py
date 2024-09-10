@@ -16,10 +16,12 @@ def get_aeropuertos():
     return aeropuertos
 
 
-def get_aeropuerto_por_nombre(nombre: str):
+def get_aeropuerto_por_nombre(nombre):
     for aeropuerto in aeropuertos:
         if aeropuerto[0] == nombre.upper():
             return aeropuerto
-    return
+    return False
 
+def ingresar_aeropuerto():
+    pass
 
