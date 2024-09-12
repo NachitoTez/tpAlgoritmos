@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from repositorio_aeropuertos import get_aeropuerto_por_nombre, ingresar_aeropuerto
 import re #regex
-import main
 #Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente
 #Para manipular los datos se van a llamar a funciones creadas en este repositorio, las cuales nos van a permitir no
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
@@ -38,6 +37,7 @@ def validacion_aeropuerto(regex):
     return aeropuerto
 
 def ingresar_vuelo():
+    from main import main #Importado dentro de la funcion porque como desde main yo importo este archivo, si yo importo main globalmente aqui, se genera un circulo de importacion y rompe
     """El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000"""
     regex_numero_vuelo = r'^[A-Z]{2}[0-9]{4}$' #REGEX QUE VALIDE 2 LETRAS AL PRINCIPIO Y 4 NUMEROS AL FINAL
     regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
@@ -72,8 +72,7 @@ def ingresar_vuelo():
         fecha_hora_despegue= input("Ingrese fecha y hora correctamente en el siguiente formato: AAAA-MM-DD HH:MM:SS \n")
     vuelos.append([numero_vuelo, aerolinea, aeropuerto_origen, aeropuerto_destino, fecha_hora_despegue, fecha_hora_arribo])
 #Por ahora estos son los unicos atributos modificables de un vuelo.
-ingresar_vuelo()
-print(vuelos)
+
 def modificar_estado_vuelos(id, estado):
     for vuelo in vuelos:
         if vuelo[0] == id:

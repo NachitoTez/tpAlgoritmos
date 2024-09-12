@@ -72,28 +72,9 @@ def eliminacion_vuelo(current_user):
   else: return "EXCEPCION Error al eliminar vuelo"
   
 
-def chequeo_usuario_existente(lista_usuarios, nuevo_usuario):
-  """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema"""
-  bandera = False
-  for usuario in lista_usuarios:
-    if usuario[0] == nuevo_usuario:
-      bandera = True
-  return bandera
 
-def registracion_usuarios(lista_usuarios):
-  """Funcion a utilizar para poder hacer la registracion de un nuevo usuario, mejoras a implementar a futuro,
-   cuando falla el registro por usuario O contrasenia te diga mas especificamente el porque"""
-  system("cls")
-  usuario = ""
-  contrasenia = ""
-  usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
-  while usuario == "" or chequeo_usuario_existente(lista_usuarios, usuario):
-     usuario = input("Ingrese un usuario a utilizar en el sistema que sea correcto: ").lower()
-  contrasenia = input("Ingrese la contrasenia a utilizar en el sistema, debe tener minimo 6 digitos y un maximo de 12 digitos: \n")
-  while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
-     contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
-  lista_usuarios.append([usuario, contrasenia])
-  main()
+
+
 
 def administrador():
   """Listado de funciones disponibles Exclusivo de Administradores"""
@@ -155,8 +136,8 @@ def menu_opciones_consultante():
       bandera = False
 
 def consultarVuelosArribados():
-  vuelosAribados = repositorio_vuelos.get_vuelos()
-  for vuelo in vuelosAribados:
+  vuelosArribados = repositorio_vuelos.get_vuelos()
+  for vuelo in vuelosArribados:
     if vuelo[4] == "Arribado":
       print("=================\n"
         f"El vuelo {vuelo[0]} \n"
@@ -199,23 +180,29 @@ def main():
     -2) Registración de usuario Administrador.""")
     opcion = validar_input(NUMERO_DE_OPCIONES_2)
     if(opcion == "1"):
-      registracion_usuarios(usuarios_consultantes) ##parece que pueden acceder a las variables sin el get -> preguntar a la profe
+      repositorio_usuarios.registracion_usuarios(False) ##parece que pueden acceder a las variables sin el get -> preguntar a la profe
+      system("cls")
+      print("Registracion concretada")
+      main()
     else:
       validacion_codigos = repositorio_usuarios.validar_codigos_admin()
       if validacion_codigos == False:
         return "EXCEPCION Usuario bloqueado" #A definir
-      registracion_usuarios(usuarios_admin)
+      repositorio_usuarios.registracion_usuarios(True)
+      system("cls")
+      print("Registracion concretada")
+      main()
   elif(opcion == "2"):
     #se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
     #podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
-    if(repositorio_usuarios.inicio_sesion("admin")):
+    if(repositorio_usuarios.inicio_sesion(True)):
       administrador()
     else:
       system("cls")
       print("Ha llegado al máximo de intentos posibles de inicio de sesion")
       main()
   else:
-    if(repositorio_usuarios.inicio_sesion("consultante")):
+    if(repositorio_usuarios.inicio_sesion(False)):
       consultante()
     else:
       system("cls")
