@@ -14,7 +14,7 @@ vuelo2 = ["BA4321", "British Airways", get_aeropuerto_por_nombre("EZE"), get_aer
 vuelo3 = ["AF5678", "Air France", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDG"), "Cancelado", "2024-11-20 13:00:00", "2024-11-20 22:00:00"]
 vuelo4 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "En horario", "2024-11-25 23:30:00", "2024-11-26 07:30:00"]
 vuelo5 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "Arribado", "2024-11-25 23:30:00", "2024-11-26 07:30:00"]
-vuelo6 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "Arribado", "2024-09-08 16:43:03", "2024-09-09 16:43:03"]
+vuelo6 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDM"), "Arribado", "2024-09-08 16:43:03", "2024-09-09 16:43:03"]
 vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5, vuelo6]
 
 def get_vuelos():

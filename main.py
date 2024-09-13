@@ -111,46 +111,51 @@ def menu_opciones_consultante():
   while not bandera:
     opcion = input("Ingrese la opcion que desee: ")
     if opcion == "1":
-      consultarVuelosArribados()
-      bandera = True
-    elif opcion == "2":
-      consultarVuelosPartidos()
-      bandera = True
-    elif opcion == "3":
       consultarVuelos()
       bandera = True
-    elif opcion == "4":
+    elif opcion == "2":
       consultarAsientosDisponibles()
       bandera = True
-    elif opcion == "5":
+    elif opcion == "3":
       consultarEstadoDeVuelo()
       bandera = True
-    elif opcion == "6":
+    elif opcion == "4":
       consultarReserva()
       bandera = True
-    elif opcion == "7":
+    elif opcion == "5":
       cancelarReserva()
       bandera = True
     else:
       print("Ingrese una opcion valida")
       bandera = False
 
-def consultarVuelosArribados():
-  vuelosArribados = repositorio_vuelos.get_vuelos()
-  for vuelo in vuelosArribados:
-    if vuelo[4] == "Arribado":
+def consultarVuelos():
+  bandera = False
+  vuelos = repositorio_vuelos.get_vuelos()
+  for vuelo in vuelos:
       print("=================\n"
         f"El vuelo {vuelo[0]} \n"
         f"de la aerolinea {vuelo[1]} \n"
+        f"que parte desde la terminal de {vuelo[2][0]} \n"
+        f"con destino a la terminal de {vuelo[3][0]} \n"
         f"Esta {vuelo[4]} \n"
+        f"Hora de salida: {vuelo[5]} \n"
+        f"Hora de llegada: {vuelo[6]} \n"
         "=================\n"
             )
+  volver = input("seleccione 0 para volver al menu anterio o -1 para salir del sistema: ")
+  while not bandera:    
+    if volver == "0":
+      bandera = True
+      consultante()
+    elif volver == "-1":
+      print("Muchas gracias")
+      bandera = True
+    else:
+      print("Seleccione un valor valido")
+      volver = input("seleccione 0 para volver al menu anterio o -1 para salir del sistema: ")
+    
 
-def consultarVuelosPartidos():
-  pass
-
-def consultarVuelos():
-  pass
 
 def consultarAsientosDisponibles():
   pass
@@ -167,8 +172,6 @@ def cancelarReserva():
 # Podríamos modularizar este código
 # Si modularizamos mucho el código podemos volver para atras (ejemplo, si hay un error  algo volvemos a llamar a la funcion y estamos parados en el mismo lugar que antes)
 def main():
-  usuarios_consultantes = repositorio_usuarios.get_usuarios_consultantes()
-  usuarios_admin = repositorio_usuarios.get_usuarios_admin()
   print("""Ingrese la opción (numero) que quiera ejecutar:
   -1) Registración de usuario Consultante/Administrador.
   -2) Ingreso como Administrador.

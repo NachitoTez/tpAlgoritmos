@@ -42,9 +42,8 @@
    para validar que este en el sistema. GUIDO **LISTA**
 
   - def menu_opciones() -> contendra las opciones para poder ir a cualquiera de las funciones de debajo. Frank
-    '- def consultar_vuelos_arribos() -> Que permita ver un listado de todos los vuelos registrados que ingresan, filtrando por aerolinea/dia/aeropuerto. Frank
-    - def consultar_vuelos_partidas() -> Que permita ver un listado de todos los vuelos registrados que parten, filtrando por aerolinea/dia/aeropuerto.' Frank
-    - def consultar_vuelos(criterio) -> Encontrar la manera de poder ingresarle el criterio segun nosotros queramos consultar los vuelos (arribos, partidas, a definir mas) Frank
+    '- def consultar_informacion_de_avion() -> Permite ver toda la informacion de los aviones comerciales mas a detalle Frank
+    - def consultar_vuelos(criterio) -> Mostrara los dintintos estados de todos los vuelos, asi como el punto de partita y la llegada del mismo, con tiempo estimado (arribos, partidas, a definir mas) Frank
     - def consultar_vuelos_asientos_disponibles() -> Una vez ingresados los datos aeropuertos de origen y destino y dia de viaje el sistema muestre los vuelos que tenga asientos disponibles de compra. Frank
     - def consultar_estado_vuelo(numero_vuelo) -> Que devuelva el estado del mismo (En horario/Atrasado/Cancelado/Pre embarque/Embarcando/Despegado) Frank
     - def dibujar_mapa(lugar_origen, lugar_destino) -> Que muestre por consola un minimapa a escala del recorrido del avion.
