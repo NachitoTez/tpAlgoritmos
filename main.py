@@ -1,6 +1,7 @@
 from os import system
 import repositorio_usuarios
 import repositorio_vuelos
+from repositorio_aviones import avion_asignado
  
  
 #Es solo para hacer mas legible el codigo y no tener magic numbers
@@ -135,10 +136,11 @@ def consultarVuelos():
   for vuelo in vuelos:
       print("=================\n"
         f"El vuelo {vuelo[0]} \n"
-        f"de la aerolinea {vuelo[1]} \n"
-        f"que parte desde la terminal de {vuelo[2][0]} \n"
-        f"con destino a la terminal de {vuelo[3][0]} \n"
+        f"De la aerolinea {vuelo[1]} \n"
+        f"Que parte desde la terminal de {vuelo[2][0]} \n"
+        f"Con destino a la terminal de {vuelo[3][0]} \n"
         f"Esta {vuelo[4]} \n"
+        f"Avion: {vuelo[7][0]} \n"
         f"Hora de salida: {vuelo[5]} \n"
         f"Hora de llegada: {vuelo[6]} \n"
         "=================\n"

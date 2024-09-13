@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from repositorio_aeropuertos import get_aeropuerto_por_nombre, ingresar_aeropuerto
+from repositorio_aviones import avion_asignado
 import re #regex
 #Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente
 #Para manipular los datos se van a llamar a funciones creadas en este repositorio, las cuales nos van a permitir no
@@ -9,12 +10,12 @@ import re #regex
 #Esto estaría bueno que sea una tupla en un futuro
 #vuelo = {id: number, aerolinea: string, modelo: string, capacidad: number, fecha_salida-llegada: number?, origen-destino: string, puerta_embarque: string, terminal: string, tripulacion: tupla, pasajeros: tupla?}
 #Por ahora solo va a tener id, aerolinea, orige, destino, estado, fecha salida, fecha llegada (por ahora no consideramos zona hoaria)
-vuelo1 = ["AA1234", "Aerolineas Argentinas", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("AEP"), "En horario", "2024-11-11 12:00:00", "2024-11-11 13:00:00"]
-vuelo2 = ["BA4321", "British Airways", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("LHR"), "Retrasado", "2024-11-15 18:00:00", "2024-11-16 09:00:00"]
-vuelo3 = ["AF5678", "Air France", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDG"), "Cancelado", "2024-11-20 13:00:00", "2024-11-20 22:00:00"]
-vuelo4 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "En horario", "2024-11-25 23:30:00", "2024-11-26 07:30:00"]
-vuelo5 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "Arribado", "2024-11-25 23:30:00", "2024-11-26 07:30:00"]
-vuelo6 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDM"), "Arribado", "2024-09-08 16:43:03", "2024-09-09 16:43:03"]
+vuelo1 = ["AA1234", "Aerolineas Argentinas", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("AEP"), "En horario", "2024-11-11 12:00:00", "2024-11-11 13:00:00", avion_asignado(4)]
+vuelo2 = ["BA4321", "British Airways", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("LHR"), "Retrasado", "2024-11-15 18:00:00", "2024-11-16 09:00:00", avion_asignado(5)]
+vuelo3 = ["AF5678", "Air France", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDG"), "Cancelado", "2024-11-20 13:00:00", "2024-11-20 22:00:00", avion_asignado(3)]
+vuelo4 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "En horario", "2024-11-25 23:30:00", "2024-11-26 07:30:00", avion_asignado(1)]
+vuelo5 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "Arribado", "2024-11-25 23:30:00", "2024-11-26 07:30:00", avion_asignado(0)]
+vuelo6 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDM"), "Arribado", "2024-09-08 16:43:03", "2024-09-09 16:43:03", avion_asignado(2)]
 vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5, vuelo6]
 
 def get_vuelos():
