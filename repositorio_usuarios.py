@@ -10,12 +10,6 @@ usuarios=[{"admin": True, "usuario":"nacho", "contrasenia":"playstation"},
            {"admin": False, "usuario":"matias", "contrasenia":"123456"}]
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
 
-def get_usuarios_consultantes():
-    return usuarios_consultantes
-
-def get_usuarios_admin():
-    return usuarios_admin
-
 def get_codigos_admin():
     return codigos_admin
 

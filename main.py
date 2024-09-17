@@ -84,7 +84,29 @@ def administrador():
         1. Ingresar vuelo al sistema.
         2. Modificar vuelo.
         3. Consulta de estados de vuelos.
+        4. Cerrar Sesión.
         """)
+  menu_opciones_administrador()
+
+def menu_opciones_administrador():
+  #Selecciona la opccion deseada
+  bandera = False
+  while not bandera:
+    opcion = input("Ingrese la opcion que desee: ")
+    if opcion == "1":
+      repositorio_vuelos.ingresar_vuelo()
+      bandera = True
+    elif opcion == "2":
+      consultarVuelosPartidos()
+      bandera = True
+    elif opcion == "3":
+      consultarVuelos()
+      bandera = True
+    elif opcion == "4":
+      consultarAsientosDisponibles()
+      bandera = True
+    else:
+      print("Ingrese una opcion valida")
   #modificar
 
 #Mostrar el menu
