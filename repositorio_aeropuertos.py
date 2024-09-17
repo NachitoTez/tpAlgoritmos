@@ -8,8 +8,12 @@
 eze = ["EZE", [0, 0]]
 aep = ["AEP", [2, 3]]
 mdq = ["MDQ", [4, -20]]
+lhr = ["LHR", [4, -20]]
+cdg = ["CDG", [4, -20]]
+iah = ["IAH", [4, -20]]
+cdm = ["CDM", [4, -20]]
 
-aeropuertos = [eze, aep, mdq]
+aeropuertos = [eze, aep, mdq, lhr, cdg, iah, cdm]
 
 
 def get_aeropuertos():
