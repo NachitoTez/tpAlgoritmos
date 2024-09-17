@@ -98,7 +98,7 @@ def menu_opciones_administrador():
       repositorio_vuelos.ingresar_vuelo()
       bandera = True
     elif opcion == "2":
-      consultarVuelosPartidos()
+      #consultarVuelosPartidos()
       bandera = True
     elif opcion == "3":
       consultarVuelos()

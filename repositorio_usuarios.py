@@ -33,26 +33,22 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
                 bandera+=1
     return bandera==2
 
-
-def validar_ingreso_usuario(funcion, usuario, contrasenia):
-    """Valido los intentos de inicio de sesion de los usuarios"""
-    CANTIDAD_INTENTOS = 3
-    intentos = 1
-    while not(funcion(usuario, contrasenia)) and intentos<3:
-            print("Usuario o contraseña inválidos")
-            usuario = input("Ingrese su nombre de usuario: ").lower()
-            contrasenia = input("Ingrese su contraseña de usuario: ")
-            intentos+=1
-    if intentos >= CANTIDAD_INTENTOS and not funcion(usuario, contrasenia):
-        return False
-    else:
-        return True
     
 def inicio_sesion(privilegio):
     """Funcion principal de inicio de sesion llamada desde el main"""
     usuario = input("Ingrese su nombre de usuario: ").lower()
     contrasenia = input("Ingrese su contraseña de usuario: ")
-    return validar_usuario_registrado(usuario, contrasenia, privilegio)
+    CANTIDAD_INTENTOS = 3
+    intentos = 1
+    while not(validar_usuario_registrado(usuario, contrasenia, privilegio)) and intentos<3:
+            print("Usuario o contraseña inválidos")
+            usuario = input("Ingrese su nombre de usuario: ").lower()
+            contrasenia = input("Ingrese su contraseña de usuario: ")
+            intentos+=1
+    if intentos >= CANTIDAD_INTENTOS and not validar_usuario_registrado(usuario, contrasenia, privilegio):
+        return False
+    else:
+        return True
 
 def chequeo_usuario_existente(nuevo_usuario):
     """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema"""
