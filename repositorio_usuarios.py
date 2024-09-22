@@ -4,17 +4,17 @@ from os import system
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
 #Una vez que cambiemos a archivos se reemplazan los datos de prueba con el acceso al archivo y todo seguiría funcionando igual
 
-usuarios=[{"admin": True, "usuario":"nacho", "contrasenia":"playstation"},
-           {"admin": True, "usuario":"yiya", "contrasenia":"654321"},
+usuarios=[ {"admin": True, "usuario":"yiya", "contrasenia":"cocacola"},
+           {"admin": True, "usuario":"nacho", "contrasenia":"playstation"},
            {"admin": False, "usuario":"guido", "contrasenia":"holabebe"},
            {"admin": False, "usuario":"matias", "contrasenia":"123456"}]
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
 
-def get_codigos_admin():
-    return codigos_admin
-
 def validar_codigos_admin():
-    MAXIMO_INTENTOS_CODIGOS_ADMIN = 5
+    """Función encargada de validar si el nuevo usuario que quiere registrarse como administrador cuenta
+    con alguno de los códigos validadores que le permitan registrarse como tal.
+    Devuelve True en caso de que haya sido exitosa la validación"""
+    MAXIMO_INTENTOS_CODIGOS_ADMIN = 3
     validacion = int(input("Ingrese el código de administrador para poder registrarse: "))
     intentos = 1
     while validacion not in codigos_admin and intentos < MAXIMO_INTENTOS_CODIGOS_ADMIN:
@@ -25,17 +25,25 @@ def validar_codigos_admin():
     return True
 
 def validar_usuario_registrado(usuario, contrasenia, privilegio):
+    """Función encargada de validar si el usuario que intenta ingresar al sistema esta registrado.
+    Utilizo una bandera y filtro mi listado de usuarios segun el tipo de privilegio, luego por cada 
+    Recibe 3 parametros: Usuario, Contrasenia y privilegio(admin(true) o no(false))"""
     consultante= list(filter(lambda usuario: usuario.get("admin") == privilegio, usuarios))
     bandera = 0
     for user in consultante:
         for clave, valor in user.items():
             if clave == "usuario" and valor == usuario or clave=="contrasenia" and valor == contrasenia:
                 bandera+=1
-    return bandera==2
+        if bandera == 2: #Consulto en este paso si es que ya se encontro con el usuario y contrasenia buscado.
+            return True
+        else:
+            bandera=0 #Si 2 usuarios comparten contrasenia en este caso limpiaremos la variable bandera para no confundir la validacion.
+    return False
 
     
 def inicio_sesion(privilegio):
-    """Funcion principal de inicio de sesion llamada desde el main"""
+    """Funcion principal de inicio de sesion llamada desde el main, la misma recibe por parámetro que tipo de usuario esta intentando iniciar sesión, admin o no.
+    Devuelve True en caso de inicio de sesion y False si la misma no fue exitosa"""
     usuario = input("Ingrese su nombre de usuario: ").lower()
     contrasenia = input("Ingrese su contraseña de usuario: ")
     CANTIDAD_INTENTOS = 3
@@ -51,7 +59,9 @@ def inicio_sesion(privilegio):
         return True
 
 def chequeo_usuario_existente(nuevo_usuario):
-    """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema"""
+    """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema.
+    Recibe por parámetro el nombre de usuario a ingresar al sistema y devuelve True si ya se encuentra o
+    False si no."""
     bandera = False
     for user in usuarios:
         for clave, valor in user.items():
@@ -60,8 +70,8 @@ def chequeo_usuario_existente(nuevo_usuario):
     return bandera
   
 def registracion_usuarios(privilegio):
-  """Funcion a utilizar para poder hacer la registracion de un nuevo usuario, mejoras a implementar a futuro,
-   cuando falla el registro por usuario O contrasenia te diga mas especificamente el porque"""
+  """Funcion a utilizar para poder hacer la registracion de un nuevo usuario. Recibe por parametro el tipo de usuario a registrar
+  True= Admin"""
   system("cls")
   usuario = ""
   contrasenia = ""
@@ -72,4 +82,5 @@ def registracion_usuarios(privilegio):
   while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
   usuarios.append({"admin":privilegio, "usuario":usuario, "contrasenia":contrasenia})
+  return
 

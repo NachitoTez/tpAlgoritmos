@@ -1,6 +1,7 @@
 from os import system
 import repositorio_usuarios
 import repositorio_vuelos
+from utils import validar_input
 from repositorio_aviones import avion_asignado
  
  
@@ -12,16 +13,7 @@ NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
 
-def validar_input(cantidad_de_opciones):
-    opcion = input()
-    opciones_validas = []
-    for i in range(1,cantidad_de_opciones +1):
-        opciones_validas.append(str(i))
-    
-    while opcion not in opciones_validas:
-        opcion = input("Ingrese una opción válida: ")
-    
-    return opcion
+
 
 
 def modificacion_vuelo(current_user):
@@ -78,7 +70,7 @@ def eliminacion_vuelo(current_user):
 
 
 def administrador():
-  """Listado de funciones disponibles Exclusivo de Administradores"""
+  """Listado de funciones disponibles que se pueden ejecutar Exclusivo de Administradores"""
   system("cls")
   print("OPCIONES")
   print("""
@@ -91,21 +83,23 @@ def administrador():
 
 def menu_opciones_administrador():
   #Selecciona la opccion deseada
-  bandera = False
-  while not bandera:
-    opcion = input("Ingrese la opcion que desee: ")
+  bandera = True
+  while bandera:
+    opcion = validar_input(4)
     if opcion == "1":
       repositorio_vuelos.ingresar_vuelo()
-      bandera = True
+      bandera = False
     elif opcion == "2":
       #consultarVuelosPartidos()
-      bandera = True
+      bandera = False
     elif opcion == "3":
       consultarVuelos()
-      bandera = True
+      bandera = False
     elif opcion == "4":
-      consultarAsientosDisponibles()
-      bandera = True
+      system("cls")
+      print("Ha cerrado la sesión con éxito!")
+      main()
+      bandera = False
     else:
       print("Ingrese una opcion valida")
   #modificar
@@ -196,6 +190,7 @@ def cancelarReserva():
 # Podríamos modularizar este código
 # Si modularizamos mucho el código podemos volver para atras (ejemplo, si hay un error  algo volvemos a llamar a la funcion y estamos parados en el mismo lugar que antes)
 def main():
+  """Función encargada de dirigir la ejecución completa de nuestro programa"""
   print("""Ingrese la opción (numero) que quiera ejecutar:
   -1) Registración de usuario Consultante/Administrador.
   -2) Ingreso como Administrador.
@@ -213,12 +208,16 @@ def main():
       main()
     else:
       validacion_codigos = repositorio_usuarios.validar_codigos_admin()
-      if validacion_codigos == False:
-        return "EXCEPCION Usuario bloqueado" #A definir
-      repositorio_usuarios.registracion_usuarios(True)
-      system("cls")
-      print("Registracion concretada")
-      main()
+      if validacion_codigos:
+        repositorio_usuarios.registracion_usuarios(True)
+        system("cls")
+        print("Registracion concretada")
+        main()       
+      else:
+        system("cls")
+        print("No cuenta con el código para registrarse como administrador.") 
+        main()
+        
   elif(opcion == "2"):
     #se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
     #podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
@@ -236,4 +235,4 @@ def main():
       print("Ha llegado al máximo de intentos posibles de inicio de sesion")
       main()
 
-print(main())
+main()
