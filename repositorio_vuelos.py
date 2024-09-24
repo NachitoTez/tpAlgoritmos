@@ -161,13 +161,24 @@ def ingresar_fecha_y_hora(tipo): #Falta agregar validaciones
     minutos = int(validar_input(59, 0))
     fecha_hora = datetime(anio, mes, dia, hora, minutos) # convierte la fecha al estandar AAAA-MM-DD HH:MM:SS.
     return fecha_hora
-   
-def ingreso_numero_vuelo():
+
+def verificar_numero_vuelo_unico(numero_vuelo):
+    flag=False
+    for vuelo in vuelos:
+        if(vuelo.get("numero_vuelo")==numero_vuelo):
+            flag=True
+    return flag
+
+def ingreso_numero_vuelo(flag=False):
     """Funcion que valida y retorna un numero de vuelo"""
     regex_numero_vuelo = r'^[A-Z]{2}[0-9]{4}$' #REGEX QUE VALIDE 2 LETRAS AL PRINCIPIO Y 4 NUMEROS AL FINAL
     numero_vuelo = input("Ingrese el numero de vuelo en formato (XX1111): \n").upper()
     while not re.match(regex_numero_vuelo,numero_vuelo): #Si mi regex no matchea con el ingreso, vuelve a solicitarlo
         numero_vuelo = input("Ingrese el numero de vuelo correctamente: \n").upper()
+    while verificar_numero_vuelo_unico(numero_vuelo):
+        numero_vuelo = input("Ingrese un numero de vuelo que no exista en el programa: \n").upper()
+    while not verificar_numero_vuelo_unico(numero_vuelo) and flag:
+        numero_vuelo = input("Ingrese un numero de vuelo que exista en el programa: \n").upper()
     return numero_vuelo
 
 def ingresar_vuelo():
@@ -219,14 +230,14 @@ def modificar_estado_vuelo(numero_vuelo, key, estado):
 
 def modificacion_vuelo():
   """Funcion encargada de modificar el atributo del vuelo que se desee."""
-  numero_vuelo = ingreso_numero_vuelo()
-  
+  numero_vuelo = ingreso_numero_vuelo(True)
   print("""Ingrese la opción (numero) que quiera modificar:
   -1) Estado del vuelo.
   -2) Destino.
   -3) Origen.
   -4) Fecha-hora de salida.
-  -5) Fecha-hora de llegada""")
+  -5) Fecha-hora de llegada.
+  -6) Volver Atras.""")
   opcion = int(validar_input(5))
 
   if opcion == 1:
@@ -257,6 +268,8 @@ def modificacion_vuelo():
   elif opcion == 5:
     fecha_hora_llegada = ingresar_fecha_y_hora("fecha y hora de arribo")
     modificar_estado_vuelo(numero_vuelo,"arribo",fecha_hora_llegada)
+  elif opcion == 6:
+      return
     ## Continuar con el resto de modificaciones
   return
 
@@ -266,7 +279,7 @@ def consultar_estado_vuelo():
     if(vuelo == -1):
         print("Vuelo no encontrado en el sistema.")
         return
-    print(f"El estado del vuelo es: {vuelo.get("estado")}")
+    print(f"El estado del vuelo es: {vuelo.get('estado')}")
 
 def eliminar_vuelo(id):
     for vuelo in vuelos:
