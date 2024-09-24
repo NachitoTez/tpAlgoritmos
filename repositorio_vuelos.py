@@ -117,7 +117,6 @@ def ingresar_vuelo():
     system("cls")
     return
 #Por ahora estos son los unicos atributos modificables de un vuelo.
-ingresar_vuelo()
 def modificar_estado_vuelos(id, estado):
     for vuelo in vuelos:
         if vuelo[0] == id:
