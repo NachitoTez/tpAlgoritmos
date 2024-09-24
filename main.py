@@ -1,7 +1,7 @@
 from os import system
 from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo
+from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo
 from utils import validar_input
 from repositorio_aviones import avion_asignado
  
@@ -68,7 +68,7 @@ def menu_opciones_administrador():
       administrador()
       bandera = False
     elif opcion == "2":
-      #consultarVuelosPartidos()
+      modificacion_vuelo()
       bandera = False
     elif opcion == "3":
       mostrar_vuelos()

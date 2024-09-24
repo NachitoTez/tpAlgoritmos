@@ -130,7 +130,8 @@ def validacion_aeropuerto(regex):
             return False
     return aeropuerto
 
-def carga_aeropuerto(regex_codigo_aeropuerto, lugar):
+def carga_aeropuerto(lugar):
+    regex_codigo_aeropuerto = r'^[A-Z]{3}$'
     while True:
         print(f"Ingrese el codigo de aeropuerto de {lugar}: ")
         aeropuerto= validacion_aeropuerto(regex_codigo_aeropuerto)
@@ -173,7 +174,6 @@ def ingresar_vuelo():
     """Funcion encargada de ingresar un nuevo vuelo e ingresarlo a la lista de vuelos."""
     #El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000
     regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
-    regex_codigo_aeropuerto = r'^[A-Z]{3}$'
 
     numero_vuelo = ingreso_numero_vuelo()
 
@@ -181,8 +181,8 @@ def ingresar_vuelo():
     while aerolinea == "" or re.match(regex_aerolinea,aerolinea):
         aerolinea = input("Ingrese la Aerolinea prestadora del vuelo correctamente: \n").capitalize()
     
-    aeropuerto_origen = carga_aeropuerto(regex_codigo_aeropuerto, "origen")
-    aeropuerto_destino = carga_aeropuerto(regex_codigo_aeropuerto, "destino")
+    aeropuerto_origen = carga_aeropuerto("origen")
+    aeropuerto_destino = carga_aeropuerto("destino")
 
     estado = "En horario" #Los vuelos ingresados al sistema siempre estan en horario
 
@@ -198,8 +198,8 @@ def ingresar_vuelo():
     vuelo = {
         "numero_vuelo": numero_vuelo,
         "aerolinea": aerolinea,
-        "origen": aeropuerto_origen,
-        "destino": aeropuerto_destino,
+        "origen": get_aeropuerto_por_nombre(aeropuerto_origen),
+        "destino": get_aeropuerto_por_nombre(aeropuerto_destino),
         "estado": estado,
         "despegue": fecha_hora_despegue,
         "arribo": fecha_hora_arribo,
@@ -213,7 +213,7 @@ def ingresar_vuelo():
     system("cls")
     return
 
-def modificar_estado_vuelos(numero_vuelo, key, estado):
+def modificar_estado_vuelo(numero_vuelo, key, estado):
     vuelo = get_vuelo(numero_vuelo)
     vuelo[key] = estado
 
@@ -224,15 +224,16 @@ def modificacion_vuelo():
   print("""Ingrese la opción (numero) que quiera modificar:
   -1) Estado del vuelo.
   -2) Destino.
-  -3) Fecha-hora de salida.
-  -4) Fecha-hora de llegada""")
-  opcion = int(validar_input(4))
+  -3) Origen.
+  -4) Fecha-hora de salida.
+  -5) Fecha-hora de llegada""")
+  opcion = int(validar_input(5))
 
   if opcion == 1:
     print("""Ingrese el nuevo estado:
-  -1) En horario.
-  -2) Retrasado.
-  -3) Cancelado.""")  
+    -1) En horario.
+    -2) Retrasado.
+    -3) Cancelado.""")  
     estado = validar_input(3)
 
     if estado == "1":
@@ -243,9 +244,19 @@ def modificacion_vuelo():
       estado = "Cancelado"
     else:
      return "Error asignando estado" #Acá deberíamos volver a llamar a la funcion en realidad
-    
-    modificar_estado_vuelos(numero_vuelo,"estado",estado)
-
+    modificar_estado_vuelo(numero_vuelo,"estado",estado)
+  elif opcion == 2:
+    aeropuerto_destino = carga_aeropuerto("nuevo destino")
+    modificar_estado_vuelo(numero_vuelo,"destino",get_aeropuerto_por_nombre(aeropuerto_destino))
+  elif opcion == 3:
+    aeropuerto_origen = carga_aeropuerto("nuevo origen")
+    modificar_estado_vuelo(numero_vuelo,"origen",get_aeropuerto_por_nombre(aeropuerto_origen))
+  elif opcion == 4:
+    fecha_hora_salida = ingresar_fecha_y_hora("fecha y hora de despegue")
+    modificar_estado_vuelo(numero_vuelo,"despegue",fecha_hora_salida)
+  elif opcion == 5:
+    fecha_hora_llegada = ingresar_fecha_y_hora("fecha y hora de arribo")
+    modificar_estado_vuelo(numero_vuelo,"arribo",fecha_hora_llegada)
     ## Continuar con el resto de modificaciones
   return
 
@@ -256,28 +267,6 @@ def consultar_estado_vuelo():
         print("Vuelo no encontrado en el sistema.")
         return
     print(f"El estado del vuelo es: {vuelo.get("estado")}")
-
-
-def modificar_destino_vuelos(id, destino):
-    for vuelo in vuelos:
-        if vuelo[0] == id:
-            vuelo[3] = destino
-            return True
-    return False
-
-def modificar_fecha_salida_vuelos(id, fecha_salida):
-    for vuelo in vuelos:
-        if vuelo[0] == id:
-            vuelo[5] = fecha_salida
-            return True
-    return False
-
-def modificar_fecha_llegada_vuelos(id, fecha_llegada):
-    for vuelo in vuelos:
-        if vuelo[0] == id:
-            vuelo[6] = fecha_llegada
-            return True
-    return False
 
 def eliminar_vuelo(id):
     for vuelo in vuelos:

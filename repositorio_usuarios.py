@@ -6,7 +6,7 @@ from os import system
 
 usuarios=[ {"admin": True, "usuario":"yiya", "contrasenia":"cocacola"},
            {"admin": True, "usuario":"nacho", "contrasenia":"playstation"},
-           {"admin": False, "usuario":"guido", "contrasenia":"holabebe"},
+           {"admin": False, "usuario":"guido", "contrasenia":"guido123"},
            {"admin": False, "usuario":"matias", "contrasenia":"123456"}]
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
 
