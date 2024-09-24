@@ -110,6 +110,7 @@ def get_vuelo(numero_vuelo):
     for vuelo in vuelos:
         if vuelo.get("numero_vuelo") == numero_vuelo:
             return vuelo
+    return -1
 
 def validacion_aeropuerto(regex):
     MAX_INTENTOS = 3
@@ -247,7 +248,14 @@ def modificacion_vuelo():
 
     ## Continuar con el resto de modificaciones
   return
-#Por ahora estos son los unicos atributos modificables de un vuelo.
+
+def consultar_estado_vuelo():
+    numero_vuelo = ingreso_numero_vuelo()
+    vuelo = get_vuelo(numero_vuelo)
+    if(vuelo == -1):
+        print("Vuelo no encontrado en el sistema.")
+        return
+    print(f"El estado del vuelo es: {vuelo.get("estado")}")
 
 
 def modificar_destino_vuelos(id, destino):

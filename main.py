@@ -1,6 +1,7 @@
 from os import system
+from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, get_vuelos, mostrar_vuelos
+from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo
 from utils import validar_input
 from repositorio_aviones import avion_asignado
  
@@ -31,6 +32,19 @@ def eliminacion_vuelo(current_user):
     return eliminacion_vuelo(numero_vuelo) #como no manejamos excepciones los returns son variados. Acá devuelve true -> si pudo eliminar ; false ->si no
   else: return "EXCEPCION Error al eliminar vuelo"
   
+def imprimible_menu_regreso(funcion):
+  bandera = False
+  volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
+  while not bandera:    
+    if volver == "0":
+      bandera = True
+      funcion()
+    elif volver == "-1":
+      print("Muchas gracias")
+      bandera = True
+    else:
+      print("Seleccione un valor valido")
+      volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
 
 def administrador():
   """Listado de funciones disponibles que se pueden ejecutar Exclusivo de Administradores"""
@@ -57,15 +71,18 @@ def menu_opciones_administrador():
       #consultarVuelosPartidos()
       bandera = False
     elif opcion == "3":
-      consultarVuelos()
+      mostrar_vuelos()
       bandera = False
     elif opcion == "4":
       system("cls")
       print("Ha cerrado la sesión con éxito!")
+      sleep(2)
+      system("cls")
       main()
       bandera = False
     else:
       print("Ingrese una opcion valida")
+  imprimible_menu_regreso(administrador)
   #modificar
 
 #Mostrar el menu
@@ -79,8 +96,10 @@ def consultante():
         3. Consultar estado de vuelo.
         4. Consultar reserva.
         5. Cancelar reserva.
+        6. Cerrar sesión.
         """)
   menu_opciones_consultante()
+
 
 def menu_opciones_consultante():
   #Selecciona la opccion deseada
@@ -88,13 +107,13 @@ def menu_opciones_consultante():
   while not bandera:
     opcion = input("Ingrese la opcion que desee: ")
     if opcion == "1":
-      consultarVuelos()
+      mostrar_vuelos()
       bandera = True
     elif opcion == "2":
       consultarAsientosDisponibles()
       bandera = True
     elif opcion == "3":
-      consultarEstadoDeVuelo()
+      consultar_estado_vuelo()
       bandera = True
     elif opcion == "4":
       consultarReserva()
@@ -102,32 +121,27 @@ def menu_opciones_consultante():
     elif opcion == "5":
       cancelarReserva()
       bandera = True
+    elif opcion == "6":
+      system("cls")
+      print("Ha cerrado la sesión con éxito!")
+      sleep(2)
+      system("cls")
+      main()
     else:
       print("Ingrese una opcion valida")
       bandera = False
+  imprimible_menu_regreso(consultante)
 
-def consultarVuelos():
-  bandera = False
-  mostrar_vuelos()
-  volver = input("seleccione 0 para volver al menu anterio o -1 para salir del sistema: ")
-  while not bandera:    
-    if volver == "0":
-      bandera = True
-      consultante()
-    elif volver == "-1":
-      print("Muchas gracias")
-      bandera = True
-    else:
-      print("Seleccione un valor valido")
-      volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
+
+  
     
 
 
 def consultarAsientosDisponibles():
   pass
 
-def consultarEstadoDeVuelo():
-  pass
+
+  
 
 def consultarReserva():
   pass
