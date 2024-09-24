@@ -88,6 +88,7 @@ def menu_opciones_administrador():
     opcion = validar_input(4)
     if opcion == "1":
       repositorio_vuelos.ingresar_vuelo()
+      administrador()
       bandera = False
     elif opcion == "2":
       #consultarVuelosPartidos()

@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
-from repositorio_aeropuertos import get_aeropuerto_por_nombre, ingresar_aeropuerto
+from repositorio_aeropuertos import get_aeropuerto_por_nombre, cargar_aeropuerto
 from repositorio_aviones import avion_asignado
+from os import system
+from time import sleep
 import re #regex
 from utils import validar_input
 #Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente
@@ -39,45 +41,83 @@ def validacion_aeropuerto(regex):
         else:
             return False
     return aeropuerto
+def carga_aeropuerto_origen(regex_codigo_aeropuerto):
+    print("Ingrese el codigo de aeropuerto de origen: ")
+    aeropuerto_origen= validacion_aeropuerto(regex_codigo_aeropuerto)
+    if(aeropuerto_origen == "Reintento"):
+        carga_aeropuerto_origen(regex_codigo_aeropuerto)
+    elif(aeropuerto_origen == False):
+        cargar_aeropuerto()
+        system("cls")
+        print("Ingrese el codigo de aeropuerto de origen: ")
+        aeropuerto_origen=validacion_aeropuerto(regex_codigo_aeropuerto)
+    return aeropuerto_origen
 
+def carga_aeropuerto_destino(regex_codigo_aeropuerto):
+    print("Ingrese el codigo de aeropuerto de destino: ")
+    aeropuerto_destino= validacion_aeropuerto(regex_codigo_aeropuerto)
+    if(aeropuerto_destino == "Reintento"):
+        carga_aeropuerto_destino(regex_codigo_aeropuerto)
+    elif(aeropuerto_destino == False):
+        cargar_aeropuerto()
+        system("cls")
+        print("Ingrese el codigo de aeropuerto de destino: ")
+        aeropuerto_destino=validacion_aeropuerto(regex_codigo_aeropuerto)
+    return aeropuerto_destino
+
+def ingresar_fecha_y_hora(tipo): #Falta agregar validaciones
+    """Función para ingresar fecha y hora de forma secuencial."""
+    print(f"Ingrese la {tipo}:")
+    anio = int(input("  Año (AAAA): "))
+    mes = int(input("  Mes (1-12): "))
+    dia = int(input("  Día (1-31): "))
+    hora = int(input("  Hora (0-23): "))
+    minutos = int(input("  Minutos (0-59): "))
+    fecha_hora = datetime(anio, mes, dia, hora, minutos)
+    return fecha_hora
+        
 def ingresar_vuelo():
     """Funcion encargada de ingresar un nuevo vuelo e ingresarlo a la lista de vuelos."""
-     #Importado dentro de la funcion porque como desde main yo importo este archivo, si yo importo main globalmente aqui, se genera un circulo de importacion y rompe
     #El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000
     regex_numero_vuelo = r'^[A-Z]{2}[0-9]{4}$' #REGEX QUE VALIDE 2 LETRAS AL PRINCIPIO Y 4 NUMEROS AL FINAL
     regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
-    regex_codigo_aerupuerto = r'^[A-Z]{3}$'
+    regex_codigo_aeropuerto = r'^[A-Z]{3}$'
     regex_fecha = r'^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}'
-    numero_vuelo = input("Ingrese el numero de vuelo en formato (XX1111): ").upper()
-    while not re.match(regex_numero_vuelo,numero_vuelo): #Si mi regex no matchea con el ingreso, vuelve a solicitarlo
-        numero_vuelo = input("Ingrese el numero de vuelo correctamente: ").upper()
-    aerolinea = input("Ingrese la Aerolinea prestadora del vuelo: ").capitalize() #al momento de mostrarla .capitalize()
-    while aerolinea == "" or re.match(regex_aerolinea,aerolinea):
-        aerolinea = input("Ingrese la Aerolinea prestadora del vuelo correctamente: ").capitalize()
-    print("Ingrese el codigo de aeropuerto de origen: ")
-    aeropuerto_origen= validacion_aeropuerto(regex_codigo_aerupuerto)
-    if(aeropuerto_origen == "Reintento"):
-        print("Ingrese el codigo de aeropuerto de origen: ")
-        aeropuerto_origen=validacion_aeropuerto(regex_codigo_aerupuerto)
-    elif(aeropuerto_origen == False):
-        administrador()
-    print("Ingrese el codigo de aeropuerto de destino: ")
-    aeropuerto_destino = validacion_aeropuerto(regex_codigo_aerupuerto)
-    if(aeropuerto_destino == "Reintento"):
-        print("Ingrese el codigo de aeropuerto de destino: ")
-        aeropuerto_destino=validacion_aeropuerto(regex_codigo_aerupuerto)
-    elif(aeropuerto_destino == False):
-        administrador()
-    estado = "En horario" #Los vuelos ingresados al sistema siempre estan en horario
-    fecha_hora_despegue= input("Ingrese fecha y hora de despegue en el siguiente formato: AAAA-MM-DD HH:MM:SS : \n")
-    while not(re.match(regex_fecha, fecha_hora_despegue)):
-        fecha_hora_despegue= input("Ingrese fecha y hora correctamente en el siguiente formato: AAAA-MM-DD HH:MM:SS \n")
-    fecha_hora_arribo = input("Ingrese fecha y hora de arribo en el siguiente formato: AAAA-MM-DD HH:MM:SS : \n")
-    while not(re.match(regex_fecha, fecha_hora_arribo)):
-        fecha_hora_arribo= input("Ingrese fecha y hora correctamente en el siguiente formato: AAAA-MM-DD HH:MM:SS \n")
-    vuelos.append([numero_vuelo, aerolinea, aeropuerto_origen, aeropuerto_destino, fecha_hora_despegue, fecha_hora_arribo])
-#Por ahora estos son los unicos atributos modificables de un vuelo.
 
+    numero_vuelo = input("Ingrese el numero de vuelo en formato (XX1111): \n").upper()
+    while not re.match(regex_numero_vuelo,numero_vuelo): #Si mi regex no matchea con el ingreso, vuelve a solicitarlo
+        numero_vuelo = input("Ingrese el numero de vuelo correctamente: \n").upper()
+
+    aerolinea = input("Ingrese la Aerolinea prestadora del vuelo: \n").capitalize() #al momento de mostrarla .capitalize()
+    while aerolinea == "" or re.match(regex_aerolinea,aerolinea):
+        aerolinea = input("Ingrese la Aerolinea prestadora del vuelo correctamente: \n").capitalize()
+    
+    aeropuerto_origen = carga_aeropuerto_origen(regex_codigo_aeropuerto)
+    aeropuerto_destino = carga_aeropuerto_destino(regex_codigo_aeropuerto)
+
+    estado = "En horario" #Los vuelos ingresados al sistema siempre estan en horario
+
+    fecha_hora_despegue = ingresar_fecha_y_hora("fecha y hora de despegue")
+    fecha_hora_arribo = ingresar_fecha_y_hora("fecha y hora de arribo")
+    
+    while fecha_hora_arribo <= fecha_hora_despegue:
+        print("La fecha de arribo debe ser posterior a la de despegue. Intente nuevamente.\n")
+        fecha_hora_arribo = ingresar_fecha_y_hora("fecha y hora de arribo")
+    
+    # Formatear las fechas a string en el formato AAAA-MM-DD HH:MM:SS
+    fecha_hora_despegue = fecha_hora_despegue.strftime('%Y-%m-%d %H:%M:%S')
+    fecha_hora_arribo = fecha_hora_arribo.strftime('%Y-%m-%d %H:%M:%S')
+
+    vuelo= [numero_vuelo, aerolinea, aeropuerto_origen, aeropuerto_destino, estado, fecha_hora_despegue, fecha_hora_arribo]
+    vuelos.append(vuelo)
+    system("cls")
+    print("Vuelo cargado al sistema correctamente!")
+    print(vuelo)
+    sleep(2)
+    system("cls")
+    return
+#Por ahora estos son los unicos atributos modificables de un vuelo.
+ingresar_vuelo()
 def modificar_estado_vuelos(id, estado):
     for vuelo in vuelos:
         if vuelo[0] == id:
