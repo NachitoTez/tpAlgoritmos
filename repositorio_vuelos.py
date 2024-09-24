@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 from repositorio_aeropuertos import get_aeropuerto_por_nombre, cargar_aeropuerto
-from repositorio_aviones import avion_asignado
+from repositorio_aviones import avion_asignado, mostrar_aviones
 from os import system
 from time import sleep
 import re #regex
-from utils import validar_input
+from utils import validar_input, cantidad_dias
 #Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente
 #Para manipular los datos se van a llamar a funciones creadas en este repositorio, las cuales nos van a permitir no
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
@@ -13,16 +13,103 @@ from utils import validar_input
 #Esto estaría bueno que sea una tupla en un futuro
 #vuelo = {id: number, aerolinea: string, modelo: string, capacidad: number, fecha_salida-llegada: number?, origen-destino: string, puerta_embarque: string, terminal: string, tripulacion: tupla, pasajeros: tupla?}
 #Por ahora solo va a tener id, aerolinea, orige, destino, estado, fecha salida, fecha llegada (por ahora no consideramos zona hoaria)
-vuelo1 = ["AA1234", "Aerolineas Argentinas", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("AEP"), "En horario", "2024-11-11 12:00:00", "2024-11-11 13:00:00", avion_asignado(4)]
-vuelo2 = ["BA4321", "British Airways", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("LHR"), "Retrasado", "2024-11-15 18:00:00", "2024-11-16 09:00:00", avion_asignado(5)]
-vuelo3 = ["AF5678", "Air France", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDG"), "Cancelado", "2024-11-20 13:00:00", "2024-11-20 22:00:00", avion_asignado(3)]
-vuelo4 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "En horario", "2024-11-25 23:30:00", "2024-11-26 07:30:00", avion_asignado(1)]
-vuelo5 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("IAH"), "Arribado", "2024-11-25 23:30:00", "2024-11-26 07:30:00", avion_asignado(0)]
-vuelo6 = ["UA8765", "United Airlines", get_aeropuerto_por_nombre("EZE"), get_aeropuerto_por_nombre("CDM"), "Arribado", "2024-09-08 16:43:03", "2024-09-09 16:43:03", avion_asignado(2)]
+vuelo1 = {
+    "numero_vuelo": "AA1234",
+    "aerolinea": "Aerolineas Argentinas",
+    "origen": get_aeropuerto_por_nombre("EZE"),
+    "destino": get_aeropuerto_por_nombre("AEP"),
+    "estado": "En horario",
+    "despegue": "2024-11-11 12:00:00",
+    "arribo": "2024-11-11 13:00:00",
+    "avion": avion_asignado(4)
+}
+
+vuelo2 = {
+    "numero_vuelo": "BA4321",
+    "aerolinea": "British Airways",
+    "origen": get_aeropuerto_por_nombre("EZE"),
+    "destino": get_aeropuerto_por_nombre("LHR"),
+    "estado": "Retrasado",
+    "despegue": "2024-11-15 18:00:00",
+    "arribo": "2024-11-16 09:00:00",
+    "avion": avion_asignado(5)
+}
+
+vuelo3 = {
+    "numero_vuelo": "AF5678",
+    "aerolinea": "Air France",
+    "origen": get_aeropuerto_por_nombre("EZE"),
+    "destino": get_aeropuerto_por_nombre("CDG"),
+    "estado": "Cancelado",
+    "despegue": "2024-11-20 13:00:00",
+    "arribo": "2024-11-20 22:00:00",
+    "avion": avion_asignado(3)
+}
+
+vuelo4 = {
+    "numero_vuelo": "UA8764",
+    "aerolinea": "United Airlines",
+    "origen": get_aeropuerto_por_nombre("EZE"),
+    "destino": get_aeropuerto_por_nombre("IAH"),
+    "estado": "En horario",
+    "despegue": "2024-11-25 23:30:00",
+    "arribo": "2024-11-26 07:30:00",
+    "avion": avion_asignado(1)
+}
+
+vuelo5 = {
+    "numero_vuelo": "UA8762",
+    "aerolinea": "United Airlines",
+    "origen": get_aeropuerto_por_nombre("EZE"),
+    "destino": get_aeropuerto_por_nombre("IAH"),
+    "estado": "Arribado",
+    "despegue": "2024-11-25 23:30:00",
+    "arribo": "2024-11-26 07:30:00",
+    "avion": avion_asignado(6)
+}
+
+vuelo6 = {
+    "numero_vuelo": "UA8761",
+    "aerolinea": "United Airlines",
+    "origen": get_aeropuerto_por_nombre("EZE"),
+    "destino": get_aeropuerto_por_nombre("CDM"),
+    "estado": "Arribado",
+    "despegue": "2024-09-08 16:43:03",
+    "arribo": "2024-09-09 16:43:03",
+    "avion": avion_asignado(2)
+}
 vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5, vuelo6]
 
 def get_vuelos():
     return vuelos
+
+def mostrar_vuelos():
+    """Función que imprime los detalles de cada vuelo almacenado."""
+    for vuelo in vuelos:
+        print(f"Número de vuelo: {vuelo['numero_vuelo']}")
+        print(f"Aerolínea: {vuelo['aerolinea']}")
+        print(f"Origen: {vuelo['origen']}")  # Esto puede requerir un __str__ en tu clase Aeropuerto
+        print(f"Destino: {vuelo['destino']}")
+        print(f"Estado: {vuelo['estado']}")
+        print(f"Despegue: {vuelo['despegue']}")
+        print(f"Arribo: {vuelo['arribo']}")
+        
+        # Detalles del avión asignado
+        avion = vuelo["avion"]
+        print(f"Avión Asignado:")
+        print(f"    Modelo: {avion['modelo']}")
+        print(f"    Capacidad: {avion['capacidad']} pasajeros")
+        print(f"    Alcance: {avion['alcance']}")
+        print(f"    Altitud Máxima: {avion['altitud_maxima']}")
+        print(f"    Velocidad Máxima: {avion['velocidad_maxima']}")
+        print("-" * 40)
+
+    return  
+
+def get_vuelo(numero_vuelo):
+    for vuelo in vuelos:
+        if vuelo.get("numero_vuelo") == numero_vuelo:
+            return vuelo
 
 def validacion_aeropuerto(regex):
     MAX_INTENTOS = 3
@@ -41,59 +128,60 @@ def validacion_aeropuerto(regex):
         else:
             return False
     return aeropuerto
-def carga_aeropuerto_origen(regex_codigo_aeropuerto):
-    print("Ingrese el codigo de aeropuerto de origen: ")
-    aeropuerto_origen= validacion_aeropuerto(regex_codigo_aeropuerto)
-    if(aeropuerto_origen == "Reintento"):
-        carga_aeropuerto_origen(regex_codigo_aeropuerto)
-    elif(aeropuerto_origen == False):
-        cargar_aeropuerto()
-        system("cls")
-        print("Ingrese el codigo de aeropuerto de origen: ")
-        aeropuerto_origen=validacion_aeropuerto(regex_codigo_aeropuerto)
-    return aeropuerto_origen
 
-def carga_aeropuerto_destino(regex_codigo_aeropuerto):
-    print("Ingrese el codigo de aeropuerto de destino: ")
-    aeropuerto_destino= validacion_aeropuerto(regex_codigo_aeropuerto)
-    if(aeropuerto_destino == "Reintento"):
-        carga_aeropuerto_destino(regex_codigo_aeropuerto)
-    elif(aeropuerto_destino == False):
-        cargar_aeropuerto()
-        system("cls")
-        print("Ingrese el codigo de aeropuerto de destino: ")
-        aeropuerto_destino=validacion_aeropuerto(regex_codigo_aeropuerto)
-    return aeropuerto_destino
+def carga_aeropuerto(regex_codigo_aeropuerto, lugar):
+    while True:
+        print(f"Ingrese el codigo de aeropuerto de {lugar}: ")
+        aeropuerto= validacion_aeropuerto(regex_codigo_aeropuerto)
+        if(aeropuerto == "Reintento"):
+            continue
+        elif(aeropuerto == False):
+            cargar_aeropuerto()
+            system("cls")
+            print(f"Ingrese el codigo de aeropuerto de {lugar}: ")
+            aeropuerto=validacion_aeropuerto(regex_codigo_aeropuerto)
+        return aeropuerto
 
 def ingresar_fecha_y_hora(tipo): #Falta agregar validaciones
-    """Función para ingresar fecha y hora de forma secuencial."""
+    """Función para ingresar fecha y hora y validar los ingresos.
+    Recibe por parametro un string si es "fecha y hora de despegue" o "fecha y hora de arribo"
+    devuelve la fecha completa"""
     print(f"Ingrese la {tipo}:")
-    anio = int(input("  Año (AAAA): "))
-    mes = int(input("  Mes (1-12): "))
-    dia = int(input("  Día (1-31): "))
-    hora = int(input("  Hora (0-23): "))
-    minutos = int(input("  Minutos (0-59): "))
-    fecha_hora = datetime(anio, mes, dia, hora, minutos)
+    anio = int(input("Año (AAAA): \n"))
+    print("Mes (1-12): ")
+    mes = int(validar_input(12))
+    dias = cantidad_dias(anio, mes)
+    print(f"Día (1-{dias}):")
+    dia = int(validar_input(dias))
+    print("Hora (0-23):")
+    hora = int(validar_input(23, 0))
+    print("Minutos (0-59):")
+    minutos = int(validar_input(59, 0))
+    fecha_hora = datetime(anio, mes, dia, hora, minutos) # convierte la fecha al estandar AAAA-MM-DD HH:MM:SS.
     return fecha_hora
-        
-def ingresar_vuelo():
-    """Funcion encargada de ingresar un nuevo vuelo e ingresarlo a la lista de vuelos."""
-    #El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000
+   
+def ingreso_numero_vuelo():
+    """Funcion que valida y retorna un numero de vuelo"""
     regex_numero_vuelo = r'^[A-Z]{2}[0-9]{4}$' #REGEX QUE VALIDE 2 LETRAS AL PRINCIPIO Y 4 NUMEROS AL FINAL
-    regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
-    regex_codigo_aeropuerto = r'^[A-Z]{3}$'
-    regex_fecha = r'^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}'
-
     numero_vuelo = input("Ingrese el numero de vuelo en formato (XX1111): \n").upper()
     while not re.match(regex_numero_vuelo,numero_vuelo): #Si mi regex no matchea con el ingreso, vuelve a solicitarlo
         numero_vuelo = input("Ingrese el numero de vuelo correctamente: \n").upper()
+    return numero_vuelo
+
+def ingresar_vuelo():
+    """Funcion encargada de ingresar un nuevo vuelo e ingresarlo a la lista de vuelos."""
+    #El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000
+    regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
+    regex_codigo_aeropuerto = r'^[A-Z]{3}$'
+
+    numero_vuelo = ingreso_numero_vuelo()
 
     aerolinea = input("Ingrese la Aerolinea prestadora del vuelo: \n").capitalize() #al momento de mostrarla .capitalize()
     while aerolinea == "" or re.match(regex_aerolinea,aerolinea):
         aerolinea = input("Ingrese la Aerolinea prestadora del vuelo correctamente: \n").capitalize()
     
-    aeropuerto_origen = carga_aeropuerto_origen(regex_codigo_aeropuerto)
-    aeropuerto_destino = carga_aeropuerto_destino(regex_codigo_aeropuerto)
+    aeropuerto_origen = carga_aeropuerto(regex_codigo_aeropuerto, "origen")
+    aeropuerto_destino = carga_aeropuerto(regex_codigo_aeropuerto, "destino")
 
     estado = "En horario" #Los vuelos ingresados al sistema siempre estan en horario
 
@@ -103,12 +191,19 @@ def ingresar_vuelo():
     while fecha_hora_arribo <= fecha_hora_despegue:
         print("La fecha de arribo debe ser posterior a la de despegue. Intente nuevamente.\n")
         fecha_hora_arribo = ingresar_fecha_y_hora("fecha y hora de arribo")
-    
-    # Formatear las fechas a string en el formato AAAA-MM-DD HH:MM:SS
-    fecha_hora_despegue = fecha_hora_despegue.strftime('%Y-%m-%d %H:%M:%S')
-    fecha_hora_arribo = fecha_hora_arribo.strftime('%Y-%m-%d %H:%M:%S')
-
-    vuelo= [numero_vuelo, aerolinea, aeropuerto_origen, aeropuerto_destino, estado, fecha_hora_despegue, fecha_hora_arribo]
+    print("Seleccione el id del avion designado para el vuelo:")
+    mostrar_aviones()
+    avion = int(validar_input(7))
+    vuelo = {
+        "numero_vuelo": numero_vuelo,
+        "aerolinea": aerolinea,
+        "origen": aeropuerto_origen,
+        "destino": aeropuerto_destino,
+        "estado": estado,
+        "despegue": fecha_hora_despegue,
+        "arribo": fecha_hora_arribo,
+        "avion": avion_asignado(avion)
+    }
     vuelos.append(vuelo)
     system("cls")
     print("Vuelo cargado al sistema correctamente!")
@@ -116,13 +211,44 @@ def ingresar_vuelo():
     sleep(2)
     system("cls")
     return
+
+def modificar_estado_vuelos(numero_vuelo, key, estado):
+    vuelo = get_vuelo(numero_vuelo)
+    vuelo[key] = estado
+
+def modificacion_vuelo():
+  """Funcion encargada de modificar el atributo del vuelo que se desee."""
+  numero_vuelo = ingreso_numero_vuelo()
+  
+  print("""Ingrese la opción (numero) que quiera modificar:
+  -1) Estado del vuelo.
+  -2) Destino.
+  -3) Fecha-hora de salida.
+  -4) Fecha-hora de llegada""")
+  opcion = int(validar_input(4))
+
+  if opcion == 1:
+    print("""Ingrese el nuevo estado:
+  -1) En horario.
+  -2) Retrasado.
+  -3) Cancelado.""")  
+    estado = validar_input(3)
+
+    if estado == "1":
+      estado = "En horario"
+    elif estado == "2":
+      estado = "Retrasado"
+    elif estado == "3":
+      estado = "Cancelado"
+    else:
+     return "Error asignando estado" #Acá deberíamos volver a llamar a la funcion en realidad
+    
+    modificar_estado_vuelos(numero_vuelo,"estado",estado)
+
+    ## Continuar con el resto de modificaciones
+  return
 #Por ahora estos son los unicos atributos modificables de un vuelo.
-def modificar_estado_vuelos(id, estado):
-    for vuelo in vuelos:
-        if vuelo[0] == id:
-            vuelo[4] = estado
-            return True
-    return False
+
 
 def modificar_destino_vuelos(id, destino):
     for vuelo in vuelos:

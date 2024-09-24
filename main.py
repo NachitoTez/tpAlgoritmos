@@ -1,6 +1,6 @@
 from os import system
 import repositorio_usuarios
-import repositorio_vuelos
+from repositorio_vuelos import ingresar_vuelo, get_vuelos, mostrar_vuelos
 from utils import validar_input
 from repositorio_aviones import avion_asignado
  
@@ -13,39 +13,6 @@ NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
 
-
-
-
-def modificacion_vuelo(current_user):
-  # if current_user != admin: return ; esto es lo que dije más abajo
-  print("""Ingrese la opción (numero) que quiera modificar:
-  -1) Estado del vuelo.
-  -2) Destino.
-  -3) Fecha-hora de salida.
-  -4) Fecha-hora de llegada""")
-  opcion = validar_input(NUMERO_DE_OPCIONES_4)
-
-  if opcion == 1:
-    print("""Ingrese el nuevo estado:
-  -1) En horario.
-  -2) Retrasado.
-  -3) Cancelado.""")  
-    estado = validar_input(NUMERO_DE_OPCIONES_3)
-
-    if estado == "1":
-      estado = "En horario"
-    elif estado == "2":
-      estado = "Retrasado"
-    elif estado == "3":
-      estado = "Cancelado"
-    else:
-     return "Error asignando estado" #Acá deberíamos volver a llamar a la funcion en realidad
-    
-    id = input("Inserte el numero de vuelo: ")
-    repositorio_vuelos.modificar_estado_vuelos(id, estado)
-
-    ## Continuar con el resto de modificaciones
-  return
 
 def eliminacion_vuelo(current_user):
   # if current_user != admin: return // Al menos con los codigos ya es un poco mas seguro el código (igual no se si importa acá)
@@ -65,10 +32,6 @@ def eliminacion_vuelo(current_user):
   else: return "EXCEPCION Error al eliminar vuelo"
   
 
-
-
-
-
 def administrador():
   """Listado de funciones disponibles que se pueden ejecutar Exclusivo de Administradores"""
   system("cls")
@@ -87,7 +50,7 @@ def menu_opciones_administrador():
   while bandera:
     opcion = validar_input(4)
     if opcion == "1":
-      repositorio_vuelos.ingresar_vuelo()
+      ingresar_vuelo()
       administrador()
       bandera = False
     elif opcion == "2":
@@ -111,17 +74,13 @@ def consultante():
   system("cls")
   print("OPCIONES")
   print("""
-        1. Consultar vuelos arribados.
-        2. Consulta de vuelos partidos.
-        3. Consulta de vuelos.
-        4. Consulta de vuelos con asientos disponibles.
-        5. Consulta de estados de vuelos.
-        6. Consulta de reserva de vuelos.
-        7. Cancelar reserva.
+        1. Consulta de vuelos.
+        2. Consulta de vuelos con asientos disponibles.
+        3. Consultar estado de vuelo.
+        4. Consultar reserva.
+        5. Cancelar reserva.
         """)
   menu_opciones_consultante()
-  
-
 
 def menu_opciones_consultante():
   #Selecciona la opccion deseada
@@ -149,19 +108,7 @@ def menu_opciones_consultante():
 
 def consultarVuelos():
   bandera = False
-  vuelos = repositorio_vuelos.get_vuelos()
-  for vuelo in vuelos:
-      print("=================\n"
-        f"El vuelo {vuelo[0]} \n"
-        f"De la aerolinea {vuelo[1]} \n"
-        f"Que parte desde la terminal de {vuelo[2][0]} \n"
-        f"Con destino a la terminal de {vuelo[3][0]} \n"
-        f"Esta {vuelo[4]} \n"
-        f"Avion: {vuelo[7][0]} \n"
-        f"Hora de salida: {vuelo[5]} \n"
-        f"Hora de llegada: {vuelo[6]} \n"
-        "=================\n"
-            )
+  mostrar_vuelos()
   volver = input("seleccione 0 para volver al menu anterio o -1 para salir del sistema: ")
   while not bandera:    
     if volver == "0":
@@ -172,7 +119,7 @@ def consultarVuelos():
       bandera = True
     else:
       print("Seleccione un valor valido")
-      volver = input("seleccione 0 para volver al menu anterio o -1 para salir del sistema: ")
+      volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
     
 
 
