@@ -44,7 +44,7 @@ def menu_opciones_administrador():
   #Selecciona la opccion deseada
   bandera = True
   while bandera:
-    opcion = validar_input(4)
+    opcion = validar_input(5)
     if opcion == "1":
       ingresar_vuelo()
       administrador()
