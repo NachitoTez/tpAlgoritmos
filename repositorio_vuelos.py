@@ -283,7 +283,7 @@ def modificacion_vuelo():
   return
 
 def consultar_estado_vuelo():
-    numero_vuelo = ingreso_numero_vuelo()
+    numero_vuelo = ingreso_numero_vuelo(True)
     vuelo = get_vuelo(numero_vuelo)
     if(vuelo == -1):
         print("Vuelo no encontrado en el sistema.")

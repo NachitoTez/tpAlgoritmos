@@ -65,8 +65,6 @@ def menu_opciones_administrador():
       system("cls")
       main()
       bandera = False
-    else:
-      print("Ingrese una opcion valida")
   imprimible_menu_regreso(administrador)
   #modificar
 
@@ -90,7 +88,7 @@ def menu_opciones_consultante():
   #Selecciona la opccion deseada
   bandera = False
   while not bandera:
-    opcion = input("Ingrese la opcion que desee: ")
+    opcion = validar_input(6)
     if opcion == "1":
       mostrar_vuelos()
       bandera = True
@@ -112,9 +110,6 @@ def menu_opciones_consultante():
       sleep(2)
       system("cls")
       main()
-    else:
-      print("Ingrese una opcion valida")
-      bandera = False
   imprimible_menu_regreso(consultante)
 
 
