@@ -21,7 +21,8 @@ vuelo1 = {
     "estado": "En horario",
     "despegue": "2024-11-11 12:00:00",
     "arribo": "2024-11-11 13:00:00",
-    "avion": avion_asignado(4)
+    "avion": avion_asignado(4),
+    "asientos_disponibles": 3
 }
 
 vuelo2 = {
@@ -32,7 +33,9 @@ vuelo2 = {
     "estado": "Retrasado",
     "despegue": "2024-11-15 18:00:00",
     "arribo": "2024-11-16 09:00:00",
-    "avion": avion_asignado(5)
+    "avion": avion_asignado(5),
+    "asientos_disponibles": 15
+
 }
 
 vuelo3 = {
@@ -43,7 +46,8 @@ vuelo3 = {
     "estado": "Cancelado",
     "despegue": "2024-11-20 13:00:00",
     "arribo": "2024-11-20 22:00:00",
-    "avion": avion_asignado(3)
+    "avion": avion_asignado(3),
+    "asientos_disponibles": -1
 }
 
 vuelo4 = {
@@ -54,7 +58,8 @@ vuelo4 = {
     "estado": "En horario",
     "despegue": "2024-11-25 23:30:00",
     "arribo": "2024-11-26 07:30:00",
-    "avion": avion_asignado(1)
+    "avion": avion_asignado(1),
+    "asientos_disponibles": 0
 }
 
 vuelo5 = {
@@ -65,7 +70,8 @@ vuelo5 = {
     "estado": "Arribado",
     "despegue": "2024-11-25 23:30:00",
     "arribo": "2024-11-26 07:30:00",
-    "avion": avion_asignado(6)
+    "avion": avion_asignado(6),
+    "asientos_disponibles": 11
 }
 
 vuelo6 = {
@@ -76,7 +82,8 @@ vuelo6 = {
     "estado": "Arribado",
     "despegue": "2024-09-08 16:43:03",
     "arribo": "2024-09-09 16:43:03",
-    "avion": avion_asignado(2)
+    "avion": avion_asignado(2),
+    "asientos_disponibles": -10
 }
 vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5, vuelo6]
 
@@ -306,6 +313,10 @@ def filtrar_vuelos_en_curso():
     vuelos_en_curso = list(filter(lambda vuelo : vuelo_esta_en_curso(vuelo, ahora), vuelos))
 
     return vuelos_en_curso
+
+def filtrar_vuelos_asientos_disponibles():
+    vuelos_disponibles = list(filter(lambda vuelo:  vuelo["asientos_disponibles"]> 0, vuelos))
+    return vuelos_disponibles
 
 
 def calcular_posicion_vuelo(vuelo):

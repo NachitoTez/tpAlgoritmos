@@ -1,7 +1,7 @@
 from os import system
 from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo
+from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
 from utils import validar_input
 from repositorio_aviones import avion_asignado
  
@@ -123,7 +123,16 @@ def menu_opciones_consultante():
 
 
 def consultarAsientosDisponibles():
-  pass
+
+  vuelos_filtrados = filtrar_vuelos_asientos_disponibles()
+  codigos_de_vuelos = []
+  for vuelo in vuelos_filtrados:
+    codigos_de_vuelos.append(vuelo["numero_vuelo"])
+
+  print(codigos_de_vuelos)
+  return
+
+
 
 
   
