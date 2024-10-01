@@ -88,7 +88,7 @@ def mostrar_vuelos():
     for vuelo in vuelos:
         print(f"Número de vuelo: {vuelo['numero_vuelo']}")
         print(f"Aerolínea: {vuelo['aerolinea']}")
-        print(f"Origen: {vuelo['origen']}")  # Esto puede requerir un __str__ en tu clase Aeropuerto
+        print(f"Origen: {vuelo['origen']}")  
         print(f"Destino: {vuelo['destino']}")
         print(f"Estado: {vuelo['estado']}")
         print(f"Despegue: {vuelo['despegue']}")
@@ -175,10 +175,12 @@ def ingreso_numero_vuelo(flag=False):
     numero_vuelo = input("Ingrese el numero de vuelo en formato (XX1111): \n").upper()
     while not re.match(regex_numero_vuelo,numero_vuelo): #Si mi regex no matchea con el ingreso, vuelve a solicitarlo
         numero_vuelo = input("Ingrese el numero de vuelo correctamente: \n").upper()
-    while verificar_numero_vuelo_unico(numero_vuelo):
-        numero_vuelo = input("Ingrese un numero de vuelo que no exista en el programa: \n").upper()
-    while not verificar_numero_vuelo_unico(numero_vuelo) and flag:
-        numero_vuelo = input("Ingrese un numero de vuelo que exista en el programa: \n").upper()
+    if flag:
+        while not verificar_numero_vuelo_unico(numero_vuelo) and flag:
+            numero_vuelo = input("Ingrese un numero de vuelo que exista en el programa: \n").upper()
+    else:
+        while verificar_numero_vuelo_unico(numero_vuelo):
+            numero_vuelo = input("Ingrese un numero de vuelo que no exista en el programa: \n").upper()
     return numero_vuelo
 
 def ingresar_vuelo():
@@ -281,12 +283,13 @@ def consultar_estado_vuelo():
         return
     print(f"El estado del vuelo es: {vuelo.get('estado')}")
 
-def eliminar_vuelo(id):
-    for vuelo in vuelos:
-        if vuelo[0] == id:
-            del vuelo[0]
-            return True
-    return False
+def eliminar_vuelo():
+    numero_vuelo = ingreso_numero_vuelo(True)
+    indice_a_eliminar = 0
+    for indice, vuelo in enumerate(vuelos):
+        if vuelo["numero_vuelo"] == numero_vuelo:
+            indice_a_eliminar = indice
+    del(vuelos[indice_a_eliminar])
 
 def vuelo_esta_en_curso(vuelo, tiempo):
     hora_salida = vuelo[5]

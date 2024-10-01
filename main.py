@@ -1,7 +1,7 @@
 from os import system
 from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo
+from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo
 from utils import validar_input
 from repositorio_aviones import avion_asignado
  
@@ -12,25 +12,6 @@ NUMERO_DE_OPCIONES_2 = 2
 NUMERO_DE_OPCIONES_3 = 3
 NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
-
-
-
-def eliminacion_vuelo(current_user):
-  # if current_user != admin: return // Al menos con los codigos ya es un poco mas seguro el código (igual no se si importa acá)
-  print("Ingrese el número de vuelo que quiere eliminar")
-  numero_vuelo = input()
-  print("""Estas seguro de que queres eliminar un vuelo? No se puede volver atrás:
-  -1) Estoy seguro, eliminar.
-  -2) Me arrepiento.""")
-  segundo_input = validar_input(NUMERO_DE_OPCIONES_2)
-  if segundo_input == 2:
-    return False
-  elif segundo_input == 1:
-    validacion_codigos = repositorio_usuarios.validar_codigos_admin()
-    if validacion_codigos == False:
-      return "EXCEPCION Usuario bloqueado" #A definir
-    return eliminacion_vuelo(numero_vuelo) #como no manejamos excepciones los returns son variados. Acá devuelve true -> si pudo eliminar ; false ->si no
-  else: return "EXCEPCION Error al eliminar vuelo"
   
 def imprimible_menu_regreso(funcion):
   bandera = False
@@ -54,7 +35,8 @@ def administrador():
         1. Ingresar vuelo al sistema.
         2. Modificar vuelo.
         3. Consulta de estados de vuelos.
-        4. Cerrar Sesión.
+        4. Eliminar vuelo.
+        5. Cerrar Sesión.
         """)
   menu_opciones_administrador()
 
@@ -74,6 +56,9 @@ def menu_opciones_administrador():
       mostrar_vuelos()
       bandera = False
     elif opcion == "4":
+      eliminar_vuelo()
+      bandera = False
+    elif opcion == "5":
       system("cls")
       print("Ha cerrado la sesión con éxito!")
       sleep(2)
