@@ -158,14 +158,14 @@ def reservaSalaVIP(user):
     seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
     if 1 <= seleccion <= len(aeropuertos):
       if "salavip" in aeropuertos[seleccion - 1]:
-        for salaVIP in aeropuertos[seleccion - 1]["salavip"]:
+        for ind, salaVIP in enumerate(aeropuertos[seleccion - 1]["salavip"]):
           counterSala += 1 
           if salaVIP["reservados"] < salaVIP["capacidad"]:
-            print(counterSala, "Nombre: ", salaVIP["nombre"], "Precio: ",  salaVIP["precio"]  )
+            print(ind + 1, "Nombre: ", salaVIP["nombre"], "Precio: ",  salaVIP["precio"]  )
         seleccionSala = int(input("Seleccione la sala: "))
         while not fechaValida:
            fecha = input("Inque en que fecha DD/MM/AAAA: ")
-           fechaValida = validarFecha(fecha)
+           fechaValida, _ = validarFecha(fecha)
            if fechaValida:
              reservar = {
                "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
@@ -205,6 +205,8 @@ def reservaEstacionamiento(user):
     aeropuertos = get_aeropuertos()
     flag = False
     reserva = False
+    validaFechaInicio = False
+    validaFechaFin = False
     fechas_rango = []
     
     while not flag:    
@@ -220,13 +222,17 @@ def reservaEstacionamiento(user):
             if "estacionamiento" in aeropuerto_seleccionado:
                 estacionamiento = aeropuerto_seleccionado["estacionamiento"]
                 
-                # Pedir el rango de fechas
-                inicioFecha = input("Ingrese la fecha de inicio de la reserva (DD/MM/AAAA): ")
-                finFecha = input("Ingrese la fecha de fin de la reserva (DD/MM/AAAA ): ")
+                while not validaFechaInicio:
+                  inicioFecha = input("Ingrese la fecha de inicio de la reserva (DD/MM/AAAA): ")
+                  validaFechaInicio, fechaInicio = validarFecha(inicioFecha)
+                  if not validaFechaInicio:
+                    print("Fecha no valida, agregue una fecha valida ")
 
-                # Convertir las fechas en objetos datetime
-                _, fechaInicio = validarFecha(inicioFecha)
-                _, fechaFin = validarFecha(finFecha)
+                while not validaFechaFin:
+                  finFecha = input("Ingrese la fecha de fin de la reserva (DD/MM/AAAA ): ")
+                  validaFechaFin, fechaFin = validarFecha(finFecha)
+                  if not validaFechaFin:
+                    print("Fecha no valida, agregue una fecha valida ")
 
                 # Lista de fechas en el rango
                 fecha_actual = fechaInicio
@@ -267,7 +273,7 @@ def reservaEstacionamiento(user):
                         if valida:
                           for fecha in fechas_rango:
                             if fecha not in estacionamiento["reservados"]:
-                              estacionamiento["reservados"][fecha] = []  # Asegúrate de inicializar la lista
+                              estacionamiento["reservados"][fecha] = []  
                               estacionamiento["reservados"][fecha].append(lugarSeleccionado)
                           if "reservas" in user:
                             user["reservas"].append(reservar)
@@ -342,27 +348,3 @@ def main():
       main()
 
 main()
-
-
-
-
-          
-              # while not fechaValida:
-              #     fecha = input("Inque en que fecha DD/MM/AAAA: ")
-              #     fechaValida = validarFecha(fecha)
-              #     if fechaValida:
-
-                  
-              #        else:
-              #          print("Ocurrio un problema")
-              #     else:
-              #       print("Fecha no valida")
-              #       fechaValida = False
-              #       bandera = False          
-          
-
-          
-                   
-                     
-                        # aeropuertos[seleccion - 1]["estacionamiento"][seleccionSala - 1]["reservados"] += 1
-                         
