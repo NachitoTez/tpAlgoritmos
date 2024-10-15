@@ -1,3 +1,6 @@
+from datetime import datetime
+import random
+
 def validar_input(cantidad_de_opciones, inicio=1):
     """Función creada para validar si la opción ingresada por teclado esta dentro del numero de opciones posibles
     Recibe por parámetro la cantidad de opciones disponibles y devuelve la opcion "String" ingresada por el usuario ya validada
@@ -19,3 +22,17 @@ def cantidad_dias(anio, mes):
         return dias[mes-1]+1
     else:
         return dias[mes-1]
+    
+def validarFecha(fecha):
+    try:
+        fechaValida =  datetime.strptime(fecha, "%d/%m/%Y")
+        return True, fechaValida
+    except ValueError:
+        return False, None
+    
+def randonAprobado():
+    valido = random.randint(0,10)
+    if valido > 3:
+        return True
+    else:
+        return False

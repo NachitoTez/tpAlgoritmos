@@ -9,7 +9,34 @@ eze = {
     "codigo": "EZE",
     "ciudad": "Buenos Aires",
     "pais": "Argentina",
-    "latitud": [0, 0]
+    "latitud": [0, 0],
+    "salavip": [ 
+        {"nombre" :"EZE GOLD",
+        "capacidad": 50, 
+        "precio": "$100",
+        "reservados": 0
+        },        
+        {"nombre" :"EZE Diamante",
+        "capacidad": 10, 
+        "precio": "$100",
+        "reservados": 0
+        },        
+        {"nombre" :"EZE Silver",
+        "capacidad": 30, 
+        "precio": "$100",
+        "reservados": 0
+        },        
+        ],
+    "estacionamiento": {
+        "capacidadtotal" : 50,
+        "lugares": {
+            "A":10,
+            "B":10,
+            "C":15,
+            "D":15        
+                    },
+        "reservados":{}
+    }
 }
 
 aep = {

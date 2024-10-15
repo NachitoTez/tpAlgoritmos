@@ -4,7 +4,13 @@ import repositorio_usuarios
 from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
 from utils import validar_input
 from repositorio_aviones import avion_asignado
- 
+from repositorio_aeropuertos import get_aeropuertos
+from repositorio_usuarios import getDataUser
+from utils import validarFecha, randonAprobado
+from repositorio_pagos import  tieneTarjeta, tieneTarjeta
+import random
+from datetime import datetime, timedelta
+
  
 #Es solo para hacer mas legible el codigo y no tener magic numbers
 NUMERO_DE_OPCIONES_1 = 1
@@ -12,6 +18,8 @@ NUMERO_DE_OPCIONES_2 = 2
 NUMERO_DE_OPCIONES_3 = 3
 NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
+
+user = getDataUser()
   
 def imprimible_menu_regreso(funcion):
   bandera = False
@@ -79,7 +87,9 @@ def consultante():
         3. Consultar estado de vuelo.
         4. Consultar reserva.
         5. Cancelar reserva.
-        6. Cerrar sesión.
+        6. Reserva sala VIP.
+        7. Reserva de cochera.
+        8. Cerrar sesión.
         """)
   menu_opciones_consultante()
 
@@ -88,7 +98,7 @@ def menu_opciones_consultante():
   #Selecciona la opccion deseada
   bandera = False
   while not bandera:
-    opcion = validar_input(6)
+    opcion = validar_input(8)
     if opcion == "1":
       mostrar_vuelos()
       bandera = True
@@ -105,6 +115,12 @@ def menu_opciones_consultante():
       cancelarReserva()
       bandera = True
     elif opcion == "6":
+      reservaSalaVIP(user)
+      bandera = True
+    elif opcion == "7":
+      reservaEstacionamiento(user)
+      bandera = True
+    elif opcion == "8":
       system("cls")
       print("Ha cerrado la sesión con éxito!")
       sleep(2)
@@ -127,10 +143,149 @@ def consultarAsientosDisponibles():
   print(codigos_de_vuelos)
   return
 
+def reservaSalaVIP(user):
+  valida = False
+  aeropuertos = get_aeropuertos()
+  counterSala = 0
+  bandera = False
+  fechaValida = False
+  banderaReserva = False
+  seleccionSala = 0
+  while not bandera:    
+    for index, aeropuerto in enumerate(aeropuertos):
 
-
+      print(index + 1 ,aeropuerto["codigo"], aeropuerto["ciudad"])
+    seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
+    if 1 <= seleccion <= len(aeropuertos):
+      if "salavip" in aeropuertos[seleccion - 1]:
+        for salaVIP in aeropuertos[seleccion - 1]["salavip"]:
+          counterSala += 1 
+          if salaVIP["reservados"] < salaVIP["capacidad"]:
+            print(counterSala, "Nombre: ", salaVIP["nombre"], "Precio: ",  salaVIP["precio"]  )
+        seleccionSala = int(input("Seleccione la sala: "))
+        while not fechaValida:
+           fecha = input("Inque en que fecha DD/MM/AAAA: ")
+           fechaValida = validarFecha(fecha)
+           if fechaValida:
+             reservar = {
+               "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
+               "codigo": aeropuertos[seleccion - 1]["codigo"],
+               "fecha": fecha,
+               "salavip":  aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["nombre"]
+             }
+             print("Debe seleccionar o registar una tarjeta para realizar el pago")
+             while not banderaReserva:
+               tarjeta = tieneTarjeta(user)
+               if tarjeta:
+                 valida = randonAprobado()
+                 if valida:
+                   aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["reservados"] += 1
+                   if "reservas" in user:
+                     user["reservas"].append(reservar)
+                     bandera = True
+                     banderaReserva = valida
+                   else:
+                     user["reservas"] = [reservar]
+                     bandera = True
+                     banderaReserva = valida
+                 else:
+                   print("Fondo insuficiente")
+               else:
+                 print("Ocurrio un problema")
+           else:
+             print("Fecha no valida")
+             fechaValida = False
+             bandera = False
+    else:
+      seleccion = input("Seleccione un aeropuerto correctamente: ")
+  print("Reserva realizada, con exito", user)
 
   
+def reservaEstacionamiento(user):
+    aeropuertos = get_aeropuertos()
+    flag = False
+    reserva = False
+    fechas_rango = []
+    
+    while not flag:    
+        # Mostrar aeropuertos disponibles
+        for idx, aeropuerto in enumerate(aeropuertos):
+            print(f"{idx + 1}. {aeropuerto['codigo']} - {aeropuerto['ciudad']}")
+        
+        # Seleccionar aeropuerto
+        seleccion = int(input("Seleccione el aeropuerto donde quiere reservar: "))
+        if 1 <= seleccion <= len(aeropuertos):
+            aeropuerto_seleccionado = aeropuertos[seleccion - 1]
+            
+            if "estacionamiento" in aeropuerto_seleccionado:
+                estacionamiento = aeropuerto_seleccionado["estacionamiento"]
+                
+                # Pedir el rango de fechas
+                inicioFecha = input("Ingrese la fecha de inicio de la reserva (DD/MM/AAAA): ")
+                finFecha = input("Ingrese la fecha de fin de la reserva (DD/MM/AAAA ): ")
+
+                # Convertir las fechas en objetos datetime
+                _, fechaInicio = validarFecha(inicioFecha)
+                _, fechaFin = validarFecha(finFecha)
+
+                # Lista de fechas en el rango
+                fecha_actual = fechaInicio
+                while fecha_actual <= fechaFin:
+                    fechas_rango.append(fechaInicio.strftime("%d/%m/%Y"))
+                    fecha_actual += timedelta(days=1)
+
+                # Verificar disponibilidad en todas las fechas del rango
+                lugares_disponibles = []
+                for letra, capacidad in estacionamiento["lugares"].items():
+                    for i in range(1, capacidad + 1):
+                        lugar = f"{letra}{i}"
+                        # Verificar que el lugar esté disponible en todas las fechas del rango
+                        lugar_disponible = all(
+                            lugar not in estacionamiento["reservados"].get(fecha, [])
+                            for fecha in fechas_rango
+                        )
+                        if lugar_disponible:
+                            lugares_disponibles.append(lugar)
+
+                if lugares_disponibles:
+                    # Seleccionar un lugar aleatoriamente
+                    lugarSeleccionado = random.choice(lugares_disponibles)
+
+                    reservar = {
+                     "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
+                     "codigo": aeropuertos[seleccion - 1]["codigo"],
+                     "fechainicio": fechaInicio,
+                     "fechafin": fechaFin,
+                     "estacionamiento": lugarSeleccionado
+                   }
+                    
+                    print("Debe seleccionar o registar una tarjeta para realizar el pago")
+                    while not reserva:
+                      tarjeta = tieneTarjeta(user)
+                      if tarjeta:
+                        valida = randonAprobado()
+                        if valida:
+                          for fecha in fechas_rango:
+                            if fecha not in estacionamiento["reservados"]:
+                              estacionamiento["reservados"][fecha] = []  # Asegúrate de inicializar la lista
+                              estacionamiento["reservados"][fecha].append(lugarSeleccionado)
+                          if "reservas" in user:
+                            user["reservas"].append(reservar)
+                            flag = True
+                            reserva = valida
+                          else:
+                            user["reservas"] = [reservar]
+                            flag = True
+                            reserva = valida
+                        else:
+                          print("Fondo insuficiente")
+                    print(f"Lugar {lugarSeleccionado} reservado para {user["usuario"]} desde {fechaInicio} hasta {fechaFin}")
+                else:
+                    print(f"No hay lugares disponibles para el rango de fechas {fechaInicio} a {fechaFin}")
+            else:
+                print("Este aeropuerto no tiene estacionamiento disponible.")
+        else:
+            print("Selección inválida. Por favor, elija un aeropuerto válido.")
 
 def consultarReserva():
   pass
@@ -187,3 +342,27 @@ def main():
       main()
 
 main()
+
+
+
+
+          
+              # while not fechaValida:
+              #     fecha = input("Inque en que fecha DD/MM/AAAA: ")
+              #     fechaValida = validarFecha(fecha)
+              #     if fechaValida:
+
+                  
+              #        else:
+              #          print("Ocurrio un problema")
+              #     else:
+              #       print("Fecha no valida")
+              #       fechaValida = False
+              #       bandera = False          
+          
+
+          
+                   
+                     
+                        # aeropuertos[seleccion - 1]["estacionamiento"][seleccionSala - 1]["reservados"] += 1
+                         

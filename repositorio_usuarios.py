@@ -7,9 +7,9 @@ from os import system
 usuarios=[ {"admin": True, "usuario":"yiya", "contrasenia":"cocacola"},
            {"admin": True, "usuario":"nacho", "contrasenia":"playstation"},
            {"admin": False, "usuario":"guido", "contrasenia":"guido123"},
-           {"admin": False, "usuario":"matias", "contrasenia":"123456"}]
+           {"id": "12345", "admin": False, "usuario":"matias", "contrasenia":"123456", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891234567', 'nombretitular': 'carlos', 'fechavencimiento': '12/29', 'codigo': '222'}]}]
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
-
+userLoguin = {}
 def validar_codigos_admin():
     """Función encargada de validar si el nuevo usuario que quiere registrarse como administrador cuenta
     con alguno de los códigos validadores que le permitan registrarse como tal.
@@ -33,6 +33,7 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
     for user in consultante:
         for clave, valor in user.items():
             if clave == "usuario" and valor == usuario or clave=="contrasenia" and valor == contrasenia:
+                userLoguin.update(user)
                 bandera+=1
         if bandera == 2: #Consulto en este paso si es que ya se encontro con el usuario y contrasenia buscado.
             return True
@@ -84,3 +85,5 @@ def registracion_usuarios(privilegio):
   usuarios.append({"admin":privilegio, "usuario":usuario, "contrasenia":contrasenia})
   return
 
+def getDataUser():
+    return userLoguin
