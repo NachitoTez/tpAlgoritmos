@@ -1,8 +1,7 @@
-from os import system, name
 from time import sleep
 import repositorio_usuarios
 from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
-from utils import validar_input
+from utils import validar_input, limpiar_consola
 from repositorio_aviones import avion_asignado
 from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser
@@ -21,16 +20,12 @@ NUMERO_DE_OPCIONES_5 = 5
 
 user = getDataUser()
   
-def limpiar_consola():
-    if name == "nt":  # Windows
-        system("cls")
-    else:  # macOS y Linux
-        system("clear")
-    return
         
 def cerrar_sesion():
     limpiar_consola()
     print("Ha cerrado la sesión con éxito!")
+    print("Volviendo al menú principal...")
+
     sleep(2)
     limpiar_consola()
     main()

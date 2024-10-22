@@ -1,5 +1,7 @@
 from datetime import datetime
 import random
+from time import sleep
+from os import system, name
 
 def validar_input(cantidad_de_opciones, inicio=1):
     """Función creada para validar si la opción ingresada por teclado esta dentro del numero de opciones posibles
@@ -36,3 +38,10 @@ def randonAprobado():
         return True
     else:
         return False
+    
+def limpiar_consola():
+    if name == "nt":  # Windows
+        system("cls")
+    else:  # macOS y Linux
+        system("clear")
+    return
