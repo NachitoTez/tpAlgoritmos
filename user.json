@@ -1,0 +1,53 @@
+[
+    {
+        "usuario": "yiya",
+        "contrasenia": "cocacola",
+        "admin": true
+    },
+    {
+        "id": "12345",
+        "admin": false,
+        "usuario": "matias",
+        "contrasenia": "123456",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": [
+            {
+                "numerotareja": "1234567891234567",
+                "nombretitular": "carlos",
+                "fechavencimiento": "12/29",
+                "codigo": 222
+            }
+        ]
+    },
+    {
+        "admin": true,
+        "usuario": "nacho",
+        "contrasenia": "playstation"
+    },
+    {
+        "admin": false,
+        "usuario": "guido",
+        "contrasenia": "guido123"
+    },
+    {
+        "admin": false,
+        "usuario": "frank",
+        "contrasenia": "123456"
+    },
+    {
+        "admin": false,
+        "usuario": "ali",
+        "contrasenia": "159875"
+    },
+    {
+        "admin": false,
+        "usuario": "carlos",
+        "contrasenia": "123456"
+    },
+    {
+        "admin": true,
+        "usuario": "brandon",
+        "contrasenia": "156423"
+    }
+]
