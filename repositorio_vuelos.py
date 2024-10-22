@@ -89,18 +89,16 @@ vuelos = [vuelo1, vuelo2, vuelo3, vuelo4, vuelo5, vuelo6]
 
 def get_vuelos():
     return vuelos
-
-def mostrar_vuelos():
-    """Función que imprime los detalles de cada vuelo almacenado."""
+def imprimir_vuelo(vuelos):
     for vuelo in vuelos:
         print(f"Número de vuelo: {vuelo['numero_vuelo']}")
         print(f"Aerolínea: {vuelo['aerolinea']}")
-        print(f"Origen: {vuelo['origen']}")  
+        print(f"Origen: {vuelo['origen']}")
         print(f"Destino: {vuelo['destino']}")
         print(f"Estado: {vuelo['estado']}")
         print(f"Despegue: {vuelo['despegue']}")
         print(f"Arribo: {vuelo['arribo']}")
-        
+
         # Detalles del avión asignado
         avion = vuelo["avion"]
         print(f"Avión Asignado:")
@@ -111,7 +109,61 @@ def mostrar_vuelos():
         print(f"    Velocidad Máxima: {avion['velocidad_maxima']}")
         print("-" * 40)
 
-    return  
+def filtrar_vuelos(key, valor):
+    """Funcion General para poder filtrar nuestra lista de vuelos segun la key que querramos visualizar
+    Parametro: key (Numero de vuelo, Aerolinea, etc) y valor (input del user).
+    Return: Lista filtrada de vuelos"""
+    lista = list(filter(lambda vuelo: vuelo.get(key) == valor, vuelos))
+    return lista
+def mostrar_vuelos():
+    """Función que imprime los detalles de cada vuelo almacenado."""
+    print("""Ingrese la opcion por la cual desea filtrar la muestra de vuelos:
+    1. Numero de vuelo.
+    2. Aerolinea.
+    3. Aeropuerto de origen.
+    4. Aeropuerto de destino.
+    5. Estado de vuelo.
+    6. Vuelo con Asientos disponibles.
+    7. Mostrar todos los vuelos del sistema.""")
+    bandera = False
+    while not bandera:
+        opcion = validar_input(8)
+        if opcion == "1":
+            numero_vuelo = ingreso_numero_vuelo(True)
+            vuelo = get_vuelo(numero_vuelo)
+            imprimir_vuelo([vuelo])
+            bandera = True
+        elif opcion == "2":
+            aerolinea = input("Ingrese la aerolinea que desea visualizar: \n").title()
+            print(aerolinea)
+            vuelos = filtrar_vuelos("aerolinea", aerolinea)
+            imprimir_vuelo(vuelos)
+            bandera = True
+        elif opcion == "3":
+            aeropuerto = input("Ingrese el codigo de aeropuerto de origen que desea filtrar 'XXX': \n").upper()
+            vuelos = filtrar_vuelos("origen", get_aeropuerto_por_nombre(aeropuerto))
+            imprimir_vuelo(vuelos)
+            bandera = True
+        elif opcion == "4":
+            aeropuerto = input("Ingrese el codigo de aeropuerto de destino que desea filtrar 'XXX': \n").upper()
+            vuelos = filtrar_vuelos("destino", get_aeropuerto_por_nombre(aeropuerto))
+            imprimir_vuelo(vuelos)
+            bandera = True
+        elif opcion == "5":
+            print("""Seleccione el estado por el que quiere filtrar los vuelos: 
+            1. En horario.
+            2. Retrasado.
+            3. Cancelado""")
+            bandera = True
+        elif opcion == "6":
+            reservaSalaVIP(user)
+            bandera = True
+        elif opcion == "7":
+            reservaEstacionamiento(user)
+            bandera = True
+    return
+
+
 
 def get_vuelo(numero_vuelo):
     for vuelo in vuelos:
@@ -119,7 +171,8 @@ def get_vuelo(numero_vuelo):
             return vuelo
     return -1
 
-def validacion_aeropuerto(regex):
+def validacion_aeropuerto():
+    regex = r'^[A-Z]{3}$'
     MAX_INTENTOS = 3
     aeropuerto= input().upper()
     while (aeropuerto == "" or not re.match(regex, aeropuerto)) and MAX_INTENTOS>0:
@@ -138,17 +191,17 @@ def validacion_aeropuerto(regex):
     return aeropuerto
 
 def carga_aeropuerto(lugar):
-    regex_codigo_aeropuerto = r'^[A-Z]{3}$'
+
     while True:
         print(f"Ingrese el codigo de aeropuerto de {lugar}: ")
-        aeropuerto= validacion_aeropuerto(regex_codigo_aeropuerto)
+        aeropuerto= validacion_aeropuerto()
         if(aeropuerto == "Reintento"):
             continue
         elif(aeropuerto == False):
             cargar_aeropuerto()
             system("cls")
             print(f"Ingrese el codigo de aeropuerto de {lugar}: ")
-            aeropuerto=validacion_aeropuerto(regex_codigo_aeropuerto)
+            aeropuerto=validacion_aeropuerto()
         return aeropuerto
 
 def ingresar_fecha_y_hora(tipo): #Falta agregar validaciones
@@ -194,11 +247,9 @@ def ingresar_vuelo():
     """Funcion encargada de ingresar un nuevo vuelo e ingresarlo a la lista de vuelos."""
     #El codigo de vuelo al ingresarlo verificar con regex que cumpla AA0000
     regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
-
     numero_vuelo = ingreso_numero_vuelo()
-
     aerolinea = input("Ingrese la Aerolinea prestadora del vuelo: \n").capitalize() #al momento de mostrarla .capitalize()
-    while aerolinea == "" or re.match(regex_aerolinea,aerolinea):
+    while aerolinea == "" or re.match(regex_aerolinea,aerolinea): #Podria reemplazarse por un aerolinea.isDigit()
         aerolinea = input("Ingrese la Aerolinea prestadora del vuelo correctamente: \n").capitalize()
     
     aeropuerto_origen = carga_aeropuerto("origen")
@@ -282,14 +333,6 @@ def modificacion_vuelo():
     ## Continuar con el resto de modificaciones
   return
 
-def consultar_estado_vuelo():
-    numero_vuelo = ingreso_numero_vuelo(True)
-    vuelo = get_vuelo(numero_vuelo)
-    if(vuelo == -1):
-        print("Vuelo no encontrado en el sistema.")
-        return
-    print(f"El estado del vuelo es: {vuelo.get('estado')}")
-
 def eliminar_vuelo():
     numero_vuelo = ingreso_numero_vuelo(True)
     indice_a_eliminar = 0
@@ -301,12 +344,10 @@ def eliminar_vuelo():
 def vuelo_esta_en_curso(vuelo, tiempo):
     hora_salida = vuelo[5]
     hora_llegada = vuelo[6]
-        
     return hora_salida <= tiempo <= hora_llegada
 
 
 def filtrar_vuelos_en_curso():
-
     ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(ahora)
 

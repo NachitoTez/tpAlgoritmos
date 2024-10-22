@@ -3,11 +3,10 @@ from time import sleep
 import repositorio_usuarios
 from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
 from utils import validar_input
-from repositorio_aviones import avion_asignado
 from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser
 from utils import validarFecha, randonAprobado
-from repositorio_pagos import  tieneTarjeta, tieneTarjeta
+from repositorio_pagos import tieneTarjeta
 import random
 from datetime import datetime, timedelta
 
@@ -80,8 +79,8 @@ def menu_opciones_administrador():
 def consultante():
   """Listado de funciones disponibles Exclusivo de Consultante"""
   system("cls")
-  print("OPCIONES")
   print("""
+    OPCIONES
         1. Consulta de vuelos.
         2. Consulta de vuelos con asientos disponibles.
         3. Consultar estado de vuelo.
@@ -127,21 +126,6 @@ def menu_opciones_consultante():
       system("cls")
       main()
   imprimible_menu_regreso(consultante)
-
-
-  
-    
-
-
-def consultarAsientosDisponibles():
-
-  vuelos_filtrados = filtrar_vuelos_asientos_disponibles()
-  codigos_de_vuelos = []
-  for vuelo in vuelos_filtrados:
-    codigos_de_vuelos.append(vuelo["numero_vuelo"])
-
-  print(codigos_de_vuelos)
-  return
 
 def reservaSalaVIP(user):
   valida = False

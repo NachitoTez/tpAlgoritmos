@@ -4,12 +4,15 @@ from os import system
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
 #Una vez que cambiemos a archivos se reemplazan los datos de prueba con el acceso al archivo y todo seguiría funcionando igual
 
-usuarios=[ {"admin": True, "usuario":"yiya", "contrasenia":"cocacola"},
-           {"admin": True, "usuario":"nacho", "contrasenia":"playstation"},
-           {"admin": False, "usuario":"guido", "contrasenia":"guido123"},
-           {"id": "12345", "admin": False, "usuario":"matias", "contrasenia":"123456", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891234567', 'nombretitular': 'carlos', 'fechavencimiento': '12/29', 'codigo': '222'}]}]
+usuarios=[ {"id": 1, "admin": True, "usuario":"yiya", "contrasenia":"cocacola", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891239000', 'nombretitular': 'yiya', 'fechavencimiento': '12/29', 'codigo': '252'}]},
+           {"id": 2, "admin": True, "usuario":"nacho", "contrasenia":"playstation", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891238888', 'nombretitular': 'nacho', 'fechavencimiento': '12/29', 'codigo': '322'}]},
+           {"id": 3, "admin": False, "usuario":"guido", "contrasenia":"guido123", "vuelos":[],  "reservas":[],"tarjetas":[]},
+           {"id": 4, "admin": False, "usuario":"matias", "contrasenia":"123456", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891234567', 'nombretitular': 'carlos', 'fechavencimiento': '12/29', 'codigo': '222'}]}]
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
 userLoguin = {}
+def get_ultimo_id(usuarios):
+    """Función para retornar el id del ultimo usuario creado en el sistema y en base a eso, crear el proximo con el id+1"""
+    return usuarios[-1]["id"]
 def validar_codigos_admin():
     """Función encargada de validar si el nuevo usuario que quiere registrarse como administrador cuenta
     con alguno de los códigos validadores que le permitan registrarse como tal.
@@ -82,7 +85,7 @@ def registracion_usuarios(privilegio):
   contrasenia = input("Ingrese la contrasenia a utilizar en el sistema, debe tener minimo 6 digitos y un maximo de 12 digitos: \n")
   while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
-  usuarios.append({"admin":privilegio, "usuario":usuario, "contrasenia":contrasenia})
+  usuarios.append({"id": get_ultimo_id(usuarios)+1, "admin":privilegio, "usuario":usuario, "contrasenia":contrasenia, "vuelos":[],  "reservas":[],"tarjetas":[]})
   return
 
 def getDataUser():
