@@ -1,4 +1,4 @@
-from os import system
+from os import system, name
 from time import sleep
 import repositorio_usuarios
 from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
@@ -21,6 +21,13 @@ NUMERO_DE_OPCIONES_5 = 5
 
 user = getDataUser()
   
+def limpiar_consola():
+    if name == "nt":  # Windows
+        system("cls")
+    else:  # macOS y Linux
+        system("clear")
+    return
+        
 def imprimible_menu_regreso(funcion):
   bandera = False
   volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
@@ -37,7 +44,7 @@ def imprimible_menu_regreso(funcion):
 
 def administrador():
   """Listado de funciones disponibles que se pueden ejecutar Exclusivo de Administradores"""
-  system("cls")
+  limpiar_consola()
   print("OPCIONES")
   print("""
         1. Ingresar vuelo al sistema.
@@ -67,10 +74,10 @@ def menu_opciones_administrador():
       eliminar_vuelo()
       bandera = False
     elif opcion == "5":
-      system("cls")
+      limpiar_consola()
       print("Ha cerrado la sesión con éxito!")
       sleep(2)
-      system("cls")
+      limpiar_consola()
       main()
       bandera = False
   imprimible_menu_regreso(administrador)
@@ -79,7 +86,7 @@ def menu_opciones_administrador():
 #Mostrar el menu
 def consultante():
   """Listado de funciones disponibles Exclusivo de Consultante"""
-  system("cls")
+  limpiar_consola()
   print("OPCIONES")
   print("""
         1. Consulta de vuelos.
@@ -121,10 +128,10 @@ def menu_opciones_consultante():
       reservaEstacionamiento(user)
       bandera = True
     elif opcion == "8":
-      system("cls")
+      limpiar_consola()
       print("Ha cerrado la sesión con éxito!")
       sleep(2)
-      system("cls")
+      limpiar_consola()
       main()
   imprimible_menu_regreso(consultante)
 
@@ -285,7 +292,7 @@ def reservaEstacionamiento(user):
                             reserva = valida
                         else:
                           print("Fondo insuficiente")
-                    print(f"Lugar {lugarSeleccionado} reservado para {user["usuario"]} desde {fechaInicio} hasta {fechaFin}")
+                    print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
                 else:
                     print(f"No hay lugares disponibles para el rango de fechas {fechaInicio} a {fechaFin}")
             else:
@@ -303,6 +310,7 @@ def cancelarReserva():
 # Si modularizamos mucho el código podemos volver para atras (ejemplo, si hay un error  algo volvemos a llamar a la funcion y estamos parados en el mismo lugar que antes)
 def main():
   """Función encargada de dirigir la ejecución completa de nuestro programa"""
+  limpiar_consola()
   print("""Ingrese la opción (numero) que quiera ejecutar:
   -1) Registración de usuario Consultante/Administrador.
   -2) Ingreso como Administrador.
@@ -315,18 +323,18 @@ def main():
     opcion = validar_input(NUMERO_DE_OPCIONES_2)
     if(opcion == "1"):
       repositorio_usuarios.registracion_usuarios(False) ##parece que pueden acceder a las variables sin el get -> preguntar a la profe
-      system("cls")
+      limpiar_consola()
       print("Registracion concretada")
       main()
     else:
       validacion_codigos = repositorio_usuarios.validar_codigos_admin()
       if validacion_codigos:
         repositorio_usuarios.registracion_usuarios(True)
-        system("cls")
+        limpiar_consola()
         print("Registracion concretada")
         main()       
       else:
-        system("cls")
+        limpiar_consola()
         print("No cuenta con el código para registrarse como administrador.") 
         main()
         
@@ -336,14 +344,14 @@ def main():
     if(repositorio_usuarios.inicio_sesion(True)):
       administrador()
     else:
-      system("cls")
+      limpiar_consola()
       print("Ha llegado al máximo de intentos posibles de inicio de sesion")
       main()
   else:
     if(repositorio_usuarios.inicio_sesion(False)):
       consultante()
     else:
-      system("cls")
+      limpiar_consola()
       print("Ha llegado al máximo de intentos posibles de inicio de sesion")
       main()
 

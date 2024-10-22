@@ -1,8 +1,9 @@
-from os import system
+from os import system, name
 #Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente.
 #Para manipular los datos se van a llamar a funciones creadas en este repositorio, las cuales nos van a permitir no
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
 #Una vez que cambiemos a archivos se reemplazan los datos de prueba con el acceso al archivo y todo seguiría funcionando igual
+
 
 usuarios=[ {"admin": True, "usuario":"yiya", "contrasenia":"cocacola"},
            {"admin": True, "usuario":"nacho", "contrasenia":"playstation"},
@@ -10,6 +11,14 @@ usuarios=[ {"admin": True, "usuario":"yiya", "contrasenia":"cocacola"},
            {"id": "12345", "admin": False, "usuario":"matias", "contrasenia":"123456", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891234567', 'nombretitular': 'carlos', 'fechavencimiento': '12/29', 'codigo': '222'}]}]
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
 userLoguin = {}
+
+def limpiar_consola():
+    if name == "nt":  # Windows
+        system("cls")
+    else:  # macOS y Linux
+        system("clear")
+    return
+
 def validar_codigos_admin():
     """Función encargada de validar si el nuevo usuario que quiere registrarse como administrador cuenta
     con alguno de los códigos validadores que le permitan registrarse como tal.
@@ -73,7 +82,7 @@ def chequeo_usuario_existente(nuevo_usuario):
 def registracion_usuarios(privilegio):
   """Funcion a utilizar para poder hacer la registracion de un nuevo usuario. Recibe por parametro el tipo de usuario a registrar
   True= Admin"""
-  system("cls")
+  limpiar_consola()
   usuario = ""
   contrasenia = ""
   usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
