@@ -28,6 +28,13 @@ def limpiar_consola():
         system("clear")
     return
         
+def cerrar_sesion():
+    limpiar_consola()
+    print("Ha cerrado la sesión con éxito!")
+    sleep(2)
+    limpiar_consola()
+    main()
+
 def imprimible_menu_regreso(funcion):
   bandera = False
   volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
@@ -101,42 +108,33 @@ def consultante():
   menu_opciones_consultante()
 
 
+
 def menu_opciones_consultante():
-  #Selecciona la opccion deseada
+  """"Menu de opciones de usuario consultante"""
+  opciones = {
+      "1": mostrar_vuelos,
+      "2": consultarAsientosDisponibles,
+      "3": consultar_estado_vuelo,
+      "4": consultarReserva,
+      "5": cancelarReserva,
+      "6": lambda: reservaSalaVIP(user),
+      "7": lambda: reservaEstacionamiento(user),
+      "8": cerrar_sesion
+  }
+  
   bandera = False
   while not bandera:
-    opcion = validar_input(8)
-    if opcion == "1":
-      mostrar_vuelos()
-      bandera = True
-    elif opcion == "2":
-      consultarAsientosDisponibles()
-      bandera = True
-    elif opcion == "3":
-      consultar_estado_vuelo()
-      bandera = True
-    elif opcion == "4":
-      consultarReserva()
-      bandera = True
-    elif opcion == "5":
-      cancelarReserva()
-      bandera = True
-    elif opcion == "6":
-      reservaSalaVIP(user)
-      bandera = True
-    elif opcion == "7":
-      reservaEstacionamiento(user)
-      bandera = True
-    elif opcion == "8":
-      limpiar_consola()
-      print("Ha cerrado la sesión con éxito!")
-      sleep(2)
-      limpiar_consola()
-      main()
+      opcion = validar_input(8)  # Recoge la opción
+      accion = opciones.get(opcion)  # Obtiene la función asociada a la opción
+      
+      if accion:
+          accion()  # Llama a la función
+          bandera = True
+      else:
+          print("Opción inválida. Por favor, seleccione una opción válida.")
+
   imprimible_menu_regreso(consultante)
 
-
-  
     
 
 
