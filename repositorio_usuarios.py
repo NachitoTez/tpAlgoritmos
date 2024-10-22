@@ -1,18 +1,31 @@
-from os import system
+from os import system, name
+import json
+archivoUser = "user.json"
 #Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente.
 #Para manipular los datos se van a llamar a funciones creadas en este repositorio, las cuales nos van a permitir no
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
 #Una vez que cambiemos a archivos se reemplazan los datos de prueba con el acceso al archivo y todo seguiría funcionando igual
 
-usuarios=[ {"id": 1, "admin": True, "usuario":"yiya", "contrasenia":"cocacola", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891239000', 'nombretitular': 'yiya', 'fechavencimiento': '12/29', 'codigo': '252'}]},
-           {"id": 2, "admin": True, "usuario":"nacho", "contrasenia":"playstation", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891238888', 'nombretitular': 'nacho', 'fechavencimiento': '12/29', 'codigo': '322'}]},
-           {"id": 3, "admin": False, "usuario":"guido", "contrasenia":"guido123", "vuelos":[],  "reservas":[],"tarjetas":[]},
-           {"id": 4, "admin": False, "usuario":"matias", "contrasenia":"123456", "vuelos":[],  "reservas":[],"tarjetas":[{'numerotareja': '1234567891234567', 'nombretitular': 'carlos', 'fechavencimiento': '12/29', 'codigo': '222'}]}]
+
+
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
 userLoguin = {}
-def get_ultimo_id(usuarios):
-    """Función para retornar el id del ultimo usuario creado en el sistema y en base a eso, crear el proximo con el id+1"""
-    return usuarios[-1]["id"]
+def getUser(nombreArchivo):
+    try:
+        with open(nombreArchivo, "rt") as archivo:
+            usuarios = json.load(archivo)
+            return usuarios
+    except (FileExistsError(), json.JSONDecodeError):
+        usuarios = []
+
+
+def limpiar_consola():
+    if name == "nt":  # Windows
+        system("cls")
+    else:  # macOS y Linux
+        system("clear")
+    return
+
 def validar_codigos_admin():
     """Función encargada de validar si el nuevo usuario que quiere registrarse como administrador cuenta
     con alguno de los códigos validadores que le permitan registrarse como tal.
@@ -31,7 +44,9 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
     """Función encargada de validar si el usuario que intenta ingresar al sistema esta registrado.
     Utilizo una bandera y filtro mi listado de usuarios segun el tipo de privilegio, luego por cada 
     Recibe 3 parametros: Usuario, Contrasenia y privilegio(admin(true) o no(false))"""
-    consultante= list(filter(lambda usuario: usuario.get("admin") == privilegio, usuarios))
+    with open(archivoUser, "rt") as archivo:
+        usuarios = json.load(archivo)
+        consultante= list(filter(lambda usuario: usuario["admin"] == privilegio, usuarios))
     bandera = 0
     for user in consultante:
         for clave, valor in user.items():
@@ -66,6 +81,7 @@ def chequeo_usuario_existente(nuevo_usuario):
     """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema.
     Recibe por parámetro el nombre de usuario a ingresar al sistema y devuelve True si ya se encuentra o
     False si no."""
+    usuarios = getDataUser()
     bandera = False
     for user in usuarios:
         for clave, valor in user.items():
@@ -76,16 +92,25 @@ def chequeo_usuario_existente(nuevo_usuario):
 def registracion_usuarios(privilegio):
   """Funcion a utilizar para poder hacer la registracion de un nuevo usuario. Recibe por parametro el tipo de usuario a registrar
   True= Admin"""
-  system("cls")
+  limpiar_consola()
   usuario = ""
   contrasenia = ""
+  usuarios = getUser(archivoUser)
+  print(usuarios)
   usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
   while usuario == "" or chequeo_usuario_existente(usuario):
      usuario = input("Ingrese un usuario a utilizar en el sistema que sea correcto o que no se este utilizando: \n").lower()
   contrasenia = input("Ingrese la contrasenia a utilizar en el sistema, debe tener minimo 6 digitos y un maximo de 12 digitos: \n")
   while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
-  usuarios.append({"id": get_ultimo_id(usuarios)+1, "admin":privilegio, "usuario":usuario, "contrasenia":contrasenia, "vuelos":[],  "reservas":[],"tarjetas":[]})
+  try:
+    with open(archivoUser, "w") as archivo:
+        nuevoUsuario = {"admin":privilegio, "usuario":usuario, "contrasenia":contrasenia}
+        usuarios.append(nuevoUsuario)
+        json.dump(usuarios, archivo, indent = 4) 
+        print("Usuario creado exitosamente...")
+  except ValueError as e:
+            print(e)   
   return
 
 def getDataUser():

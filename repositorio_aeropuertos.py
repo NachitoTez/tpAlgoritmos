@@ -3,13 +3,13 @@
 #modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
 #Una vez que cambiemos a archivos se reemplazan los datos de prueba con el acceso al archivo y todo seguiría funcionando igual
 
-#aeropuerto= {"Nombre: string, latitud, longitud: number[]"}
+#aeropuerto= {"Nombre: string, posicion, longitud: number[]"}
 from time import sleep
 eze = {
     "codigo": "EZE",
     "ciudad": "Buenos Aires",
     "pais": "Argentina",
-    "latitud": [0, 0],
+    "posicion": [0, 0],
     "salavip": [ 
         {"nombre" :"EZE GOLD",
         "capacidad": 50, 
@@ -43,42 +43,42 @@ aep = {
     "codigo": "AEP",
     "ciudad": "Buenos Aires",
     "pais": "Argentina",
-    "latitud": [2, 3]
+    "posicion": [2, 3]
 }
 
 mdq = {
     "codigo": "MDQ",
     "ciudad": "Mar del Plata",
     "pais": "Argentina",
-    "latitud": [4, -20]
+    "posicion": [4, -20]
 }
 
 lhr = {
     "codigo": "LHR",
     "ciudad": "London",
     "pais": "United Kingdom",
-    "latitud": [4, -20]
+    "posicion": [4, -20]
 }
 
 cdg = {
     "codigo": "CDG",
     "ciudad": "Paris",
     "pais": "France",
-    "latitud": [4, -20]
+    "posicion": [4, -20]
 }
 
 iah = {
     "codigo": "IAH",
     "ciudad": "Houston",
     "pais": "United States",
-    "latitud": [4, -20]
+    "posicion": [4, -20]
 }
 
 cdm = {
     "codigo": "CDM",
     "ciudad": "Ciudad de México",
     "pais": "Mexico",
-    "latitud": [4, -20]
+    "posicion": [4, -20]
 }
 
 
@@ -106,7 +106,7 @@ def cargar_aeropuerto():
     eje_X=float(input("Ingrese la ubicacion sobre el eje X del aeropuerto: \n"))
     eje_y=float(input("Ingrese la ubicacion sobre el eje Y del aeropuerto: \n"))
     coordenadas = [eje_X, eje_y]
-    aeropuertos.append({"codigo":codigo, "ciudad": ciudad, "pais": pais, "latitud": coordenadas})
+    aeropuertos.append({"codigo":codigo, "ciudad": ciudad, "pais": pais, "posicion": coordenadas})
     print("Aeropuerto cargado correctamente!")
     sleep(1)
     return 

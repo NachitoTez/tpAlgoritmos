@@ -363,10 +363,38 @@ def filtrar_vuelos_asientos_disponibles():
 def calcular_posicion_vuelo(vuelo):
     ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    if ahora < vuelo[5]:
-        return vuelo[2][1]
-    elif ahora > vuelo[6]:
-        return vuelo[3][1]
+    if ahora < vuelo["despegue"]:
+        return vuelo["origen"]["posicion"]
+    elif ahora > vuelo["arribo"]:
+        return vuelo["destino"]["posicion"]
+    
+
+    # x0 + ((x1-x0)/T)t
+    # y0 + ((y1-y0)/T)t
+
+    tiempo_total = vuelo["arribo"] - vuelo["despegue"] #T
+    tiempo_transcurrido = ahora - vuelo["despegue"] #t
+
+    x0 = vuelo["origen"]["posicion"][0] #x0
+    x1 = vuelo["destino"]["posicion"][0] #x1
+
+    y0 = vuelo["origen"]["posicion"][0] #y0
+    y1 = vuelo["destino"]["posicion"][1] #y1
+
+    if tiempo_total != 0:
+        posicion_en_tiempo = [x0 + ((x1-x0)/tiempo_total)*tiempo_transcurrido, y0 + ((y1-y0)/tiempo_total)*tiempo_transcurrido]
+        return posicion_en_tiempo
+    else:
+        return "error"
+
+
+
+
+
+
+
+
+
 
 # Dejo hasta acá, tengo que pensar como hacer hora_llegada - hora_salida y ahora - hora_salida porque son strings/datetime
 
