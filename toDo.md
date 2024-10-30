@@ -15,3 +15,4 @@
 - Migrar a archivos Todo.
 - Fecha de reserva del salon vip validarla con el datenow, debe ser mayor o igual.
 - Al guardar la tarjeta en el user 
+- funcion ingresar_vuelo() que te permita volver para atras
