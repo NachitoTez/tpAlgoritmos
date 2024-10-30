@@ -108,6 +108,24 @@ def imprimir_vuelo(vuelos):
         print(f"    Altitud Máxima: {avion['altitud_maxima']}")
         print(f"    Velocidad Máxima: {avion['velocidad_maxima']}")
         print("-" * 40)
+def validacion_aeropuerto():
+    regex = r'^[A-Z]{3}$'
+    MAX_INTENTOS = 3
+    aeropuerto= input().upper()
+    while (aeropuerto == "" or not re.match(regex, aeropuerto)) and MAX_INTENTOS>0:
+        aeropuerto= input("Ingrese codigo de aeropuerto correctamente: ").upper()   
+        MAX_INTENTOS-=1   
+    if(not get_aeropuerto_por_nombre(aeropuerto)): #si el aeropuerto no esta cargado al sistema, nos solicitará ingresarlo
+        print("""El aeropuerto ingresado no se encuentra en sistema.
+              Elija la opcion a ejecutar:
+              1) Reingresar por error.
+              2) Cargar el nuevo aeropuerto.""")
+        opcion = validar_input(2)
+        if(opcion == "1"):
+            return "Reintento"
+        else:
+            return False
+    return aeropuerto
 
 def filtrar_vuelos(key, valor):
     """Funcion General para poder filtrar nuestra lista de vuelos segun la key que querramos visualizar
@@ -145,7 +163,7 @@ def mostrar_vuelos():
             imprimir_vuelo(vuelos)
             bandera = True
         elif opcion == "4":
-            aeropuerto = input("Ingrese el codigo de aeropuerto de destino que desea filtrar 'XXX': \n").upper()
+            aeropuerto = validacion_aeropuerto()
             vuelos = filtrar_vuelos("destino", get_aeropuerto_por_nombre(aeropuerto))
             imprimir_vuelo(vuelos)
             bandera = True
@@ -163,7 +181,7 @@ def mostrar_vuelos():
             bandera = True
     return
 
-
+mostrar_vuelos()
 
 def get_vuelo(numero_vuelo):
     for vuelo in vuelos:
@@ -171,24 +189,7 @@ def get_vuelo(numero_vuelo):
             return vuelo
     return -1
 
-def validacion_aeropuerto():
-    regex = r'^[A-Z]{3}$'
-    MAX_INTENTOS = 3
-    aeropuerto= input().upper()
-    while (aeropuerto == "" or not re.match(regex, aeropuerto)) and MAX_INTENTOS>0:
-        aeropuerto= input("Ingrese codigo de aeropuerto correctamente: ").upper()   
-        MAX_INTENTOS-=1   
-    if(not get_aeropuerto_por_nombre(aeropuerto)): #si el aeropuerto no esta cargado al sistema, nos solicitará ingresarlo
-        print("""El aeropuerto ingresado no se encuentra en sistema.
-              Elija la opcion a ejecutar:
-              1) Reingresar por error.
-              2) Cargar el nuevo aeropuerto.""")
-        opcion = validar_input(2)
-        if(opcion == "1"):
-            return "Reintento"
-        else:
-            return False
-    return aeropuerto
+
 
 def carga_aeropuerto(lugar):
 
