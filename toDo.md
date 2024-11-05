@@ -8,3 +8,5 @@
 - Al guardar la tarjeta en el user 
 - funcion ingresar_vuelo() que te permita volver para atras
 - Convertir a json BIEN los usuarios.
+- Repositorio usuarios la logica de registrar usuario no se corrigio correctamente con los parametros ingresados.
+

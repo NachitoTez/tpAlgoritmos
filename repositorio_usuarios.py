@@ -101,7 +101,7 @@ def registracion_usuarios(privilegio):
   while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
   try:
-    with open(archivoUser, "w") as archivo:
+    with open(archivoUser, "wt") as archivo:
         nuevoUsuario = {"admin":privilegio, "usuario":usuario, "contrasenia":contrasenia}
         usuarios.append(nuevoUsuario)
         json.dump(usuarios, archivo, indent = 4) 
