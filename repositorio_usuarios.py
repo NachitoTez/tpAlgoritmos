@@ -1,10 +1,7 @@
 from os import system, name
 import json
 archivoUser = "user.json"
-#Como todavía no sabemos trabajar con archivos, en este repositorio vamos a generar los datos de prueba temporalmente.
-#Para manipular los datos se van a llamar a funciones creadas en este repositorio, las cuales nos van a permitir no
-#modificar la lógica de la funcion main/de la funcion que llame a los datos del repositorio.
-#Una vez que cambiemos a archivos se reemplazan los datos de prueba con el acceso al archivo y todo seguiría funcionando igual
+
 
 
 

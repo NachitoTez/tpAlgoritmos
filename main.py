@@ -1,6 +1,6 @@
 from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, consultar_estado_vuelo, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
+from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
 from utils import validar_input, limpiar_consola
 from repositorio_aviones import avion_asignado
 from repositorio_aeropuertos import get_aeropuertos
@@ -94,12 +94,11 @@ def consultante():
     OPCIONES
         1. Consulta de vuelos.
         2. Consulta de vuelos con asientos disponibles.
-        3. Consultar estado de vuelo.
-        4. Consultar reserva.
-        5. Cancelar reserva.
-        6. Reserva sala VIP.
-        7. Reserva de cochera.
-        8. Cerrar sesión.
+        3. Consultar reserva.
+        4. Cancelar reserva.
+        5. Reserva sala VIP.
+        6. Reserva de cochera.
+        7. Cerrar sesión.
         """)
   menu_opciones_consultante()
 
@@ -110,12 +109,11 @@ def menu_opciones_consultante():
   opciones = {
       "1": mostrar_vuelos,
       "2": consultarAsientosDisponibles,
-      "3": consultar_estado_vuelo,
-      "4": consultarReserva,
-      "5": cancelarReserva,
-      "6": lambda: reservaSalaVIP(user),
-      "7": lambda: reservaEstacionamiento(user),
-      "8": cerrar_sesion
+      "3": consultarReserva,
+      "4": cancelarReserva,
+      "5": lambda: reservaSalaVIP(user),
+      "6": lambda: reservaEstacionamiento(user),
+      "7": cerrar_sesion
   }
   
   bandera = False
