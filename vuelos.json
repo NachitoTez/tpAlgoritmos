@@ -1,68 +1,68 @@
 [
-    {
-        "numero_vuelo": "UA8761",
-        "aerolinea": "United Airlines",
-        "origen": "EZE",
-        "destino": "CDM",
-        "estado": "Arribado",
-        "despegue": "2024-09-08 16:43:03",
-        "arribo": "2024-09-09 16:43:03",
-        "avion": 2,
-        "asientos_disponibles": 0
-    },
-    {
-        "numero_vuelo": "UA8762",
-        "aerolinea": "United Airlines",
-        "origen": "EZE",
-        "destino": "IAH",
-        "estado": "Arribado",
-        "despegue": "2024-11-25 23:30:00",
-        "arribo": "2024-11-26 07:30:00",
-        "avion": 6,
-        "asientos_disponibles": 11
-    },
-    {
-        "numero_vuelo": "UA8764",
-        "aerolinea": "United Airlines",
-        "origen": "EZE",
-        "destino": "IAH",
-        "estado": "En horario",
-        "despegue": "2024-11-25 23:30:00",
-        "arribo": "2024-11-26 07:30:00",
-        "avion": 1,
-        "asientos_disponibles": 0
-    },
-    {
-        "numero_vuelo": "AF5678",
-        "aerolinea": "Air France",
-        "origen": "EZE",
-        "destino": "CDG",
-        "estado": "Cancelado",
-        "despegue": "2024-11-20 13:00:00",
-        "arribo": "2024-11-20 22:00:00",
-        "avion": 3,
-        "asientos_disponibles": 0
-    },
-    {
-        "numero_vuelo": "BA4321",
-        "aerolinea": "British Airways",
-        "origen": "EZE",
-        "destino": "LHR",
-        "estado": "En horario",
-        "despegue": "2024-11-15 18:00:00",
-        "arribo": "2024-11-16 09:00:00",
-        "avion": 5,
-        "asientos_disponibles": 15
-    },
-    {
-        "numero_vuelo": "AA1234",
-        "aerolinea": "Aerolineas Argentinas",
-        "origen": "EZE",
-        "destino": "AEP",
-        "estado": "Cancelado",
-        "despegue": "2024-11-11 12:00:00",
-        "arribo": "2024-11-11 13:00:00",
-        "avion": 4,
-        "asientos_disponibles": 3
-    }
+  {
+    "numero_vuelo": "UA8761",
+    "aerolinea": "United Airlines",
+    "origen": "EZE",
+    "destino": "CDM",
+    "estado": "Arribado",
+    "despegue": "2024-09-08 16:43:03",
+    "arribo": "2024-12-09 16:43:03",
+    "avion": 2,
+    "asientos_disponibles": 0
+  },
+  {
+    "numero_vuelo": "UA8762",
+    "aerolinea": "United Airlines",
+    "origen": "EZE",
+    "destino": "IAH",
+    "estado": "Arribado",
+    "despegue": "2024-10-25 23:30:00",
+    "arribo": "2024-11-26 07:30:00",
+    "avion": 6,
+    "asientos_disponibles": 11
+  },
+  {
+    "numero_vuelo": "UA8764",
+    "aerolinea": "United Airlines",
+    "origen": "EZE",
+    "destino": "IAH",
+    "estado": "En horario",
+    "despegue": "2024-10-25 23:30:00",
+    "arribo": "2024-11-26 07:30:00",
+    "avion": 1,
+    "asientos_disponibles": 0
+  },
+  {
+    "numero_vuelo": "AF5678",
+    "aerolinea": "Air France",
+    "origen": "EZE",
+    "destino": "CDG",
+    "estado": "Cancelado",
+    "despegue": "2024-10-20 13:00:00",
+    "arribo": "2024-11-20 22:00:00",
+    "avion": 3,
+    "asientos_disponibles": 0
+  },
+  {
+    "numero_vuelo": "BA4321",
+    "aerolinea": "British Airways",
+    "origen": "EZE",
+    "destino": "LHR",
+    "estado": "Retrasado",
+    "despegue": "2024-10-15 18:00:00",
+    "arribo": "2024-11-16 09:00:00",
+    "avion": 5,
+    "asientos_disponibles": 15
+  },
+  {
+    "numero_vuelo": "AA1234",
+    "aerolinea": "Aerolineas Argentinas",
+    "origen": "EZE",
+    "destino": "AEP",
+    "estado": "En horario",
+    "despegue": "2024-11-11 00:00:00",
+    "arribo": "2024-11-11 13:00:00",
+    "avion": 4,
+    "asientos_disponibles": 3
+  }
 ]
