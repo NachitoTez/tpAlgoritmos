@@ -1,6 +1,6 @@
 from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, vuelosLista, mostrar_mapa_terminal
+from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos
 from utils import validar_input, limpiar_consola
 from repositorio_aviones import avion_asignado
 from repositorio_aeropuertos import aeropuertos
@@ -8,7 +8,7 @@ from repositorio_usuarios import getDataUser, usuarios
 from utils import validarFecha, randonAprobado, writeFile
 from repositorio_pagos import tieneTarjeta
 import random
-from datetime import datetime, timedelta
+from datetime import timedelta
 
  
 #Es solo para hacer mas legible el codigo y no tener magic numbers
@@ -19,7 +19,7 @@ NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
 user = getDataUser()
-listaDeVuelos = vuelosLista
+listaDeVuelos = get_vuelos()
 listaAeropuertos = aeropuertos
         
 def cerrar_sesion():
@@ -114,7 +114,8 @@ def menu_opciones_consultante(aeropuertos, listaUsuario):
       "4": cancelarReserva,
       "5": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario ),
       "6": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
-      "7": cerrar_sesion
+      "7": mostrar_mapa_terminal,
+      "8": cerrar_sesion
   }
   
   bandera = False

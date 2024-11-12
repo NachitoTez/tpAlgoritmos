@@ -3,9 +3,8 @@ import re #regex
 from utils import writeFile, readFile
 
 archivoUser = "user.json"
-listaUsuario = []
 
-usuarios = readFile(archivoUser,listaUsuario)
+usuarios = readFile(archivoUser)
 
 def tieneTarjeta(user):
     flag = False
@@ -41,7 +40,7 @@ def registrarTarjeta(user):
     guardar = ""
     flag = False
     tarjeta = imputTarjeta()
-    usuarios = readFile(archivoUser,listaUsuario)
+    usuarios = readFile(archivoUser)
     while not flag:
         try:
             guardar = input("Desea guardar su tarjeta: S o N: ").upper()

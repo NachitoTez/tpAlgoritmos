@@ -48,7 +48,7 @@
         "aerolinea": "British Airways",
         "origen": "EZE",
         "destino": "LHR",
-        "estado": "Retrasado",
+        "estado": "En horario",
         "despegue": "2024-11-15 18:00:00",
         "arribo": "2024-11-16 09:00:00",
         "avion": 5,
@@ -59,28 +59,10 @@
         "aerolinea": "Aerolineas Argentinas",
         "origen": "EZE",
         "destino": "AEP",
-        "estado": "En horario",
+        "estado": "Cancelado",
         "despegue": "2024-11-11 12:00:00",
         "arribo": "2024-11-11 13:00:00",
         "avion": 4,
         "asientos_disponibles": 3
-    },
-    {
-        "numero_vuelo": "AC0808",
-        "aerolinea": "Argentina",
-        "origen": "EZE",
-        "destino": "AEP",
-        "estado": "En horario",
-        "despegue": "2025-05-12 15:00:00",
-        "arribo": "2025-05-12 16:20:00",
-        "avion": {
-            "id": 6,
-            "modelo": "Airbus A380",
-            "capacidad": 853,
-            "alcance": "15,200 km",
-            "altitud_maxima": "13,100 m",
-            "velocidad_maxima": "1,020 km/h"
-        },
-        "asientos_disponibles": 50
     }
 ]

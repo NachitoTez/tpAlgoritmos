@@ -1,10 +1,10 @@
 import json
 from utils import readFile
 archivoAviones = 'aviones.json'
-listaAviones = []
 
-aviones = readFile(archivoAviones, listaAviones)
-
+aviones = readFile(archivoAviones)
+def get_aviones(aviones = aviones):
+    return aviones
 def mostrar_aviones(aviones):
     """Función que imprime los detalles de cada avión almacenado."""
     for avion in aviones:

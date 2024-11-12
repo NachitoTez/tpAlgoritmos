@@ -1,18 +1,18 @@
 from datetime import datetime, timedelta
 from repositorio_aeropuertos import get_aeropuerto_por_nombre, cargar_aeropuerto, get_aeropuertos
-from repositorio_aviones import avion_asignado, mostrar_aviones, aviones
+from repositorio_aviones import avion_asignado, mostrar_aviones, get_aviones
 from os import system
 from time import sleep
 import re, json #regex
 from utils import validar_input, cantidad_dias, readFile, writeFile
 import curses
 
+def get_vuelos():
+    return readFile(archivoVuelos)
 
 archivoVuelos = "vuelos.json"
-vuelos = []
-vuelosLista = readFile(archivoVuelos, vuelos)
-listaDeAviones = aviones
-
+vuelosLista = get_vuelos()
+listaDeAviones = get_aviones()
     
 def imprimir_vuelo(vuelos): 
     for vuelo in vuelos:
@@ -26,7 +26,7 @@ def imprimir_vuelo(vuelos):
         print(f"Asientos disponibles: {vuelo['asientos_disponibles']}")
 
         # Detalles del avión asignado
-        avion = avion_asignado(vuelo["avion"]["id"], listaDeAviones)
+        avion = avion_asignado(vuelo["avion"], listaDeAviones)
         print(f"Avión Asignado:")
         print(f"    Modelo: {avion['modelo']}")
         print(f"    Capacidad: {avion['capacidad']} pasajeros")
@@ -113,6 +113,7 @@ def mostrar_vuelos(vuelosLista = vuelosLista):
             bandera = True
         elif opcion == "8":
             return
+        input("Presione una tecla para volver atras...")
     return
 
 
@@ -251,8 +252,13 @@ def ingresar_vuelo(vuelosLista = vuelosLista):
 
 
 def modificar_estado_vuelo(numero_vuelo, key, estado):
-    vuelo = get_vuelo(numero_vuelo)
-    vuelo[key] = estado
+    vuelos = readFile(archivoVuelos)
+    for vuelo in vuelos:
+        if vuelo["numero_vuelo"] == numero_vuelo:
+            vuelo[key] = estado
+            writeFile(archivoVuelos, vuelos, None)
+            return True
+    return False
 
 def modificacion_vuelo(vuelosLista = vuelosLista):
   """Funcion encargada de modificar el atributo del vuelo que se desee."""
@@ -428,7 +434,7 @@ def mostrar_mapa_terminal():
 
             #para actualizar la pantalla
             stdscr.refresh()
-            time.sleep(1)
+            sleep(1)
             
     except KeyboardInterrupt:
         pass

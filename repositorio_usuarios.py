@@ -3,8 +3,7 @@ import uuid
 import json
 from utils import writeFile, readFile
 archivoUser = "user.json"
-listaUsuarios = []
-usuarios = readFile(archivoUser, listaUsuarios)
+usuarios = readFile(archivoUser)
 
 
 
@@ -37,7 +36,7 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
     """Función encargada de validar si el usuario que intenta ingresar al sistema esta registrado.
     Utilizo una bandera y filtro mi listado de usuarios segun el tipo de privilegio, luego por cada 
     Recibe 3 parametros: Usuario, Contrasenia y privilegio(admin(true) o no(false))"""
-    usuarios = readFile(archivoUser, listaUsuarios)
+    usuarios = readFile(archivoUser)
     consultante= list(filter(lambda usuario: usuario["admin"] == privilegio, usuarios))
     bandera = 0
     for user in consultante:
@@ -87,7 +86,7 @@ def registracion_usuarios(privilegio):
   limpiar_consola()
   usuario = ""
   contrasenia = ""
-  usuarios = readFile(archivoUser, listaUsuarios)
+  usuarios = readFile(archivoUser)
   print(usuarios)
   usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
   while usuario == "" or chequeo_usuario_existente(usuario):

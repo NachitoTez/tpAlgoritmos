@@ -3,10 +3,12 @@ import json
 from utils import readFile, writeFile
 
 archivoAeropuertos = 'aeropuertos.json'
-listadoAeropuertos = []
 
-aeropuertos = readFile(archivoAeropuertos, listadoAeropuertos)
 
+aeropuertos = readFile(archivoAeropuertos)
+
+def get_aeropuertos(aeropuertos = aeropuertos):
+    return aeropuertos
 
 def get_aeropuerto_por_nombre(nombre, aeropuertos = aeropuertos ):
     """Busca y retorna un aeropuerto por su código"""

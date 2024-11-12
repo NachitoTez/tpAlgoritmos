@@ -56,12 +56,12 @@ def writeFile(archivo, listaDatos, nuevoDato ):
             json.dump(listaDatos, archivo, indent = 4) 
     except ValueError as e:
             print(e)   
-
-def readFile(nombreArchivo, nombreJSon):
+def readFile(nombreArchivo):
     """Funcion para leer archivos"""
     try:
         with open(nombreArchivo, "rt") as archivo:
             nombreJSon = json.load(archivo)
             return nombreJSon
-    except (FileExistsError, json.JSONDecodeError):
+    except (FileNotFoundError, json.JSONDecodeError):
         nombreJSon = []
+        return nombreJSon
