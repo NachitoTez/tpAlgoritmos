@@ -135,14 +135,22 @@ def menu_opciones_consultante(aeropuertos, listaUsuario):
 
 
 def consultarAsientosDisponibles():
+    """
+    Consulta y muestra los vuelos que tienen asientos disponibles.
+    
+    Utiliza la función filtrar_vuelos_asientos_disponibles() para obtener los vuelos
+    con asientos libres y extrae sus números de vuelo para mostrarlos.
+    
+    Returns:
+        None. Imprime por pantalla la lista de códigos de vuelos con asientos disponibles.
+    """
+    vuelos_filtrados = filtrar_vuelos_asientos_disponibles()
+    codigos_de_vuelos = []
+    for vuelo in vuelos_filtrados:
+        codigos_de_vuelos.append(vuelo["numero_vuelo"])
 
-  vuelos_filtrados = filtrar_vuelos_asientos_disponibles()
-  codigos_de_vuelos = []
-  for vuelo in vuelos_filtrados:
-    codigos_de_vuelos.append(vuelo["numero_vuelo"])
-
-  print(codigos_de_vuelos)
-  return
+    print(codigos_de_vuelos)
+    return
 
 def reservaSalaVIP(user, aeropuertos, listaUsuario):
   valida = False

@@ -10,3 +10,12 @@
 - Convertir a json BIEN los usuarios.
 - Repositorio usuarios la logica de registrar usuario no se corrigio correctamente con los parametros ingresados.
 
+
+12-11
+- Agregar la posibilidad de sumar su tarjeta al usuario al crearlo.
+- Agregar la posibilidad de agregar una tarjeta al usuario.
+- Agregar la posibilidad de eliminar una tarjeta del usuario.
+- Agregar la posibilidad de consultar las reservas del usuario.
+- Agregar la posibilidad de consultar los vuelos del usuario.
+- Agregar la posibilidad de consultar las tarjetas del usuario.
+

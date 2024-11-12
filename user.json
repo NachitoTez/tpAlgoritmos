@@ -1,9 +1,12 @@
 [
     {
         "id": "f7bd9d80-771e-4e6f-863d-k9fafcff506e",
+        "admin": true,
         "usuario": "yiya",
         "contrasenia": "cocacola",
-        "admin": true
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7bd9d80-111p-4e6f-863d-b8fafcff506e",
@@ -65,43 +68,64 @@
         "id": "f7bd9d80-771e-4e6f-100f-b8fafcff506e",
         "admin": true,
         "usuario": "nacho",
-        "contrasenia": "playstation"
+        "contrasenia": "playstation",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7vb9d80-771e-4e6f-863d-b8fafcff506e",
         "admin": false,
         "usuario": "guido",
-        "contrasenia": "guido123"
+        "contrasenia": "guido123",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7bd9d80-771e-4e6f-863d-b8fafcff706e",
         "admin": false,
         "usuario": "frank",
-        "contrasenia": "123456"
+        "contrasenia": "123456",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7bd9d80-771e-5a9c-863d-b8fafcff506e",
         "admin": false,
         "usuario": "ali",
-        "contrasenia": "159875"
+        "contrasenia": "159875",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7bd9d15-771e-4e6f-863d-b8fafcff506e",
         "admin": false,
         "usuario": "carlos",
-        "contrasenia": "123456"
+        "contrasenia": "123456",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7bd9d80-171e-4e6f-863d-b8fafcff506e",
         "admin": true,
         "usuario": "brandon",
-        "contrasenia": "156423"
+        "contrasenia": "156423",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7bd9d80-791e-4e6f-863d-b8fafcff506e",
         "admin": false,
         "usuario": "carlos",
-        "contrasenia": "123456"
+        "contrasenia": "123456",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     },
     {
         "id": "f7bd9d80-771e-4e6f-863d-b8fafcff506e",
