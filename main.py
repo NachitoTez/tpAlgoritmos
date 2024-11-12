@@ -1,6 +1,6 @@
 from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
+from repositorio_vuelos import ingresar_vuelo, mostrar_mapa_terminal, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
 from utils import validar_input, limpiar_consola
 from repositorio_aviones import avion_asignado
 from repositorio_aeropuertos import get_aeropuertos
@@ -91,14 +91,14 @@ def consultante():
   limpiar_consola()
   print("OPCIONES")
   print("""
-    OPCIONES
         1. Consulta de vuelos.
         2. Consulta de vuelos con asientos disponibles.
         3. Consultar reserva.
         4. Cancelar reserva.
         5. Reserva sala VIP.
         6. Reserva de cochera.
-        7. Cerrar sesión.
+        7. Mostrar mapa de vuelos
+        8. Cerrar sesión.
         """)
   menu_opciones_consultante()
 
@@ -113,7 +113,8 @@ def menu_opciones_consultante():
       "4": cancelarReserva,
       "5": lambda: reservaSalaVIP(user),
       "6": lambda: reservaEstacionamiento(user),
-      "7": cerrar_sesion
+      "7": mostrar_mapa_terminal ,
+      "8": cerrar_sesion
   }
   
   bandera = False

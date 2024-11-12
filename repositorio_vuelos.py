@@ -1,10 +1,13 @@
 from datetime import datetime, timedelta
-from repositorio_aeropuertos import get_aeropuerto_por_nombre, cargar_aeropuerto
+import time
+from repositorio_aeropuertos import get_aeropuerto_por_nombre, cargar_aeropuerto, get_aeropuertos
 from repositorio_aviones import avion_asignado, mostrar_aviones
 from os import system
 from time import sleep
 import re, json #regex
 from utils import validar_input, cantidad_dias
+import curses
+
 
 
 archivoVuelos = "vuelos.json"
@@ -324,8 +327,8 @@ def eliminar_vuelo():
     reescribir_vuelos(vuelos)
 
 def vuelo_esta_en_curso(vuelo, tiempo):
-    hora_salida = vuelo[5]
-    hora_llegada = vuelo[6]
+    hora_salida = vuelo["despegue"]
+    hora_llegada = vuelo["arribo"]
     return hora_salida <= tiempo <= hora_llegada
 
 
@@ -343,49 +346,111 @@ def filtrar_vuelos_asientos_disponibles():
 
 
 def calcular_posicion_vuelo(vuelo):
-    ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    if ahora < vuelo["despegue"]:
-        return vuelo["origen"]["posicion"]
-    elif ahora > vuelo["arribo"]:
-        return vuelo["destino"]["posicion"]
+    """Calcula la posición actual del vuelo basado en el tiempo transcurrido"""
+    ahora = datetime.now()
+    despegue = datetime.strptime(vuelo["despegue"], "%Y-%m-%d %H:%M:%S")
+    arribo = datetime.strptime(vuelo["arribo"], "%Y-%m-%d %H:%M:%S")
     
+    aeropuertos = get_aeropuertos()
+    origen = next(a for a in aeropuertos if a["codigo"] == vuelo["origen"])
+    destino = next(a for a in aeropuertos if a["codigo"] == vuelo["destino"])
 
-    # x0 + ((x1-x0)/T)t
-    # y0 + ((y1-y0)/T)t
-
-    tiempo_total = vuelo["arribo"] - vuelo["despegue"] #T
-    tiempo_transcurrido = ahora - vuelo["despegue"] #t
-
-    x0 = vuelo["origen"]["posicion"][0] #x0
-    x1 = vuelo["destino"]["posicion"][0] #x1
-
-    y0 = vuelo["origen"]["posicion"][0] #y0
-    y1 = vuelo["destino"]["posicion"][1] #y1
-
-    if tiempo_total != 0:
-        posicion_en_tiempo = [x0 + ((x1-x0)/tiempo_total)*tiempo_transcurrido, y0 + ((y1-y0)/tiempo_total)*tiempo_transcurrido]
-        return posicion_en_tiempo
+    tiempo_total = (arribo - despegue).total_seconds()
+    tiempo_transcurrido = (ahora - despegue).total_seconds()
+    
+    if tiempo_total > 0:
+        x = origen["posicion"][0] + ((destino["posicion"][0] - origen["posicion"][0]) / tiempo_total) * tiempo_transcurrido
+        y = origen["posicion"][1] + ((destino["posicion"][1] - origen["posicion"][1]) / tiempo_total) * tiempo_transcurrido
+        return [x, y]
     else:
-        return "error"
+        return None
+
+def inicializar_terminal():
+    """Configura la pantalla de curses y los colores"""
+
+    #en la documentación de curses se usa este nombre 'stdscr' es como el objeto para controlar todo
+    stdscr = curses.initscr()
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)   
+    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)   
+    curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)    
+    return stdscr
+
+def dibujar_borde(stdscr, ancho_maximo, altura_maxima):
+    """Dibuja el borde del mapa en la terminal"""
+    for i in range(ancho_maximo):
+        stdscr.addstr(0, i, "─")
+        stdscr.addstr(altura_maxima-1, i, "─")
+    for i in range(altura_maxima):
+        stdscr.addstr(i, 0, "│")
+        stdscr.addstr(i, ancho_maximo-1, "│")
+
+def dibujar_aeropuertos(stdscr, aeropuertos, ancho_maximo, altura_maxima):
+    """Dibuja los aeropuertos en el mapa"""
+    for aeropuerto in aeropuertos:
+        ancho, altura = aeropuerto["posicion"]
+        if 0 <= altura < altura_maxima-1 and 0 <= ancho < ancho_maximo-1:
+            stdscr.attron(curses.color_pair(2))
+            stdscr.addstr(altura, ancho, "◉")
+            if altura < altura_maxima-2:
+                stdscr.addstr(altura, ancho + 2, f"{aeropuerto['codigo']}")
+            stdscr.attroff(curses.color_pair(2))
+
+def dibujar_vuelos(stdscr, ancho_maximo, altura_maxima):
+    """Dibuja los vuelos en tránsito y devuelve la cantidad en vuelo"""
+    vuelos = filtrar_vuelos_en_curso()
+    if len(vuelos) > 0:
+        for vuelo in vuelos:
+            pos = calcular_posicion_vuelo(vuelo)
+            if pos:
+                ancho, altura = pos
+                if 0 <= altura < altura_maxima-1 and 0 <= ancho < ancho_maximo-1:
+                    stdscr.attron(curses.color_pair(1))
+                    stdscr.addstr(int(altura), int(ancho), "✈")
+                    if altura < altura_maxima-2:
+                        stdscr.addstr(int(altura) + 1, int(ancho), vuelo["numero_vuelo"][:4])
+                    stdscr.attroff(curses.color_pair(1))
+    return len(vuelos)
 
 
+def mostrar_leyenda(stdscr, altura_maxima, vuelos_en_transito):
+    """Muestra la leyenda y el mensaje de vuelos en tránsito"""
+    stdscr.attron(curses.color_pair(2))
+    stdscr.addstr(altura_maxima+1, 2, "◉ Aeropuertos")
+    stdscr.attroff(curses.color_pair(2))
+    stdscr.attron(curses.color_pair(1))
+    stdscr.addstr(altura_maxima+2, 2, "✈ Vuelos en tránsito")
+    stdscr.attroff(curses.color_pair(1))
 
+    if vuelos_en_transito == 0:
+        stdscr.attron(curses.color_pair(3))
+        stdscr.addstr(altura_maxima+4, 2, "NO HAY VUELOS EN EL AIRE")
+        stdscr.attroff(curses.color_pair(3))
 
+    stdscr.addstr(altura_maxima+3, 2, "Presione Ctrl+C para salir")
 
+def mostrar_mapa_terminal():
+    """Muestra un mapa en la terminal con la posición de los vuelos y aeropuertos"""
+    stdscr = inicializar_terminal()
+    try:
+        while True:
+            altura_maxima, ancho_maximo = stdscr.getmaxyx()
+            #para la leyenda
+            altura_maxima -= 5
+            ancho_maximo -= 2
 
+            stdscr.clear()
+            #TODO arreglar las esquinas
+            dibujar_borde(stdscr, ancho_maximo, altura_maxima)
+            dibujar_aeropuertos(stdscr, get_aeropuertos(), ancho_maximo, altura_maxima)
+            vuelos_en_transito = dibujar_vuelos(stdscr, ancho_maximo, altura_maxima)
+            mostrar_leyenda(stdscr, altura_maxima, vuelos_en_transito)
 
-
-
-
-# Dejo hasta acá, tengo que pensar como hacer hora_llegada - hora_salida y ahora - hora_salida porque son strings/datetime
-
-    
-
-def mostrar_mapa_vuelos():
-    vuelos_en_curso = filtrar_vuelos_en_curso()
-    #para todos los vuelos calcular la posicion con calcularposicion
-    #mostrar en un mapa los vuelos, idealmente estaría bueno hacer una linea punteada desde el vuelo hasta el destino
-
-
-
+            #para actualizar la pantalla
+            stdscr.refresh()
+            time.sleep(1)
+            
+    except KeyboardInterrupt:
+        pass
+    finally:
+        curses.endwin()
