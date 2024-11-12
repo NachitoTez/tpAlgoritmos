@@ -1,5 +1,11 @@
 from datetime import datetime
 import re #regex
+from utils import writeFile, readFile
+
+archivoUser = "user.json"
+listaUsuario = []
+
+usuarios = readFile(archivoUser,listaUsuario)
 
 def tieneTarjeta(user):
     flag = False
@@ -35,17 +41,15 @@ def registrarTarjeta(user):
     guardar = ""
     flag = False
     tarjeta = imputTarjeta()
+    usuarios = readFile(archivoUser,listaUsuario)
     while not flag:
         try:
             guardar = input("Desea guardar su tarjeta: S o N: ").upper()
             if guardar == "S": 
-                if "tarjetas" in user:
-                    user["tarjetas"].append(tarjeta)
-                    flag = True 
-                    return tarjeta
-                else:
-                    user["tarjetas"] = [tarjeta]
-                    print("ya lo guarde", tarjeta)
+                for usuario in usuarios:
+                    if usuario["id"] == user["id"]:
+                        usuario["tarjetas"].append(tarjeta)
+                    writeFile(archivoUser, usuarios, None )
                     flag = True 
                     return tarjeta
             elif guardar == "N":

@@ -1,20 +1,16 @@
 from os import system, name
+import uuid
 import json
+from utils import writeFile, readFile
 archivoUser = "user.json"
+listaUsuarios = []
+usuarios = readFile(archivoUser, listaUsuarios)
 
 
 
 
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
-userLoguin = {}
-def getUser(nombreArchivo):
-    try:
-        with open(nombreArchivo, "rt") as archivo:
-            usuarios = json.load(archivo)
-            return usuarios
-    except (FileExistsError(), json.JSONDecodeError):
-        usuarios = []
-
+userLoguin = {}  
 
 def limpiar_consola():
     if name == "nt":  # Windows
@@ -41,9 +37,8 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
     """Función encargada de validar si el usuario que intenta ingresar al sistema esta registrado.
     Utilizo una bandera y filtro mi listado de usuarios segun el tipo de privilegio, luego por cada 
     Recibe 3 parametros: Usuario, Contrasenia y privilegio(admin(true) o no(false))"""
-    with open(archivoUser, "rt") as archivo:
-        usuarios = json.load(archivo)
-        consultante= list(filter(lambda usuario: usuario["admin"] == privilegio, usuarios))
+    usuarios = readFile(archivoUser, listaUsuarios)
+    consultante= list(filter(lambda usuario: usuario["admin"] == privilegio, usuarios))
     bandera = 0
     for user in consultante:
         for clave, valor in user.items():
@@ -92,7 +87,7 @@ def registracion_usuarios(privilegio):
   limpiar_consola()
   usuario = ""
   contrasenia = ""
-  usuarios = getUser(archivoUser)
+  usuarios = readFile(archivoUser, listaUsuarios)
   print(usuarios)
   usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
   while usuario == "" or chequeo_usuario_existente(usuario):
@@ -100,14 +95,9 @@ def registracion_usuarios(privilegio):
   contrasenia = input("Ingrese la contrasenia a utilizar en el sistema, debe tener minimo 6 digitos y un maximo de 12 digitos: \n")
   while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
-  try:
-    with open(archivoUser, "wt") as archivo:
-        nuevoUsuario = {"admin":privilegio, "usuario":usuario, "contrasenia":contrasenia}
-        usuarios.append(nuevoUsuario)
-        json.dump(usuarios, archivo, indent = 4) 
-        print("Usuario creado exitosamente...")
-  except ValueError as e:
-            print(e)   
+  idGenerate = str(uuid.uuid4())
+  nuevoUsuario = {"id" : idGenerate , "admin":privilegio, "usuario":usuario, "contrasenia":contrasenia, "vuelos": [], "reservas": [], "tarjetas":[]}
+  writeFile(archivoUser, usuarios,nuevoUsuario )
   return
 
 def getDataUser():

@@ -1,16 +1,12 @@
 import json
+from utils import readFile
+archivoAviones = 'aviones.json'
+listaAviones = []
 
-def get_aviones():
-    """Función que lee y retorna la lista de aviones desde el archivo JSON"""
-    try:
-        with open('aviones.json', 'rt') as archivo:
-            return json.load(archivo)
-    except (FileNotFoundError, IOError):
-        print("Error al leer el archivo de aviones")
+aviones = readFile(archivoAviones, listaAviones)
 
-def mostrar_aviones():
+def mostrar_aviones(aviones):
     """Función que imprime los detalles de cada avión almacenado."""
-    aviones = get_aviones()
     for avion in aviones:
         print(f"ID: {avion['id']}")
         print(f"Modelo: {avion['modelo']}")
@@ -21,11 +17,11 @@ def mostrar_aviones():
         print("-" * 40)
     return
 
-def avion_asignado(id):
+def avion_asignado(id, aviones):
     """Devuelve el avión que corresponde al id proporcionado.
     Parámetro: id del avión a buscar
     Retorna: diccionario con los datos del avión o None si no se encuentra"""
-    aviones = get_aviones()
     for avion in aviones:
         if avion.get("id") == id:
+            avion = avion
             return avion

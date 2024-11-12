@@ -1,53 +1,115 @@
 [
     {
+        "id": "f7bd9d80-771e-4e6f-863d-k9fafcff506e",
         "usuario": "yiya",
         "contrasenia": "cocacola",
         "admin": true
     },
     {
-        "id": "12345",
+        "id": "f7bd9d80-111p-4e6f-863d-b8fafcff506e",
         "admin": false,
         "usuario": "matias",
         "contrasenia": "123456",
         "vuelos": [],
-        "reservas": [],
+        "reservas": [
+            {
+                "aeropuerto": "Houston",
+                "codigo": "IAH",
+                "fecha": "10/12/2024",
+                "salavip": "IAH Executive"
+            },
+            {
+                "aeropuerto": "Buenos Aires",
+                "codigo": "EZE",
+                "fechainicio": "2024-12-12 00:00:00",
+                "fechafin": "2024-12-13 00:00:00",
+                "estacionamiento": "B10"
+            },
+            {
+                "aeropuerto": "Mar del Plata",
+                "codigo": "MDQ",
+                "fecha": "13/12/2024",
+                "salavip": "MDQ VIP"
+            },
+            {
+                "aeropuerto": "Houston",
+                "codigo": "IAH",
+                "fechainicio": "2024-12-13 00:00:00",
+                "fechafin": "2024-12-14 00:00:00",
+                "estacionamiento": "C24"
+            },
+            {
+                "aeropuerto": "Paris",
+                "codigo": "CDG",
+                "fechainicio": "2026-12-12 00:00:00",
+                "fechafin": "2026-12-15 00:00:00",
+                "estacionamiento": "B18"
+            }
+        ],
         "tarjetas": [
             {
                 "numerotareja": "1234567891234567",
                 "nombretitular": "carlos",
                 "fechavencimiento": "12/29",
                 "codigo": 222
+            },
+            {
+                "numerotareja": "1234568975985213",
+                "nombretitular": "Frank",
+                "fechavencimiento": "12/27",
+                "codigo": "159"
             }
         ]
     },
     {
+        "id": "f7bd9d80-771e-4e6f-100f-b8fafcff506e",
         "admin": true,
         "usuario": "nacho",
         "contrasenia": "playstation"
     },
     {
+        "id": "f7vb9d80-771e-4e6f-863d-b8fafcff506e",
         "admin": false,
         "usuario": "guido",
         "contrasenia": "guido123"
     },
     {
+        "id": "f7bd9d80-771e-4e6f-863d-b8fafcff706e",
         "admin": false,
         "usuario": "frank",
         "contrasenia": "123456"
     },
     {
+        "id": "f7bd9d80-771e-5a9c-863d-b8fafcff506e",
         "admin": false,
         "usuario": "ali",
         "contrasenia": "159875"
     },
     {
+        "id": "f7bd9d15-771e-4e6f-863d-b8fafcff506e",
         "admin": false,
         "usuario": "carlos",
         "contrasenia": "123456"
     },
     {
+        "id": "f7bd9d80-171e-4e6f-863d-b8fafcff506e",
         "admin": true,
         "usuario": "brandon",
         "contrasenia": "156423"
+    },
+    {
+        "id": "f7bd9d80-791e-4e6f-863d-b8fafcff506e",
+        "admin": false,
+        "usuario": "carlos",
+        "contrasenia": "123456"
+    },
+    {
+        "id": "f7bd9d80-771e-4e6f-863d-b8fafcff506e",
+        "admin": false,
+        "usuario": "franchu",
+        "contrasenia": "123456",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     }
 ]

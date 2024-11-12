@@ -1,27 +1,24 @@
 from time import sleep
 import json
+from utils import readFile, writeFile
 
-def get_aeropuertos():
-    """Función que lee y retorna la lista de aeropuertos desde el archivo JSON"""
-    try:
-        with open('aeropuertos.json', 'rt') as archivo:
-            return json.load(archivo)
-    except (FileNotFoundError, IOError):
-        print("Error al leer el archivo de aeropuertos")
+archivoAeropuertos = 'aeropuertos.json'
+listadoAeropuertos = []
 
-def get_aeropuerto_por_nombre(nombre):
+aeropuertos = readFile(archivoAeropuertos, listadoAeropuertos)
+
+
+def get_aeropuerto_por_nombre(nombre, aeropuertos = aeropuertos ):
     """Busca y retorna un aeropuerto por su código"""
-    aeropuertos = get_aeropuertos()
     for aeropuerto in aeropuertos:
         if aeropuerto["codigo"] == nombre.upper():
             return aeropuerto
     return False
 
-def cargar_aeropuerto():
+def cargar_aeropuerto( aeropuertos = aeropuertos):
     """Funcion encargada de cargar un nuevo aeropuerto al sistema en caso de que un administrador lo necesite.
     No recibe parametros y no retorna parametros"""
 
-    aeropuertos = get_aeropuertos()
     
     codigo = input("Ingrese el código del aeropuerto a ingresar: \n").upper()
     while len(codigo) != 3:
@@ -57,10 +54,7 @@ def cargar_aeropuerto():
         }
     }
     
-    aeropuertos.append(nuevo_aeropuerto)
-    
-    with open('aeropuertos.json', 'wt') as archivo:
-        json.dump(aeropuertos, archivo, indent=4)
+    writeFile(archivoAeropuertos, aeropuertos, nuevo_aeropuerto )
         
     print("Aeropuerto cargado correctamente!")
     sleep(1)

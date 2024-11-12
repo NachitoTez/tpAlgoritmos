@@ -2,6 +2,7 @@ from datetime import datetime
 import random
 from time import sleep
 from os import system, name
+import json
 
 def validar_input(cantidad_de_opciones, inicio=1):
     """Función creada para validar si la opción ingresada por teclado esta dentro del numero de opciones posibles
@@ -45,3 +46,22 @@ def limpiar_consola():
     else:  # macOS y Linux
         system("clear")
     return
+
+def writeFile(archivo, listaDatos, nuevoDato ):
+    """Funcin que permite escribir en json """
+    try:
+        with open(archivo, "wt") as archivo:
+            if nuevoDato is not None:
+                listaDatos.append(nuevoDato)
+            json.dump(listaDatos, archivo, indent = 4) 
+    except ValueError as e:
+            print(e)   
+
+def readFile(nombreArchivo, nombreJSon):
+    """Funcion para leer archivos"""
+    try:
+        with open(nombreArchivo, "rt") as archivo:
+            nombreJSon = json.load(archivo)
+            return nombreJSon
+    except (FileExistsError, json.JSONDecodeError):
+        nombreJSon = []

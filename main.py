@@ -1,11 +1,11 @@
 from time import sleep
 import repositorio_usuarios
-from repositorio_vuelos import ingresar_vuelo, mostrar_mapa_terminal, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles
+from repositorio_vuelos import ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, vuelosLista, mostrar_mapa_terminal
 from utils import validar_input, limpiar_consola
 from repositorio_aviones import avion_asignado
-from repositorio_aeropuertos import get_aeropuertos
-from repositorio_usuarios import getDataUser
-from utils import validarFecha, randonAprobado
+from repositorio_aeropuertos import aeropuertos
+from repositorio_usuarios import getDataUser, usuarios
+from utils import validarFecha, randonAprobado, writeFile
 from repositorio_pagos import tieneTarjeta
 import random
 from datetime import datetime, timedelta
@@ -19,7 +19,8 @@ NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
 user = getDataUser()
-  
+listaDeVuelos = vuelosLista
+listaAeropuertos = aeropuertos
         
 def cerrar_sesion():
     limpiar_consola()
@@ -63,17 +64,17 @@ def menu_opciones_administrador():
   while bandera:
     opcion = validar_input(5)
     if opcion == "1":
-      ingresar_vuelo()
+      ingresar_vuelo(listaDeVuelos)
       administrador()
       bandera = False
     elif opcion == "2":
-      modificacion_vuelo()
+      modificacion_vuelo(listaDeVuelos)
       bandera = False
     elif opcion == "3":
-      mostrar_vuelos()
+      mostrar_vuelos(listaDeVuelos)
       bandera = False
     elif opcion == "4":
-      eliminar_vuelo()
+      eliminar_vuelo(listaDeVuelos)
       bandera = False
     elif opcion == "5":
       limpiar_consola()
@@ -86,7 +87,7 @@ def menu_opciones_administrador():
   #modificar
 
 #Mostrar el menu
-def consultante():
+def consultante(aeropuertos, listaUsuario):
   """Listado de funciones disponibles Exclusivo de Consultante"""
   limpiar_consola()
   print("OPCIONES")
@@ -100,21 +101,20 @@ def consultante():
         7. Mostrar mapa de vuelos
         8. Cerrar sesión.
         """)
-  menu_opciones_consultante()
+  menu_opciones_consultante(aeropuertos, listaUsuario)
 
 
 
-def menu_opciones_consultante():
+def menu_opciones_consultante(aeropuertos, listaUsuario):
   """"Menu de opciones de usuario consultante"""
   opciones = {
       "1": mostrar_vuelos,
       "2": consultarAsientosDisponibles,
       "3": consultarReserva,
       "4": cancelarReserva,
-      "5": lambda: reservaSalaVIP(user),
-      "6": lambda: reservaEstacionamiento(user),
-      "7": mostrar_mapa_terminal ,
-      "8": cerrar_sesion
+      "5": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario ),
+      "6": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
+      "7": cerrar_sesion
   }
   
   bandera = False
@@ -128,7 +128,7 @@ def menu_opciones_consultante():
       else:
           print("Opción inválida. Por favor, seleccione una opción válida.")
 
-  imprimible_menu_regreso(consultante)
+  imprimible_menu_regreso(consultante(listaAeropuertos, usuarios))
 
     
 
@@ -143,14 +143,14 @@ def consultarAsientosDisponibles():
   print(codigos_de_vuelos)
   return
 
-def reservaSalaVIP(user):
+def reservaSalaVIP(user, aeropuertos, listaUsuario):
   valida = False
-  aeropuertos = get_aeropuertos()
   counterSala = 0
   bandera = False
   fechaValida = False
   banderaReserva = False
   seleccionSala = 0
+  archivoUser = "user.json"
   while not bandera:    
     for index, aeropuerto in enumerate(aeropuertos):
 
@@ -180,14 +180,12 @@ def reservaSalaVIP(user):
                  valida = randonAprobado()
                  if valida:
                    aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["reservados"] += 1
-                   if "reservas" in user:
-                     user["reservas"].append(reservar)
-                     bandera = True
-                     banderaReserva = valida
-                   else:
-                     user["reservas"] = [reservar]
-                     bandera = True
-                     banderaReserva = valida
+                   for usuario in listaUsuario:
+                      if usuario["id"] == user["id"]:
+                        usuario["reservas"].append(reservar)
+                        writeFile(archivoUser, listaUsuario, None)
+                        bandera = True
+                        banderaReserva = valida
                  else:
                    print("Fondo insuficiente")
                else:
@@ -201,13 +199,13 @@ def reservaSalaVIP(user):
   print("Reserva realizada, con exito", user)
 
   
-def reservaEstacionamiento(user):
-    aeropuertos = get_aeropuertos()
+def reservaEstacionamiento(use, aeropuertos, listaUsuario):
     flag = False
     reserva = False
     validaFechaInicio = False
     validaFechaFin = False
     fechas_rango = []
+    archivoUser = "user.json"
     
     while not flag:    
         # Mostrar aeropuertos disponibles
@@ -260,8 +258,8 @@ def reservaEstacionamiento(user):
                     reservar = {
                      "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
                      "codigo": aeropuertos[seleccion - 1]["codigo"],
-                     "fechainicio": fechaInicio,
-                     "fechafin": fechaFin,
+                     "fechainicio": str(fechaInicio),
+                     "fechafin": str(fechaFin),
                      "estacionamiento": lugarSeleccionado
                    }
                     
@@ -275,14 +273,12 @@ def reservaEstacionamiento(user):
                             if fecha not in estacionamiento["reservados"]:
                               estacionamiento["reservados"][fecha] = []  
                               estacionamiento["reservados"][fecha].append(lugarSeleccionado)
-                          if "reservas" in user:
-                            user["reservas"].append(reservar)
-                            flag = True
-                            reserva = valida
-                          else:
-                            user["reservas"] = [reservar]
-                            flag = True
-                            reserva = valida
+                              for usuario in listaUsuario:
+                                if usuario["id"] == user["id"]:
+                                  usuario["reservas"].append(reservar)
+                                  writeFile(archivoUser, listaUsuario, None )
+                                  flag = True
+                                  reserva = valida
                         else:
                           print("Fondo insuficiente")
                     print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
@@ -342,7 +338,7 @@ def main():
       main()
   else:
     if(repositorio_usuarios.inicio_sesion(False)):
-      consultante()
+      consultante(listaAeropuertos, usuarios)
     else:
       limpiar_consola()
       print("Ha llegado al máximo de intentos posibles de inicio de sesion")
