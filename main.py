@@ -1,11 +1,9 @@
-from time import sleep
 import repositorio_usuarios
 from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos
 from utils import validar_input, limpiar_consola
-from repositorio_aviones import avion_asignado
-from repositorio_aeropuertos import aeropuertos
+from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser, usuarios
-from utils import validarFecha, randonAprobado, writeFile
+from utils import ingresar_fecha_y_hora, randonAprobado, writeFile, bloquear_teclado
 from repositorio_pagos import tieneTarjeta
 import random
 from datetime import timedelta
@@ -18,201 +16,191 @@ NUMERO_DE_OPCIONES_3 = 3
 NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
-user = getDataUser()
-listaDeVuelos = get_vuelos()
-listaAeropuertos = aeropuertos
-        
-def cerrar_sesion():
-    limpiar_consola()
-    print("Ha cerrado la sesión con éxito!")
-    print("Volviendo al menú principal...")
 
-    sleep(2)
-    limpiar_consola()
-    main()
+listaDeVuelos = get_vuelos()
+listaAeropuertos = get_aeropuertos()
+				
+def cerrar_sesion():
+		limpiar_consola()
+		print("Ha cerrado la sesión con éxito!")
+		print("Volviendo al menú principal...")
+
+		bloquear_teclado(2)
+		limpiar_consola()
+		main()
 
 def imprimible_menu_regreso(funcion):
-  bandera = False
-  volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
-  while not bandera:    
-    if volver == "0":
-      bandera = True
-      funcion()
-    elif volver == "-1":
-      print("Muchas gracias")
-      bandera = True
-    else:
-      print("Seleccione un valor valido")
-      volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
+	bandera = False
+	volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
+	while not bandera:    
+		if volver == "0":
+			bandera = True
+			funcion()
+		elif volver == "-1":
+			print("Muchas gracias")
+			bandera = True
+		else:
+			print("Seleccione un valor valido")
+			volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
 
 def administrador():
-  """Listado de funciones disponibles que se pueden ejecutar Exclusivo de Administradores"""
-  limpiar_consola()
-  print("OPCIONES")
-  print("""
-        1. Ingresar vuelo al sistema.
-        2. Modificar vuelo.
-        3. Consulta de estados de vuelos.
-        4. Eliminar vuelo.
-        5. Cerrar Sesión.
-        """)
-  menu_opciones_administrador()
+	"""Listado de funciones disponibles que se pueden ejecutar Exclusivo de Administradores"""
+	limpiar_consola()
+	print("OPCIONES")
+	print("""
+				1. Ingresar vuelo al sistema.
+				2. Modificar vuelo.
+				3. Consulta de estados de vuelos.
+				4. Eliminar vuelo.
+				5. Cerrar Sesión.
+				""")
+	menu_opciones_administrador()
 
 def menu_opciones_administrador():
-  #Selecciona la opccion deseada
-  bandera = True
-  while bandera:
-    opcion = validar_input(5)
-    if opcion == "1":
-      ingresar_vuelo(listaDeVuelos)
-      administrador()
-      bandera = False
-    elif opcion == "2":
-      modificacion_vuelo(listaDeVuelos)
-      bandera = False
-    elif opcion == "3":
-      mostrar_vuelos(listaDeVuelos)
-      bandera = False
-    elif opcion == "4":
-      eliminar_vuelo(listaDeVuelos)
-      bandera = False
-    elif opcion == "5":
-      limpiar_consola()
-      print("Ha cerrado la sesión con éxito!")
-      sleep(2)
-      limpiar_consola()
-      main()
-      bandera = False
-  imprimible_menu_regreso(administrador)
-  #modificar
+	#Selecciona la opccion deseada
+	bandera = True
+	while bandera:
+		opcion = validar_input(5)
+		if opcion == "1":
+			ingresar_vuelo(listaDeVuelos)
+			administrador()
+			bandera = False
+		elif opcion == "2":
+			modificacion_vuelo(listaDeVuelos)
+			bandera = False
+		elif opcion == "3":
+			mostrar_vuelos(listaDeVuelos)
+			bandera = False
+		elif opcion == "4":
+			eliminar_vuelo(listaDeVuelos)
+			bandera = False
+		elif opcion == "5":
+			limpiar_consola()
+			print("Ha cerrado la sesión con éxito!")
+			bloquear_teclado(2)
+			limpiar_consola()
+			main()
+			bandera = False
+	imprimible_menu_regreso(administrador)
+	#modificar
 
 #Mostrar el menu
 def consultante(aeropuertos, listaUsuario):
-  """Listado de funciones disponibles Exclusivo de Consultante"""
-  limpiar_consola()
-  print("OPCIONES")
-  print("""
-        1. Consulta de vuelos.
-        2. Consulta de vuelos con asientos disponibles.
-        3. Consultar reserva.
-        4. Cancelar reserva.
-        5. Reserva sala VIP.
-        6. Reserva de cochera.
-        7. Mostrar mapa de vuelos
-        8. Cerrar sesión.
-        """)
-  menu_opciones_consultante(aeropuertos, listaUsuario)
+	"""Listado de funciones disponibles Exclusivo de Consultante"""
+	limpiar_consola()
+	print("OPCIONES")
+	print("""
+				1. Consulta de vuelos.
+				2. Consulta de vuelos con asientos disponibles.
+				3. Consultar reserva.
+				4. Cancelar reserva.
+				5. Reserva sala VIP.
+				6. Reserva de cochera.
+				7. Mostrar mapa de vuelos
+				8. Cerrar sesión.
+				""")
+	menu_opciones_consultante(aeropuertos, listaUsuario)
 
 
 
 def menu_opciones_consultante(aeropuertos, listaUsuario):
-  """"Menu de opciones de usuario consultante"""
-  opciones = {
-      "1": mostrar_vuelos,
-      "2": consultarAsientosDisponibles,
-      "3": consultarReserva,
-      "4": cancelarReserva,
-      "5": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario ),
-      "6": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
-      "7": mostrar_mapa_terminal,
-      "8": cerrar_sesion
-  }
-  
-  bandera = False
-  while not bandera:
-      opcion = validar_input(8)  # Recoge la opción
-      accion = opciones.get(opcion)  # Obtiene la función asociada a la opción
-      
-      if accion:
-          accion()  # Llama a la función
-          bandera = True
-      else:
-          print("Opción inválida. Por favor, seleccione una opción válida.")
+	"""Menu de opciones de usuario consultante"""
+	user = getDataUser()
+	opciones = {
+			"1": lambda: mostrar_vuelos(listaDeVuelos),
+			"2": lambda: consultarAsientosDisponibles(),
+			"3": lambda: repositorio_usuarios.consultarReserva(user),
+			"4": lambda: repositorio_usuarios.cancelarReserva(user),
+			"5": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario),
+			"6": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
+			"7": lambda: mostrar_mapa_terminal(),
+			"8": lambda: cerrar_sesion()
+	}
+	bandera = False
+	while not bandera:
+			opcion = validar_input(8)
+			accion = opciones.get(opcion)
+			
+			if accion:
+					accion()
+					bandera = True
+			else:
+					print("Opción inválida. Por favor, seleccione una opción válida.")
 
-  imprimible_menu_regreso(consultante(listaAeropuertos, usuarios))
+	imprimible_menu_regreso(lambda: consultante(listaAeropuertos, usuarios))
 
-    
+		
 
 
 def consultarAsientosDisponibles():
-    """
-    Consulta y muestra los vuelos que tienen asientos disponibles.
-    
-    Utiliza la función filtrar_vuelos_asientos_disponibles() para obtener los vuelos
-    con asientos libres y extrae sus números de vuelo para mostrarlos.
-    
-    Returns:
-        None. Imprime por pantalla la lista de códigos de vuelos con asientos disponibles.
-    """
-    vuelos_filtrados = filtrar_vuelos_asientos_disponibles()
-    codigos_de_vuelos = []
-    for vuelo in vuelos_filtrados:
-        codigos_de_vuelos.append(vuelo["numero_vuelo"])
+		"""
+		Consulta y muestra los vuelos que tienen asientos disponibles.
+		
+		Utiliza la función filtrar_vuelos_asientos_disponibles() para obtener los vuelos
+		con asientos libres y extrae sus números de vuelo para mostrarlos.
+		
+		Returns:
+				None. Imprime por pantalla la lista de códigos de vuelos con asientos disponibles.
+		"""
+		vuelos_filtrados = filtrar_vuelos_asientos_disponibles()
+		codigos_de_vuelos = []
+		for vuelo in vuelos_filtrados:
+				codigos_de_vuelos.append(vuelo["numero_vuelo"])
 
-    print(codigos_de_vuelos)
-    return
+		print(codigos_de_vuelos)
+		return
 
 def reservaSalaVIP(user, aeropuertos, listaUsuario):
-  valida = False
-  counterSala = 0
-  bandera = False
-  fechaValida = False
-  banderaReserva = False
-  seleccionSala = 0
-  archivoUser = "user.json"
-  while not bandera:    
-    for index, aeropuerto in enumerate(aeropuertos):
+	valida = False
+	counterSala = 0
+	bandera = False
+	banderaReserva = False
+	seleccionSala = 0
+	archivoUser = "user.json"
+	while not bandera:    
+		for index, aeropuerto in enumerate(aeropuertos):
+			print(index + 1 ,aeropuerto["codigo"], aeropuerto["ciudad"])
+		seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
+		if 1 <= seleccion <= len(aeropuertos):
+			if "salavip" in aeropuertos[seleccion - 1]:
+				for ind, salaVIP in enumerate(aeropuertos[seleccion - 1]["salavip"]):
+					counterSala += 1 
+					if salaVIP["reservados"] < salaVIP["capacidad"]:
+						print(ind + 1, "Nombre: ", salaVIP["nombre"], "Precio: ",  salaVIP["precio"]  )
+				seleccionSala = int(input("Seleccione la sala: "))
+				fecha = ingresar_fecha_y_hora("fecha y hora de reserva")
 
-      print(index + 1 ,aeropuerto["codigo"], aeropuerto["ciudad"])
-    seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
-    if 1 <= seleccion <= len(aeropuertos):
-      if "salavip" in aeropuertos[seleccion - 1]:
-        for ind, salaVIP in enumerate(aeropuertos[seleccion - 1]["salavip"]):
-          counterSala += 1 
-          if salaVIP["reservados"] < salaVIP["capacidad"]:
-            print(ind + 1, "Nombre: ", salaVIP["nombre"], "Precio: ",  salaVIP["precio"]  )
-        seleccionSala = int(input("Seleccione la sala: "))
-        while not fechaValida:
-           fecha = input("Inque en que fecha DD/MM/AAAA: ")
-           fechaValida, _ = validarFecha(fecha)
-           if fechaValida:
-             reservar = {
-               "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
-               "codigo": aeropuertos[seleccion - 1]["codigo"],
-               "fecha": fecha,
-               "salavip":  aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["nombre"]
-             }
-             print("Debe seleccionar o registar una tarjeta para realizar el pago")
-             while not banderaReserva:
-               tarjeta = tieneTarjeta(user)
-               if tarjeta:
-                 valida = randonAprobado()
-                 if valida:
-                   aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["reservados"] += 1
-                   for usuario in listaUsuario:
-                      if usuario["id"] == user["id"]:
-                        usuario["reservas"].append(reservar)
-                        writeFile(archivoUser, listaUsuario, None)
-                        bandera = True
-                        banderaReserva = valida
-                 else:
-                   print("Fondo insuficiente")
-               else:
-                 print("Ocurrio un problema")
-           else:
-             print("Fecha no valida")
-             fechaValida = False
-             bandera = False
-    else:
-      seleccion = input("Seleccione un aeropuerto correctamente: ")
-  print("Reserva realizada, con exito", user)
+				reservar = {
+					"aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
+					"codigo": aeropuertos[seleccion - 1]["codigo"],
+					"fecha": fecha,
+					"salavip":  aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["nombre"]
+				}
+				print("Debe seleccionar o registar una tarjeta para realizar el pago")
+				while not banderaReserva:
+					tarjeta = tieneTarjeta(user)
+					if tarjeta:
+						valida = randonAprobado()
+						if valida:
+							aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["reservados"] += 1
+							for usuario in listaUsuario:
+								if usuario["id"] == user["id"]:
+									usuario["reservas"].append(reservar)
+									writeFile(archivoUser, listaUsuario, None)
+									bandera = True
+									banderaReserva = valida
+						else:
+							print("Fondo insuficiente")
+					else:
+						print("Ocurrio un problema")
+		else:
+			seleccion = input("Seleccione un aeropuerto correctamente: ")
+	print("Reserva realizada, con exito", user)
 
-  
-def reservaEstacionamiento(use, aeropuertos, listaUsuario):
+	
+def reservaEstacionamiento(user, aeropuertos, listaUsuario):
     flag = False
     reserva = False
-    validaFechaInicio = False
-    validaFechaFin = False
     fechas_rango = []
     archivoUser = "user.json"
     
@@ -229,23 +217,14 @@ def reservaEstacionamiento(use, aeropuertos, listaUsuario):
             if "estacionamiento" in aeropuerto_seleccionado:
                 estacionamiento = aeropuerto_seleccionado["estacionamiento"]
                 
-                while not validaFechaInicio:
-                  inicioFecha = input("Ingrese la fecha de inicio de la reserva (DD/MM/AAAA): ")
-                  validaFechaInicio, fechaInicio = validarFecha(inicioFecha)
-                  if not validaFechaInicio:
-                    print("Fecha no valida, agregue una fecha valida ")
-
-                while not validaFechaFin:
-                  finFecha = input("Ingrese la fecha de fin de la reserva (DD/MM/AAAA ): ")
-                  validaFechaFin, fechaFin = validarFecha(finFecha)
-                  if not validaFechaFin:
-                    print("Fecha no valida, agregue una fecha valida ")
-
-                # Lista de fechas en el rango
-                fecha_actual = fechaInicio
-                while fecha_actual <= fechaFin:
-                    fechas_rango.append(fechaInicio.strftime("%d/%m/%Y"))
-                    fecha_actual += timedelta(days=1)
+                fechaInicio = ingresar_fecha_y_hora("fecha y hora de inicio de estacionamiento")
+                fechaFin = ingresar_fecha_y_hora("fecha y hora de fin de estacionamiento")
+                while fechaFin <= fechaInicio:
+                    print("La fecha de fin de estacionamiento debe ser posterior a la de inicio. Intente nuevamente.\n")
+                    fechaFin = ingresar_fecha_y_hora("fecha y hora de fin de estacionamiento")
+                # Lista de fechas en el rango		
+                fechas_rango.append(fechaInicio)
+                    
 
                 # Verificar disponibilidad en todas las fechas del rango
                 lugares_disponibles = []
@@ -261,36 +240,37 @@ def reservaEstacionamiento(use, aeropuertos, listaUsuario):
                             lugares_disponibles.append(lugar)
 
                 if lugares_disponibles:
-                    # Seleccionar un lugar aleatoriamente
                     lugarSeleccionado = random.choice(lugares_disponibles)
-
                     reservar = {
-                     "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
-                     "codigo": aeropuertos[seleccion - 1]["codigo"],
-                     "fechainicio": str(fechaInicio),
-                     "fechafin": str(fechaFin),
-                     "estacionamiento": lugarSeleccionado
-                   }
+                        "aeropuerto": aeropuerto_seleccionado["ciudad"],
+                        "codigo": aeropuerto_seleccionado["codigo"],
+                        "fechainicio": str(fechaInicio),
+                        "fechafin": str(fechaFin),
+                        "estacionamiento": lugarSeleccionado
+                    }
                     
-                    print("Debe seleccionar o registar una tarjeta para realizar el pago")
+                    print("Debe seleccionar o registrar una tarjeta para realizar el pago")
                     while not reserva:
-                      tarjeta = tieneTarjeta(user)
-                      if tarjeta:
-                        valida = randonAprobado()
-                        if valida:
-                          for fecha in fechas_rango:
-                            if fecha not in estacionamiento["reservados"]:
-                              estacionamiento["reservados"][fecha] = []  
-                              estacionamiento["reservados"][fecha].append(lugarSeleccionado)
-                              for usuario in listaUsuario:
-                                if usuario["id"] == user["id"]:
-                                  usuario["reservas"].append(reservar)
-                                  writeFile(archivoUser, listaUsuario, None )
-                                  flag = True
-                                  reserva = valida
-                        else:
-                          print("Fondo insuficiente")
-                    print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
+                        tarjeta = tieneTarjeta(user)
+                        if tarjeta:
+                            valida = randonAprobado()
+                            if valida:
+                                # Corregir la lógica de guardado de reservas
+                                for fecha in fechas_rango:
+                                    if fecha not in estacionamiento["reservados"]:
+                                        estacionamiento["reservados"][fecha] = []
+                                    estacionamiento["reservados"][fecha].append(lugarSeleccionado)
+                                
+                                for usuario in listaUsuario:
+                                    if usuario["id"] == user["id"]:
+                                        usuario["reservas"].append(reservar)
+                                        writeFile(archivoUser, listaUsuario, None)
+                                        flag = True
+                                        reserva = True
+                                print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
+                            else:
+                                print("Fondos insuficientes")
+                                break
                 else:
                     print(f"No hay lugares disponibles para el rango de fechas {fechaInicio} a {fechaFin}")
             else:
@@ -298,59 +278,55 @@ def reservaEstacionamiento(use, aeropuertos, listaUsuario):
         else:
             print("Selección inválida. Por favor, elija un aeropuerto válido.")
 
-def consultarReserva():
-  pass
 
-def cancelarReserva():
-  pass
 
 # Podríamos modularizar este código
 # Si modularizamos mucho el código podemos volver para atras (ejemplo, si hay un error  algo volvemos a llamar a la funcion y estamos parados en el mismo lugar que antes)
 def main():
-  """Función encargada de dirigir la ejecución completa de nuestro programa"""
-  limpiar_consola()
-  print("""Ingrese la opción (numero) que quiera ejecutar:
-  -1) Registración de usuario Consultante/Administrador.
-  -2) Ingreso como Administrador.
-  -3) Ingreso como Consultante.""")
-  opcion = validar_input(NUMERO_DE_OPCIONES_3)
-  if(opcion == "1"):
-    print("""Ingrese la opción (numero) que quiera ejecutar:
-    -1) Registración de usuario Consultante.
-    -2) Registración de usuario Administrador.""")
-    opcion = validar_input(NUMERO_DE_OPCIONES_2)
-    if(opcion == "1"):
-      repositorio_usuarios.registracion_usuarios(False) ##parece que pueden acceder a las variables sin el get -> preguntar a la profe
-      limpiar_consola()
-      print("Registracion concretada")
-      main()
-    else:
-      validacion_codigos = repositorio_usuarios.validar_codigos_admin()
-      if validacion_codigos:
-        repositorio_usuarios.registracion_usuarios(True)
-        limpiar_consola()
-        print("Registracion concretada")
-        main()       
-      else:
-        limpiar_consola()
-        print("No cuenta con el código para registrarse como administrador.") 
-        main()
-        
-  elif(opcion == "2"):
-    #se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
-    #podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
-    if(repositorio_usuarios.inicio_sesion(True)):
-      administrador()
-    else:
-      limpiar_consola()
-      print("Ha llegado al máximo de intentos posibles de inicio de sesion")
-      main()
-  else:
-    if(repositorio_usuarios.inicio_sesion(False)):
-      consultante(listaAeropuertos, usuarios)
-    else:
-      limpiar_consola()
-      print("Ha llegado al máximo de intentos posibles de inicio de sesion")
-      main()
+	"""Función encargada de dirigir la ejecución completa de nuestro programa"""
+	limpiar_consola()
+	print("""Ingrese la opción (numero) que quiera ejecutar:
+	-1) Registración de usuario Consultante/Administrador.
+	-2) Ingreso como Administrador.
+	-3) Ingreso como Consultante.""")
+	opcion = validar_input(NUMERO_DE_OPCIONES_3)
+	if(opcion == "1"):
+		print("""Ingrese la opción (numero) que quiera ejecutar:
+		-1) Registración de usuario Consultante.
+		-2) Registración de usuario Administrador.""")
+		opcion = validar_input(NUMERO_DE_OPCIONES_2)
+		if(opcion == "1"):
+			repositorio_usuarios.registracion_usuarios(False)
+			limpiar_consola()
+			print("Registracion concretada")
+			main()
+		else:
+			validacion_codigos = repositorio_usuarios.validar_codigos_admin()
+			if validacion_codigos:
+				repositorio_usuarios.registracion_usuarios(True)
+				limpiar_consola()
+				print("Registracion concretada")
+				main()       
+			else:
+				limpiar_consola()
+				print("No cuenta con el código para registrarse como administrador.") 
+				main()
+				
+	elif(opcion == "2"):
+		#se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
+		#podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
+		if(repositorio_usuarios.inicio_sesion(True)):
+			administrador()
+		else:
+			limpiar_consola()
+			print("Ha llegado al máximo de intentos posibles de inicio de sesion")
+			main()
+	else:
+		if(repositorio_usuarios.inicio_sesion(False)):
+			consultante(listaAeropuertos, usuarios)
+		else:
+			limpiar_consola()
+			print("Ha llegado al máximo de intentos posibles de inicio de sesion")
+			main()
 
 main()

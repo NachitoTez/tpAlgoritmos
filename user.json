@@ -22,24 +22,10 @@
                 "salavip": "IAH Executive"
             },
             {
-                "aeropuerto": "Buenos Aires",
-                "codigo": "EZE",
-                "fechainicio": "2024-12-12 00:00:00",
-                "fechafin": "2024-12-13 00:00:00",
-                "estacionamiento": "B10"
-            },
-            {
                 "aeropuerto": "Mar del Plata",
                 "codigo": "MDQ",
                 "fecha": "13/12/2024",
                 "salavip": "MDQ VIP"
-            },
-            {
-                "aeropuerto": "Houston",
-                "codigo": "IAH",
-                "fechainicio": "2024-12-13 00:00:00",
-                "fechafin": "2024-12-14 00:00:00",
-                "estacionamiento": "C24"
             },
             {
                 "aeropuerto": "Paris",
@@ -79,7 +65,14 @@
         "usuario": "guido",
         "contrasenia": "guido123",
         "vuelos": [],
-        "reservas": [],
+        "reservas": [
+            {
+                "aeropuerto": "Mar del Plata",
+                "codigo": "MDQ",
+                "fecha": "2024-12-10 22:32:00",
+                "salavip": "MDQ VIP"
+            }
+        ],
         "tarjetas": []
     },
     {
@@ -132,6 +125,15 @@
         "admin": false,
         "usuario": "franchu",
         "contrasenia": "123456",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
+    },
+    {
+        "id": "f7bd9d80-771e-4e6f-863d-k9fafcff506e",
+        "admin": true,
+        "usuario": "yiya",
+        "contrasenia": "cocacola",
         "vuelos": [],
         "reservas": [],
         "tarjetas": []

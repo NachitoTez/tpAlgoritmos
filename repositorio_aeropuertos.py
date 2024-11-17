@@ -1,6 +1,6 @@
-from time import sleep
+
 import json
-from utils import readFile, writeFile
+from utils import readFile, writeFile, bloquear_teclado
 
 archivoAeropuertos = 'aeropuertos.json'
 
@@ -59,5 +59,5 @@ def cargar_aeropuerto( aeropuertos = aeropuertos):
     writeFile(archivoAeropuertos, aeropuertos, nuevo_aeropuerto )
         
     print("Aeropuerto cargado correctamente!")
-    sleep(1)
+    bloquear_teclado(2)
     return

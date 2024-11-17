@@ -1,7 +1,9 @@
 from os import system, name
 import uuid
 import json
-from utils import writeFile, readFile
+from utils import writeFile, readFile, bloquear_teclado, validar_input
+from repositorio_pagos import registrarTarjeta
+from tabulate import tabulate
 archivoUser = "user.json"
 usuarios = readFile(archivoUser)
 
@@ -9,7 +11,7 @@ usuarios = readFile(archivoUser)
 
 
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
-userLoguin = {}  
+userLoguin = {}  #Diccionario que se actualiza con el usuario y contrasenia ingresado.
 
 def limpiar_consola():
     if name == "nt":  # Windows
@@ -42,7 +44,7 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
     for user in consultante:
         for clave, valor in user.items():
             if clave == "usuario" and valor == usuario or clave=="contrasenia" and valor == contrasenia:
-                userLoguin.update(user)
+                userLoguin.update(user) #Actualizo el diccionario userLoguin con el usuario y contrasenia ingresado.
                 bandera+=1
         if bandera == 2: #Consulto en este paso si es que ya se encontro con el usuario y contrasenia buscado.
             return True
@@ -72,7 +74,6 @@ def chequeo_usuario_existente(nuevo_usuario):
     """Funcion a utilizar para chequear si el nombre del nuevo usuario no se encuentra ya en el sistema.
     Recibe por parámetro el nombre de usuario a ingresar al sistema y devuelve True si ya se encuentra o
     False si no."""
-    usuarios = getDataUser()
     bandera = False
     for user in usuarios:
         for clave, valor in user.items():
@@ -87,17 +88,107 @@ def registracion_usuarios(privilegio):
   usuario = ""
   contrasenia = ""
   usuarios = readFile(archivoUser)
-  print(usuarios)
   usuario = input("Ingrese el usuario a utilizar en el sistema: ").lower()
   while usuario == "" or chequeo_usuario_existente(usuario):
      usuario = input("Ingrese un usuario a utilizar en el sistema que sea correcto o que no se este utilizando: \n").lower()
   contrasenia = input("Ingrese la contrasenia a utilizar en el sistema, debe tener minimo 6 digitos y un maximo de 12 digitos: \n")
   while contrasenia == "" or len(contrasenia) < 6 or len(contrasenia) > 12:
      contrasenia = input("Ingrese una contrasenia a utilizar en el sistema que sea correcta: \n")
+
   idGenerate = str(uuid.uuid4())
   nuevoUsuario = {"id" : idGenerate , "admin":privilegio, "usuario":usuario, "contrasenia":contrasenia, "vuelos": [], "reservas": [], "tarjetas":[]}
   writeFile(archivoUser, usuarios,nuevoUsuario )
+  if not(privilegio):
+    print("Si desea agregar una tarjeta de crédito, ingrese S, de lo contrario ingrese N")
+    agregarTarjeta = input("Ingrese su respuesta: ").upper()
+    if agregarTarjeta == "S":
+        registrarTarjeta(nuevoUsuario)
+  print("Usuario registrado exitosamente")
+  bloquear_teclado(2)
   return
 
 def getDataUser():
     return userLoguin
+
+
+def consultarReserva(user):
+    """
+    Permite al usuario consultar sus reservas de Sala VIP o Estacionamiento.
+
+    Args:
+        user (dict): Diccionario con la información del usuario logueado
+
+    Returns:
+        None. Imprime por pantalla las reservas encontradas en formato tabular.
+    """
+    print("Ingrese que tipo de reserva desea consultar:")
+    print("1. Sala VIP")
+    print("2. Estacionamiento")
+    opcion = validar_input(2)
+    if opcion == "1":
+        reservas_salavip = [reserva for reserva in user["reservas"] if "salavip" in reserva]
+        if(len(reservas_salavip) == 0):
+            print("No hay reservas de sala vip para consultar")
+        else:
+            print(tabulate(reservas_salavip, headers="keys", tablefmt="fancy_grid"))
+    elif opcion == "2":
+        reservas_estacionamiento = [reserva for reserva in user["reservas"] if "estacionamiento" in reserva]
+        if(len(reservas_estacionamiento) == 0):
+            print("No hay reservas de estacionamiento para consultar")
+        else:
+            print(tabulate(reservas_estacionamiento, headers="keys", tablefmt="fancy_grid"))
+
+def cancelar_reserva_por_tipo(user, tipo_reserva, usuarios):
+    """
+    Función auxiliar que maneja la cancelación de un tipo específico de reserva.
+
+    Args:
+        user (dict): Diccionario con la información del usuario logueado
+        tipo_reserva (str): Tipo de reserva a cancelar ('salavip' o 'estacionamiento')
+        usuarios (list): Lista de todos los usuarios del sistema
+
+    Returns:
+        None. Actualiza el archivo de usuarios si se cancela una reserva.
+    """
+    reservas = [reserva for reserva in user["reservas"] if tipo_reserva in reserva]
+    if not reservas:
+        print(f"No hay reservas de {tipo_reserva.title()} para cancelar")
+        return
+        
+    cantidad_reservas = len(reservas)
+    reservas_con_indice = [{"#": i + 1, **reserva} for i, reserva in enumerate(reservas)]
+    print(tabulate(reservas_con_indice, headers="keys", tablefmt="fancy_grid"))
+    print("ingrese el numero de reserva que desea cancelar: ")
+    seleccion = int(validar_input(cantidad_reservas))
+    
+    # Encontrar y actualizar el usuario en la lista de usuarios
+    for usuario in usuarios:
+        if usuario["id"] == user["id"]:
+            reserva_a_eliminar = reservas[seleccion - 1]
+            usuario["reservas"].remove(reserva_a_eliminar)
+            user["reservas"].remove(reserva_a_eliminar)
+            writeFile(archivoUser, usuarios, None)
+            print("Reserva cancelada exitosamente")
+            break
+
+def cancelarReserva(user):
+    """
+    Permite al usuario cancelar una reserva existente de Sala VIP o Estacionamiento.
+
+    Args:
+        user (dict): Diccionario con la información del usuario logueado
+
+    Returns:
+        None. Actualiza el archivo de usuarios si se cancela una reserva.
+    """
+    usuarios = readFile(archivoUser)
+    
+    print("Ingrese que tipo de reserva desea cancelar:")
+    print("1. Sala VIP")
+    print("2. Estacionamiento")
+    opcion = validar_input(2)
+    
+    if opcion == "1":
+        cancelar_reserva_por_tipo(user, "salavip", usuarios)
+    elif opcion == "2":
+        cancelar_reserva_por_tipo(user, "estacionamiento", usuarios)

@@ -3,7 +3,6 @@ import re #regex
 from utils import writeFile, readFile
 
 archivoUser = "user.json"
-
 usuarios = readFile(archivoUser)
 
 def tieneTarjeta(user):
@@ -43,18 +42,12 @@ def registrarTarjeta(user):
     usuarios = readFile(archivoUser)
     while not flag:
         try:
-            guardar = input("Desea guardar su tarjeta: S o N: ").upper()
-            if guardar == "S": 
-                for usuario in usuarios:
-                    if usuario["id"] == user["id"]:
-                        usuario["tarjetas"].append(tarjeta)
-                    writeFile(archivoUser, usuarios, None )
+            for usuario in usuarios:
+                if usuario["id"] == user["id"]:
+                    usuario["tarjetas"].append(tarjeta)
+                    writeFile(archivoUser, usuarios, None)
                     flag = True 
                     return tarjeta
-            elif guardar == "N":
-                flag = False
-            else:
-                ValueError("Agrego un dato, no valido ")
         except ValueError as e:
             print(e)
 
