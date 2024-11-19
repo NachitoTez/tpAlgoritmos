@@ -3,7 +3,7 @@ from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vu
 from utils import validar_input, limpiar_consola
 from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser, usuarios
-from utils import ingresar_fecha_y_hora, randonAprobado, writeFile, bloquear_teclado, readFile
+from utils import ingresar_fecha_y_hora, randonAprobado, writeFile, bloquear_teclado, readFile, calcularPrecioEstacionamiento
 from repositorio_pagos import tieneTarjeta, registrarTarjeta
 import random
 from datetime import timedelta
@@ -259,14 +259,17 @@ def reservaEstacionamiento(user, aeropuertos, listaUsuario):
 
                 if lugares_disponibles:
                     lugarSeleccionado = random.choice(lugares_disponibles)
+                    valor = round(calcularPrecioEstacionamiento(fechaInicio, fechaFin, 10.0), 2)
                     reservar = {
                         "aeropuerto": aeropuerto_seleccionado["ciudad"],
                         "codigo": aeropuerto_seleccionado["codigo"],
                         "fechainicio": str(fechaInicio),
                         "fechafin": str(fechaFin),
-                        "estacionamiento": lugarSeleccionado
+                        "estacionamiento": lugarSeleccionado,
+                        "precio" : valor
                     }
                     
+                    print(f"El lugar {lugarSeleccionado}, desde el dia {fechaInicio} hasta el dia {fechaFin}, por un valor de {valor}")
                     print("Debe seleccionar o registrar una tarjeta para realizar el pago")
                     while not reserva:
                         tarjeta = tieneTarjeta(user)
@@ -285,7 +288,7 @@ def reservaEstacionamiento(user, aeropuertos, listaUsuario):
                                         writeFile(archivoUser, listaUsuario, None)
                                         flag = True
                                         reserva = True
-                                print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
+                                print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}, por un valor de {valor}")
                             else:
                                 print("Fondos insuficientes")
                                 break
