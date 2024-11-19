@@ -131,7 +131,7 @@ def menu_opciones_consultante(aeropuertos, listaUsuario):
 			else:
 					print("Opción inválida. Por favor, seleccione una opción válida.")
 
-	imprimible_menu_regreso(consultante(listaAeropuertos, usuarios))
+	imprimible_menu_regreso(lambda: consultante(listaAeropuertos, usuarios))
 
 		
 
