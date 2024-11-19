@@ -122,7 +122,7 @@ def menu_opciones_consultante(aeropuertos, listaUsuario):
 	}
 	bandera = False
 	while not bandera:
-			opcion = validar_input(8)
+			opcion = validar_input(9)
 			accion = opciones.get(opcion)
 			
 			if accion:
