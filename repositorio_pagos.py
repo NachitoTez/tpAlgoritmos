@@ -16,7 +16,8 @@ def tieneTarjeta(user):
     counter = 0 
     user = actualizaUsuario(user)
     if len(user["tarjetas"]) == 0:
-        registrarTarjeta(user)
+      tarjeta =  registrarTarjeta(user)
+      return tarjeta
     else:
         while not flag:
             seleccion = input("""
