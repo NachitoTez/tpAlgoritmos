@@ -410,3 +410,34 @@ def mostrar_mapa_terminal():
         pass
     finally:
         curses.endwin()
+
+
+def reservar_asiento(numero_vuelo):
+    """Permite modificar un vuelo para hacer efectiva una reserva"""
+    try:
+        vuelos = readFile(archivoVuelos)
+        
+        if not isinstance(numero_vuelo, str):
+            raise ValueError("El número de vuelo debe ser un string")
+            
+        for vuelo in vuelos:
+            if vuelo["numero_vuelo"] == numero_vuelo:
+                if vuelo["estado"] == "Arribado":
+                    print("No se pueden reservar asientos en vuelos ya arribados")
+                    return False
+                    
+                if vuelo["asientos_disponibles"] > 0:
+                    vuelo["asientos_disponibles"] -= 1
+                    writeFile(archivoVuelos, vuelos)
+                    print(f"Reserva exitosa. Quedan {vuelo['asientos_disponibles']} asientos disponibles.")
+                    return True
+                else:
+                    print("No hay asientos disponibles para este vuelo.")
+                    return False
+                    
+        print("Vuelo no encontrado.")
+        return False
+        
+    except Exception as e:
+        print(f"Error al procesar la reserva: {str(e)}")
+        return False

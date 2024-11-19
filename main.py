@@ -1,3 +1,4 @@
+import repositorio_reservas
 import repositorio_usuarios
 from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos
 from utils import validar_input, limpiar_consola
@@ -158,18 +159,20 @@ def menu_reservas(user, aeropuertos, listaUsuario):
     limpiar_consola()
     print("SUBMENÚ - RESERVAS")
     print("""
-                1. Consultar reserva.
-                2. Cancelar reserva.
-                3. Reserva sala VIP.
-                4. Reserva de cochera.
-                5. Volver al menú principal.
+                1. Reservar vuelo.
+                2. Consultar reserva.
+          		3. Cancelar reserva.
+                4. Reserva sala VIP.
+                5. Reserva de cochera.
+                6. Volver al menú principal.
                 """)
     opciones_reservas = {
-        "1": lambda: repositorio_usuarios.consultarReserva(user),
-        "2": lambda: repositorio_usuarios.cancelarReserva(user),
-        "3": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario),
-        "4": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
-        "5": lambda: consultante(aeropuertos, listaUsuario)
+		"1": lambda: repositorio_reservas.reservar_vuelo(user),
+        "2": lambda: repositorio_usuarios.consultarReserva(user),
+        "3": lambda: repositorio_usuarios.cancelarReserva(user),
+        "4": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario),
+        "5": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
+        "6": lambda: consultante(aeropuertos, listaUsuario)
     }
 
     bandera = False
