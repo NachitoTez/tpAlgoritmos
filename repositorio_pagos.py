@@ -1,5 +1,5 @@
 from datetime import datetime
-import re #regex
+import re
 from utils import writeFile, readFile
 
 archivoUser = "user.json"
