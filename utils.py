@@ -31,7 +31,7 @@ def cantidad_dias(anio, mes):
     
 def randonAprobado():
     valido = random.randint(0,10)
-    if valido > 3:
+    if valido > 2:
         return True
     else:
         return False

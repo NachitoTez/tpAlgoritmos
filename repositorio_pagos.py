@@ -5,10 +5,17 @@ from utils import writeFile, readFile
 archivoUser = "user.json"
 usuarios = readFile(archivoUser)
 
+def actualizaUsuario(user):
+    Listausuarios = readFile(archivoUser)
+    for usuario in Listausuarios:
+        if user["id"] == usuario["id"]:  
+            return usuario
+
 def tieneTarjeta(user):
     flag = False
     counter = 0 
-    if not "tarjetas" in user:
+    user = actualizaUsuario(user)
+    if len(user["tarjetas"]) == 0:
         registrarTarjeta(user)
     else:
         while not flag:
@@ -46,6 +53,7 @@ def registrarTarjeta(user):
                 if usuario["id"] == user["id"]:
                     usuario["tarjetas"].append(tarjeta)
                     writeFile(archivoUser, usuarios, None)
+                    print("Registro exitoso!")
                     flag = True 
                     return tarjeta
         except ValueError as e:

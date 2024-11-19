@@ -3,8 +3,8 @@ from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vu
 from utils import validar_input, limpiar_consola
 from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser, usuarios
-from utils import ingresar_fecha_y_hora, randonAprobado, writeFile, bloquear_teclado
-from repositorio_pagos import tieneTarjeta
+from utils import ingresar_fecha_y_hora, randonAprobado, writeFile, bloquear_teclado, readFile
+from repositorio_pagos import tieneTarjeta, registrarTarjeta
 import random
 from datetime import timedelta
 
@@ -97,7 +97,8 @@ def consultante(aeropuertos, listaUsuario):
 				5. Reserva sala VIP.
 				6. Reserva de cochera.
 				7. Mostrar mapa de vuelos
-				8. Cerrar sesión.
+				8. Registrar tarjeta
+				9. Cerrar sesión.
 				""")
 	menu_opciones_consultante(aeropuertos, listaUsuario)
 
@@ -106,6 +107,8 @@ def consultante(aeropuertos, listaUsuario):
 def menu_opciones_consultante(aeropuertos, listaUsuario):
 	"""Menu de opciones de usuario consultante"""
 	user = getDataUser()
+	archivoUser = "user.json"
+	listaUsuario = readFile(archivoUser)
 	opciones = {
 			"1": lambda: mostrar_vuelos(listaDeVuelos),
 			"2": lambda: consultarAsientosDisponibles(),
@@ -114,7 +117,8 @@ def menu_opciones_consultante(aeropuertos, listaUsuario):
 			"5": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario),
 			"6": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
 			"7": lambda: mostrar_mapa_terminal(),
-			"8": lambda: cerrar_sesion()
+			"8": lambda: registrarTarjeta(user),
+			"9": lambda: cerrar_sesion()
 	}
 	bandera = False
 	while not bandera:
@@ -151,51 +155,65 @@ def consultarAsientosDisponibles():
 		return
 
 def reservaSalaVIP(user, aeropuertos, listaUsuario):
-	valida = False
-	counterSala = 0
-	bandera = False
-	banderaReserva = False
-	seleccionSala = 0
-	archivoUser = "user.json"
-	while not bandera:    
-		for index, aeropuerto in enumerate(aeropuertos):
-			print(index + 1 ,aeropuerto["codigo"], aeropuerto["ciudad"])
-		seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
-		if 1 <= seleccion <= len(aeropuertos):
-			if "salavip" in aeropuertos[seleccion - 1]:
-				for ind, salaVIP in enumerate(aeropuertos[seleccion - 1]["salavip"]):
-					counterSala += 1 
-					if salaVIP["reservados"] < salaVIP["capacidad"]:
-						print(ind + 1, "Nombre: ", salaVIP["nombre"], "Precio: ",  salaVIP["precio"]  )
-				seleccionSala = int(input("Seleccione la sala: "))
-				fecha = ingresar_fecha_y_hora("fecha y hora de reserva")
+    valida = False
+    bandera = False
+    banderaReserva = False
+    seleccionSala = 0
+    salaValida = False
+    archivoUser = "user.json"
 
-				reservar = {
-					"aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
-					"codigo": aeropuertos[seleccion - 1]["codigo"],
-					"fecha": fecha,
-					"salavip":  aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["nombre"]
-				}
-				print("Debe seleccionar o registar una tarjeta para realizar el pago")
-				while not banderaReserva:
-					tarjeta = tieneTarjeta(user)
-					if tarjeta:
-						valida = randonAprobado()
-						if valida:
-							aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["reservados"] += 1
-							for usuario in listaUsuario:
-								if usuario["id"] == user["id"]:
-									usuario["reservas"].append(reservar)
-									writeFile(archivoUser, listaUsuario, None)
-									bandera = True
-									banderaReserva = valida
-						else:
-							print("Fondo insuficiente")
-					else:
-						print("Ocurrio un problema")
-		else:
-			seleccion = input("Seleccione un aeropuerto correctamente: ")
-	print("Reserva realizada, con exito", user)
+    while not bandera:
+        for index, aeropuerto in enumerate(aeropuertos):
+            print(index + 1, aeropuerto["codigo"], aeropuerto["ciudad"])
+
+        seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
+        if 1 <= seleccion <= len(aeropuertos):
+            if "salavip" in aeropuertos[seleccion - 1]:
+                for ind, salaVIP in enumerate(aeropuertos[seleccion - 1]["salavip"]):
+                    if salaVIP["reservados"] < salaVIP["capacidad"]:
+                        print(ind + 1, "Nombre: ", salaVIP["nombre"], "Precio: ", salaVIP["precio"])
+
+                while not salaValida:
+                    try:
+                        seleccionSala = int(input("Seleccione la sala: "))
+                        if 1 <= seleccionSala <= len(aeropuertos[seleccion - 1]["salavip"]):
+                            salaValida = True
+                        else:
+                            print("Por favor, ingrese un número de sala válido.")
+                    except ValueError:
+                        print("Entrada no válida. Por favor, ingrese un número.")
+
+                fecha = ingresar_fecha_y_hora("fecha y hora de reserva")
+
+                reservar = {
+                    "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
+                    "codigo": aeropuertos[seleccion - 1]["codigo"],
+                    "fecha": fecha,
+                    "salavip": aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["nombre"]
+                }
+
+                print("Debe seleccionar o registrar una tarjeta para realizar el pago")
+                while not banderaReserva:
+                    tarjeta = tieneTarjeta(user)
+                    if tarjeta:
+                        valida = randonAprobado()
+                        if valida:
+                            aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["reservados"] += 1
+                            for usuario in listaUsuario:
+                                if usuario["id"] == user["id"]:
+                                    usuario["reservas"].append(reservar)
+                                    listaUsuarioActualizado = readFile(archivoUser)
+                                    writeFile(archivoUser, listaUsuarioActualizado, None)
+                                    bandera = True
+                                    banderaReserva = valida
+                        else:
+                            print("Fondos insuficientes")
+                    else:
+                        print("Ocurrió un problema")
+        else:
+            print("Seleccione un aeropuerto correctamente.")
+
+    print("Reserva realizada con éxito", user)
 
 	
 def reservaEstacionamiento(user, aeropuertos, listaUsuario):
