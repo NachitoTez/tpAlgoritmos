@@ -1,7 +1,6 @@
 from datetime import datetime
 import random
 from time import sleep
-from keyboard import block_key, unblock_key
 from os import system, name
 import json
 
@@ -94,6 +93,4 @@ def ingresar_fecha_y_hora(tipo):
     return fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
 
 def bloquear_teclado(tiempo):
-    block_key('*')
     sleep(tiempo)
-    unblock_key('*')

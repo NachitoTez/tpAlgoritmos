@@ -86,52 +86,102 @@ def menu_opciones_administrador():
 
 #Mostrar el menu
 def consultante(aeropuertos, listaUsuario):
-	"""Listado de funciones disponibles Exclusivo de Consultante"""
-	limpiar_consola()
-	print("OPCIONES")
-	print("""
-				1. Consulta de vuelos.
-				2. Consulta de vuelos con asientos disponibles.
-				3. Consultar reserva.
-				4. Cancelar reserva.
-				5. Reserva sala VIP.
-				6. Reserva de cochera.
-				7. Mostrar mapa de vuelos
-				8. Registrar tarjeta
-				9. Cerrar sesión.
-				""")
-	menu_opciones_consultante(aeropuertos, listaUsuario)
+    """Listado de funciones disponibles Exclusivo de Consultante"""
+    limpiar_consola()
+    print("MENÚ PRINCIPAL")
+    print("""
+                1. Vuelos.
+                2. Reservas.
+                3. Registrar tarjeta.
+                4. Cerrar sesión.
+                """)
+    menu_opciones_principal(aeropuertos, listaUsuario)
 
+def menu_opciones_principal(aeropuertos, listaUsuario):
+    """Menú principal dividido en submenús"""
+    user = getDataUser()
+    archivoUser = "user.json"
+    listaUsuario = readFile(archivoUser)
+    
+    opciones_principal = {
+        "1": lambda: menu_vuelos(aeropuertos, listaUsuario),
+        "2": lambda: menu_reservas(user, aeropuertos, listaUsuario),
+        "3": lambda: registrarTarjeta(user),
+        "4": lambda: cerrar_sesion()
+    }
+    
+    bandera = False
+    while not bandera:
+        opcion = validar_input(4)
+        accion = opciones_principal.get(opcion)
+        
+        if accion:
+            accion()
+            bandera = True
+        else:
+            print("Opción inválida. Por favor, seleccione una opción válida.")
 
+    imprimible_menu_regreso(lambda: consultante(aeropuertos, listaUsuario))
 
-def menu_opciones_consultante(aeropuertos, listaUsuario):
-	"""Menu de opciones de usuario consultante"""
-	user = getDataUser()
-	archivoUser = "user.json"
-	listaUsuario = readFile(archivoUser)
-	opciones = {
-			"1": lambda: mostrar_vuelos(listaDeVuelos),
-			"2": lambda: consultarAsientosDisponibles(),
-			"3": lambda: repositorio_usuarios.consultarReserva(user),
-			"4": lambda: repositorio_usuarios.cancelarReserva(user),
-			"5": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario),
-			"6": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
-			"7": lambda: mostrar_mapa_terminal(),
-			"8": lambda: registrarTarjeta(user),
-			"9": lambda: cerrar_sesion()
-	}
-	bandera = False
-	while not bandera:
-			opcion = validar_input(8)
-			accion = opciones.get(opcion)
-			
-			if accion:
-					accion()
-					bandera = True
-			else:
-					print("Opción inválida. Por favor, seleccione una opción válida.")
+# Submenú de vuelos
+def menu_vuelos(aeropuertos, listaUsuario):
+    """Opciones relacionadas con vuelos"""
+    limpiar_consola()
+    print("SUBMENÚ - VUELOS")
+    print("""
+                1. Consulta de vuelos.
+                2. Consulta de vuelos con asientos disponibles.
+                3. Mostrar mapa de vuelos.
+                4. Volver al menú principal.
+                """)
+    opciones_vuelos = {
+        "1": lambda: mostrar_vuelos(listaDeVuelos),
+        "2": lambda: consultarAsientosDisponibles(),
+        "3": lambda: mostrar_mapa_terminal(),
+        "4": lambda: consultante(aeropuertos, listaUsuario)
+    }
 
-	imprimible_menu_regreso(lambda: consultante(listaAeropuertos, usuarios))
+    bandera = False
+    while not bandera:
+        opcion = validar_input(4)
+        accion = opciones_vuelos.get(opcion)
+        
+        if accion:
+            accion()
+            bandera = True
+        else:
+            print("Opción inválida. Por favor, seleccione una opción válida.")
+
+# Submenú de reservas
+def menu_reservas(user, aeropuertos, listaUsuario):
+    """Opciones relacionadas con reservas"""
+    limpiar_consola()
+    print("SUBMENÚ - RESERVAS")
+    print("""
+                1. Consultar reserva.
+                2. Cancelar reserva.
+                3. Reserva sala VIP.
+                4. Reserva de cochera.
+                5. Volver al menú principal.
+                """)
+    opciones_reservas = {
+        "1": lambda: repositorio_usuarios.consultarReserva(user),
+        "2": lambda: repositorio_usuarios.cancelarReserva(user),
+        "3": lambda: reservaSalaVIP(user, aeropuertos, listaUsuario),
+        "4": lambda: reservaEstacionamiento(user, aeropuertos, listaUsuario),
+        "5": lambda: consultante(aeropuertos, listaUsuario)
+    }
+
+    bandera = False
+    while not bandera:
+        opcion = validar_input(5)
+        accion = opciones_reservas.get(opcion)
+        
+        if accion:
+            accion()
+            bandera = True
+        else:
+            print("Opción inválida. Por favor, seleccione una opción válida.")
 
 		
 
@@ -298,8 +348,6 @@ def reservaEstacionamiento(user, aeropuertos, listaUsuario):
 
 
 
-# Podríamos modularizar este código
-# Si modularizamos mucho el código podemos volver para atras (ejemplo, si hay un error  algo volvemos a llamar a la funcion y estamos parados en el mismo lugar que antes)
 def main():
 	"""Función encargada de dirigir la ejecución completa de nuestro programa"""
 	limpiar_consola()
@@ -331,8 +379,6 @@ def main():
 				main()
 				
 	elif(opcion == "2"):
-		#se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
-		#podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
 		if(repositorio_usuarios.inicio_sesion(True)):
 			administrador()
 		else:
