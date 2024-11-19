@@ -16,12 +16,6 @@
         "vuelos": [],
         "reservas": [
             {
-                "aeropuerto": "Houston",
-                "codigo": "IAH",
-                "fecha": "10/12/2024",
-                "salavip": "IAH Executive"
-            },
-            {
                 "aeropuerto": "Mar del Plata",
                 "codigo": "MDQ",
                 "fecha": "13/12/2024",
@@ -33,6 +27,54 @@
                 "fechainicio": "2026-12-12 00:00:00",
                 "fechafin": "2026-12-15 00:00:00",
                 "estacionamiento": "B18"
+            },
+            {
+                "aeropuerto": "Paris",
+                "codigo": "CDG",
+                "fecha": "2024-12-31 15:00:00",
+                "salavip": "CDG Elite"
+            },
+            {
+                "aeropuerto": "Buenos Aires",
+                "codigo": "AEP",
+                "fecha": "2025-12-01 20:10:00",
+                "salavip": "AEP Premium"
+            },
+            {
+                "aeropuerto": "Paris",
+                "codigo": "CDG",
+                "fecha": "2025-12-31 01:00:00",
+                "salavip": "CDG Premium"
+            },
+            {
+                "aeropuerto": "Paris",
+                "codigo": "CDG",
+                "fecha": "2025-12-05 01:01:00",
+                "salavip": "CDG Premium"
+            },
+            {
+                "aeropuerto": "Paris",
+                "codigo": "CDG",
+                "fecha": "2025-01-30 01:00:00",
+                "salavip": "CDG Premium"
+            },
+            {
+                "aeropuerto": "London",
+                "codigo": "LHR",
+                "fecha": "2025-01-01 01:01:00",
+                "salavip": "LHR First Class"
+            },
+            {
+                "aeropuerto": "Ciudad de M\u00c3\u00a9xico",
+                "codigo": "CDM",
+                "fecha": "2025-06-15 05:05:00",
+                "salavip": "CDM Platinum"
+            },
+            {
+                "aeropuerto": "Houston",
+                "codigo": "IAH",
+                "fecha": "2025-12-01 20:05:00",
+                "salavip": "IAH Executive"
             }
         ],
         "tarjetas": [
@@ -100,7 +142,20 @@
         "contrasenia": "123456",
         "vuelos": [],
         "reservas": [],
-        "tarjetas": []
+        "tarjetas": [
+            {
+                "numerotareja": "1234567895894658",
+                "nombretitular": "Carlos",
+                "fechavencimiento": "10/28",
+                "codigo": "594"
+            },
+            {
+                "numerotareja": "1325648978564125",
+                "nombretitular": "CarlosF",
+                "fechavencimiento": "04/29",
+                "codigo": "145"
+            }
+        ]
     },
     {
         "id": "f7bd9d80-171e-4e6f-863d-b8fafcff506e",
