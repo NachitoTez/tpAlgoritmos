@@ -10,6 +10,8 @@ def validar_input(cantidad_de_opciones, inicio=1):
     Recibe por parámetro la cantidad de opciones disponibles y devuelve la opcion "String" ingresada por el usuario ya validada
     """
     opcion = input()
+    while not(opcion.isdigit()):
+        opcion = input("Ingrese una opción válida: ")
     opcion = int(opcion)
     opciones_validas = []
     for i in range(inicio,cantidad_de_opciones+1):

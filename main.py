@@ -1,5 +1,5 @@
 import repositorio_usuarios
-from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos
+from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos, revision_vuelos_fecha
 from utils import validar_input, limpiar_consola
 from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser, usuarios
@@ -17,7 +17,7 @@ NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
 
-listaDeVuelos = get_vuelos()
+
 listaAeropuertos = get_aeropuertos()
 				
 def cerrar_sesion():
@@ -59,6 +59,7 @@ def administrador():
 def menu_opciones_administrador():
 	#Selecciona la opccion deseada
 	bandera = True
+	listaDeVuelos = get_vuelos()
 	while bandera:
 		opcion = validar_input(5)
 		if opcion == "1":
@@ -81,7 +82,8 @@ def menu_opciones_administrador():
 			limpiar_consola()
 			main()
 			bandera = False
-	imprimible_menu_regreso(administrador)
+	input("Presione una tecla para volver atras...")
+	administrador()
 	#modificar
 
 #Mostrar el menu
@@ -107,6 +109,7 @@ def consultante(aeropuertos, listaUsuario):
 def menu_opciones_consultante(aeropuertos, listaUsuario):
 	"""Menu de opciones de usuario consultante"""
 	user = getDataUser()
+	listaDeVuelos = get_vuelos()
 	archivoUser = "user.json"
 	listaUsuario = readFile(archivoUser)
 	opciones = {
@@ -130,8 +133,10 @@ def menu_opciones_consultante(aeropuertos, listaUsuario):
 					bandera = True
 			else:
 					print("Opción inválida. Por favor, seleccione una opción válida.")
-
-	imprimible_menu_regreso(lambda: consultante(listaAeropuertos, usuarios))
+	if opcion != "7":
+		input("Presione una tecla para volver atras...")
+	consultante(listaAeropuertos, usuarios)
+	
 
 		
 
@@ -349,5 +354,5 @@ def main():
 			limpiar_consola()
 			print("Ha llegado al máximo de intentos posibles de inicio de sesion")
 			main()
-
+revision_vuelos_fecha()
 main()

@@ -5,6 +5,7 @@ from os import system
 import re, json #regex
 from utils import validar_input, readFile, writeFile, ingresar_fecha_y_hora, bloquear_teclado
 import curses
+from tabulate import tabulate
 
 def get_vuelos():
     return readFile(archivoVuelos)
@@ -13,26 +14,6 @@ archivoVuelos = "vuelos.json"
 vuelosLista = get_vuelos()
 listaDeAviones = get_aviones()
     
-def imprimir_vuelo(vuelos): 
-    for vuelo in vuelos:
-        print(f"Número de vuelo: {vuelo['numero_vuelo']}")
-        print(f"Aerolínea: {vuelo['aerolinea']}")
-        print(f"Origen: {(vuelo['origen'])}")
-        print(f"Destino: {(vuelo['destino'])}")
-        print(f"Estado: {vuelo['estado']}")
-        print(f"Despegue: {vuelo['despegue']}")
-        print(f"Arribo: {vuelo['arribo']}")
-        print(f"Asientos disponibles: {vuelo['asientos_disponibles']}")
-
-        # Detalles del avión asignado
-        avion = avion_asignado(vuelo["avion"], listaDeAviones)
-        print(f"Avión Asignado:")
-        print(f"    Modelo: {avion['modelo']}")
-        print(f"    Capacidad: {avion['capacidad']} pasajeros")
-        print(f"    Alcance: {avion['alcance']}")
-        print(f"    Altitud Máxima: {avion['altitud_maxima']}")
-        print(f"    Velocidad Máxima: {avion['velocidad_maxima']}")
-        print("-" * 40)
 
 def validacion_aeropuerto():
     regex = r'^[A-Z]{3}$'
@@ -70,23 +51,25 @@ def mostrar_vuelos(vuelosLista = vuelosLista):
         if opcion == "1":
             numero_vuelo = ingreso_numero_vuelo(vuelosLista, True)
             vuelo = get_vuelo(numero_vuelo)
-            imprimir_vuelo([vuelo])
+            print(tabulate(vuelo, headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "2":
             aerolinea = input("Ingrese la aerolinea que desea visualizar: \n").title()
             print(aerolinea)
             vuelos = filtrar_vuelos("aerolinea", aerolinea, vuelosLista)
-            imprimir_vuelo(vuelos)
+            print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "3":
-            aeropuerto = input("Ingrese el codigo de aeropuerto de origen que desea filtrar 'XXX': \n").upper()
+            print("Ingrese el codigo de aeropuerto de destino que desea filtrar 'XXX': ")
+            aeropuerto = validacion_aeropuerto()
             vuelos = filtrar_vuelos("origen", aeropuerto, vuelosLista)
-            imprimir_vuelo(vuelos)
+            print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "4":
+            print("Ingrese el codigo de aeropuerto de destino que desea filtrar 'XXX': ")
             aeropuerto = validacion_aeropuerto()
             vuelos = filtrar_vuelos("destino", aeropuerto, vuelosLista)
-            imprimir_vuelo(vuelos)
+            print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "5":
             print("""Seleccione el estado por el que quiere filtrar los vuelos: 
@@ -101,23 +84,22 @@ def mostrar_vuelos(vuelosLista = vuelosLista):
             elif estado == "3":
                 estado = "Cancelado"
             vuelos = filtrar_vuelos("estado", estado, vuelosLista)
-            imprimir_vuelo(vuelos)
+            print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "6":
             vuelos = filtrar_vuelos_asientos_disponibles(vuelosLista)
-            imprimir_vuelo(vuelos)
+            print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "7":
-            imprimir_vuelo(vuelosLista)
+            print(tabulate(vuelosLista, headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "8":
             return
-        input("Presione una tecla para volver atras...")
     return
 
 
 
-def get_vuelo(numero_vuelo, vuelosLista = vuelosLista):
+def get_vuelo(numero_vuelo, vuelosLista):
     for vuelo in vuelosLista:
         if vuelo.get("numero_vuelo") == numero_vuelo:
             return vuelo
@@ -167,7 +149,7 @@ def ingreso_numero_vuelo( vuelosLista = vuelosLista, flag=False):
             numero_vuelo = input("Ingrese un numero de vuelo que no exista en el programa: \n").upper()
     return numero_vuelo
 
-def ingresar_vuelo(vuelosLista = vuelosLista):
+def ingresar_vuelo(vuelosLista):
     """Funcion encargada de ingresar un nuevo vuelo e ingresarlo a la lista de vuelos."""
     regex_aerolinea = r'^[0-9]+$' #Matchea si son solo numeros
     numero_vuelo = ingreso_numero_vuelo(vuelosLista)
@@ -194,8 +176,8 @@ def ingresar_vuelo(vuelosLista = vuelosLista):
         
     print("Seleccione el id del avion designado para el vuelo:")
     mostrar_aviones(listaDeAviones)
-    avion = int(validar_input(7))
-    avion = avion_asignado(avion)
+    avion = int(validar_input(len(listaDeAviones)))
+    
     
     vuelo = {
         "numero_vuelo": numero_vuelo,
@@ -206,14 +188,12 @@ def ingresar_vuelo(vuelosLista = vuelosLista):
         "despegue": fecha_hora_despegue,
         "arribo": fecha_hora_arribo,
         "avion": avion,
-        "asientos_disponibles": 50 # Valor inicial por defecto
+        "asientos_disponibles": avion_asignado(avion, listaDeAviones)["capacidad"] 
     }
 
     writeFile(archivoVuelos, vuelosLista, vuelo )
-
     system("cls")
     print("Vuelo cargado al sistema correctamente!")
-    print(vuelo)
     bloquear_teclado(2)
     system("cls")
     return
@@ -230,9 +210,11 @@ def modificar_estado_vuelo(numero_vuelo, key, estado):
             return True
     return False
 
-def modificacion_vuelo(vuelosLista = vuelosLista):
+def modificacion_vuelo(vuelosLista):
   """Funcion encargada de modificar el atributo del vuelo que se desee."""
+  print(tabulate(vuelosLista, headers="keys", tablefmt="fancy_grid"))
   numero_vuelo = ingreso_numero_vuelo(vuelosLista, True)
+  vuelo = get_vuelo(numero_vuelo, vuelosLista)
   print("""Ingrese la opción (numero) que quiera modificar:
   -1) Estado del vuelo.
   -2) Destino.
@@ -266,16 +248,23 @@ def modificacion_vuelo(vuelosLista = vuelosLista):
     modificar_estado_vuelo(numero_vuelo,"origen",get_aeropuerto_por_nombre(aeropuerto_origen))
   elif opcion == 4:
     fecha_hora_salida = ingresar_fecha_y_hora("fecha y hora de despegue")
+    while vuelo["arribo"] <= fecha_hora_salida:
+        print("La fecha de arribo debe ser posterior a la de despegue. Intente nuevamente.\n")
+        fecha_hora_salida = ingresar_fecha_y_hora("fecha y hora de arribo")
     modificar_estado_vuelo(numero_vuelo,"despegue",fecha_hora_salida)
   elif opcion == 5:
     fecha_hora_llegada = ingresar_fecha_y_hora("fecha y hora de arribo")
+    while fecha_hora_llegada <= vuelo["despegue"]:
+        print("La fecha de arribo debe ser posterior a la de despegue. Intente nuevamente.\n")
+        fecha_hora_llegada = ingresar_fecha_y_hora("fecha y hora de arribo")
     modificar_estado_vuelo(numero_vuelo,"arribo",fecha_hora_llegada)
   elif opcion == 6:
       return
     ## Continuar con el resto de modificaciones
   return
 
-def eliminar_vuelo(vuelosLista = vuelosLista):
+def eliminar_vuelo(vuelosLista):
+    print(tabulate(vuelosLista, headers="keys", tablefmt="fancy_grid"))
     numero_vuelo = ingreso_numero_vuelo(vuelosLista, True)
     indice_a_eliminar = 0
     for indice, vuelo in enumerate(vuelosLista):
@@ -410,3 +399,13 @@ def mostrar_mapa_terminal():
         pass
     finally:
         curses.endwin()
+# Start of Selection
+def revision_vuelos_fecha():
+    """
+    Realiza la revisión de los vuelos por fecha y actualiza las fechas de despegue y arribo si es necesario.
+    """
+    for vuelo in vuelosLista:
+        if datetime.strptime(vuelo["arribo"], "%Y-%m-%d %H:%M:%S") < datetime.now():
+            vuelo["despegue"] = (datetime.now() + timedelta(days=2)).strftime("%Y-%m-%d %H:%M:%S")
+            vuelo["arribo"] = (datetime.now() + timedelta(days=8)).strftime("%Y-%m-%d %H:%M:%S")
+    writeFile(archivoVuelos, vuelosLista, None)
