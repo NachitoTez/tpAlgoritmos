@@ -94,3 +94,20 @@ def ingresar_fecha_y_hora(tipo):
 
 def bloquear_teclado(tiempo):
     sleep(tiempo)
+    unblock_key('*')
+
+def calcularPrecioEstacionamiento(fecha_inicio, fecha_fin, tarifa_por_dia):
+    """
+    Funcion que calcula el valor total de la reserva de estacionamiento basado en las fechas y horas de inicio y fin.
+    """
+    inicio = datetime.strptime(fecha_inicio, "%Y-%m-%d %H:%M:%S")
+    fin = datetime.strptime(fecha_fin, "%Y-%m-%d %H:%M:%S")
+
+    diferencia_horas = (fin - inicio).total_seconds() / 3600
+
+    valor_total = (diferencia_horas / 24) * tarifa_por_dia
+
+    if diferencia_horas <= 0:
+        raise ValueError("La fecha de fin debe ser posterior a la fecha de inicio.")
+
+    return valor_total
