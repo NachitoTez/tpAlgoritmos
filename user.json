@@ -113,6 +113,14 @@
                 "codigo": "MDQ",
                 "fecha": "2024-12-10 22:32:00",
                 "salavip": "MDQ VIP"
+            },
+            {
+                "aeropuerto": "Buenos Aires",
+                "codigo": "EZE",
+                "fechainicio": "2025-12-11 11:11:00",
+                "fechafin": "2025-12-12 11:11:00",
+                "estacionamiento": "D5",
+                "precio": 10.0
             }
         ],
         "tarjetas": [

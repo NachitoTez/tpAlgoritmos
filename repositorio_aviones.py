@@ -1,5 +1,6 @@
 import json
 from utils import readFile
+from tabulate import tabulate
 archivoAviones = 'aviones.json'
 
 aviones = readFile(archivoAviones)
@@ -7,14 +8,7 @@ def get_aviones(aviones = aviones):
     return aviones
 def mostrar_aviones(aviones):
     """Función que imprime los detalles de cada avión almacenado."""
-    for avion in aviones:
-        print(f"ID: {avion['id']}")
-        print(f"Modelo: {avion['modelo']}")
-        print(f"Capacidad: {avion['capacidad']} pasajeros")
-        print(f"Alcance: {avion['alcance']}")
-        print(f"Altitud Máxima: {avion['altitud_maxima']}")
-        print(f"Velocidad Máxima: {avion['velocidad_maxima']}")
-        print("-" * 40)
+    print(tabulate(aviones, headers="keys", tablefmt="fancy_grid"))
     return
 
 def avion_asignado(id, aviones):

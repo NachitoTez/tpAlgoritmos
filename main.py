@@ -1,6 +1,6 @@
 import repositorio_reservas
 import repositorio_usuarios
-from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos
+from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos, revision_vuelos_fecha
 from utils import validar_input, limpiar_consola
 from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser, usuarios
@@ -16,7 +16,7 @@ NUMERO_DE_OPCIONES_4 = 4
 NUMERO_DE_OPCIONES_5 = 5
 
 
-listaDeVuelos = get_vuelos()
+
 listaAeropuertos = get_aeropuertos()
 				
 def cerrar_sesion():
@@ -58,6 +58,7 @@ def administrador():
 def menu_opciones_administrador():
 	#Selecciona la opccion deseada
 	bandera = True
+	listaDeVuelos = get_vuelos()
 	while bandera:
 		opcion = validar_input(5)
 		if opcion == "1":
@@ -80,7 +81,8 @@ def menu_opciones_administrador():
 			limpiar_consola()
 			main()
 			bandera = False
-	imprimible_menu_regreso(administrador)
+	input("Presione una tecla para volver atras...")
+	administrador()
 	#modificar
 
 #Mostrar el menu
@@ -105,7 +107,7 @@ def menu_opciones_principal(aeropuertos, listaUsuario):
     opciones_principal = {
         "1": lambda: menu_vuelos(aeropuertos, listaUsuario),
         "2": lambda: menu_reservas(user, aeropuertos, listaUsuario),
-        "3": lambda: registrarTarjeta(user),
+		"3": lambda: registrarTarjeta(user),
         "4": lambda: cerrar_sesion()
     }
     
@@ -150,6 +152,7 @@ def menu_vuelos(aeropuertos, listaUsuario):
             bandera = True
         else:
             print("Opción inválida. Por favor, seleccione una opción válida.")
+
 
 # Submenú de reservas
 def menu_reservas(user, aeropuertos, listaUsuario):
@@ -251,5 +254,5 @@ def main():
 			limpiar_consola()
 			print("Ha llegado al máximo de intentos posibles de inicio de sesion")
 			main()
-
+revision_vuelos_fecha()
 main()
