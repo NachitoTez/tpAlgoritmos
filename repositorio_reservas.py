@@ -51,7 +51,6 @@ def reservar_vuelo(user):
         print(f"Ocurrió un error: {str(e)}")
 
 
-#TODO esto ponerlo en repositorio_reservas
 def reservaSalaVIP(user, aeropuertos, listaUsuario):
     valida = False
     bandera = False
@@ -114,7 +113,6 @@ def reservaSalaVIP(user, aeropuertos, listaUsuario):
     print("Reserva realizada con éxito", user)
 
 	
-#TODO esto ponerlo en repositorio_reservas
 def reservaEstacionamiento(user, aeropuertos, listaUsuario):
     flag = False
     reserva = False

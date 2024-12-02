@@ -4,8 +4,10 @@ from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vu
 from utils import validar_input, limpiar_consola
 from repositorio_aeropuertos import get_aeropuertos
 from repositorio_usuarios import getDataUser, usuarios
-from utils import bloquear_teclado, readFile
-from repositorio_pagos import registrarTarjeta
+from utils import ingresar_fecha_y_hora, randonAprobado, writeFile, bloquear_teclado, readFile, calcularPrecioEstacionamiento
+from repositorio_pagos import tieneTarjeta, registrarTarjeta
+import random
+from datetime import timedelta
 
  
 #Es solo para hacer mas legible el codigo y no tener magic numbers
@@ -85,7 +87,6 @@ def menu_opciones_administrador():
 	administrador()
 	#modificar
 
-#Mostrar el menu
 def consultante(aeropuertos, listaUsuario):
     """Listado de funciones disponibles Exclusivo de Consultante"""
     limpiar_consola()
@@ -128,6 +129,7 @@ def menu_opciones_principal(aeropuertos, listaUsuario):
 def menu_vuelos(aeropuertos, listaUsuario):
     """Opciones relacionadas con vuelos"""
     limpiar_consola()
+    listaDeVuelos = get_vuelos()
     print("SUBMENÚ - VUELOS")
     print("""
                 1. Consulta de vuelos.
@@ -186,6 +188,7 @@ def menu_reservas(user, aeropuertos, listaUsuario):
             bandera = True
         else:
             print("Opción inválida. Por favor, seleccione una opción válida.")
+	
 
 		
 
@@ -207,8 +210,6 @@ def consultarAsientosDisponibles():
 
 		print(codigos_de_vuelos)
 		return
-
-
 
 def main():
 	"""Función encargada de dirigir la ejecución completa de nuestro programa"""
@@ -241,6 +242,8 @@ def main():
 				main()
 				
 	elif(opcion == "2"):
+		#se me ocurre que podríamos tener una variable tipo current_user para saber qué tipo de usuario es el actual
+		#podemos pasarle el current_user a las funciones que hagan cosas y que determinen qué cosas pueden o no hacer
 		if(repositorio_usuarios.inicio_sesion(True)):
 			administrador()
 		else:

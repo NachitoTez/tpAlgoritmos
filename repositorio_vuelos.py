@@ -50,8 +50,10 @@ def mostrar_vuelos(vuelosLista = vuelosLista):
         opcion = validar_input(8)
         if opcion == "1":
             numero_vuelo = ingreso_numero_vuelo(vuelosLista, True)
-            vuelo = get_vuelo(numero_vuelo)
-            print(tabulate(vuelo, headers="keys", tablefmt="fancy_grid"))
+            vuelo = get_vuelo(numero_vuelo, vuelosLista)
+            if vuelo is None:
+                print(f"No se encontró ningún vuelo con el número '{numero_vuelo}'.")
+            print(tabulate([vuelo], headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "2":
             aerolinea = input("Ingrese la aerolinea que desea visualizar: \n").title()
@@ -100,10 +102,16 @@ def mostrar_vuelos(vuelosLista = vuelosLista):
 
 
 def get_vuelo(numero_vuelo, vuelosLista):
+    """
+    Busca un vuelo por su número en la lista de vuelos.
+    Devuelve el vuelo como un diccionario si lo encuentra, o None si no existe.
+    """
     for vuelo in vuelosLista:
-        if vuelo.get("numero_vuelo") == numero_vuelo:
+        if vuelo.get("numero_vuelo", "").strip().upper() == numero_vuelo.strip().upper():
             return vuelo
-    return -1
+    
+    return None
+
 
 def reescribir_vuelos(vuelos):
     try:
