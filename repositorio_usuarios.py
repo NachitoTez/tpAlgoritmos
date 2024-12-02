@@ -4,8 +4,10 @@ import json
 from utils import writeFile, readFile, bloquear_teclado, validar_input
 from repositorio_pagos import registrarTarjeta
 from tabulate import tabulate
+
 archivoUser = "user.json"
 usuarios = readFile(archivoUser)
+
 
 
 
@@ -42,14 +44,9 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
     consultante= list(filter(lambda usuario: usuario["admin"] == privilegio, usuarios))
     bandera = 0
     for user in consultante:
-        for clave, valor in user.items():
-            if clave == "usuario" and valor == usuario or clave=="contrasenia" and valor == contrasenia:
-                userLoguin.update(user) #Actualizo el diccionario userLoguin con el usuario y contrasenia ingresado.
-                bandera+=1
-        if bandera == 2: #Consulto en este paso si es que ya se encontro con el usuario y contrasenia buscado.
+        if user["usuario"] == usuario and user["contrasenia"] == contrasenia:
+            userLoguin.update(user)
             return True
-        else:
-            bandera=0 #Si 2 usuarios comparten contrasenia en este caso limpiaremos la variable bandera para no confundir la validacion.
     return False
 
     
