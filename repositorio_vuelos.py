@@ -50,8 +50,10 @@ def mostrar_vuelos(vuelosLista = vuelosLista):
         opcion = validar_input(8)
         if opcion == "1":
             numero_vuelo = ingreso_numero_vuelo(vuelosLista, True)
-            vuelo = get_vuelo(numero_vuelo)
-            print(tabulate(vuelo, headers="keys", tablefmt="fancy_grid"))
+            vuelo = get_vuelo(numero_vuelo, vuelosLista)
+            if vuelo is None:
+                print(f"No se encontró ningún vuelo con el número '{numero_vuelo}'.")
+            print(tabulate([vuelo], headers="keys", tablefmt="fancy_grid"))
             bandera = True
         elif opcion == "2":
             aerolinea = input("Ingrese la aerolinea que desea visualizar: \n").title()
@@ -100,10 +102,16 @@ def mostrar_vuelos(vuelosLista = vuelosLista):
 
 
 def get_vuelo(numero_vuelo, vuelosLista):
+    """
+    Busca un vuelo por su número en la lista de vuelos.
+    Devuelve el vuelo como un diccionario si lo encuentra, o None si no existe.
+    """
     for vuelo in vuelosLista:
-        if vuelo.get("numero_vuelo") == numero_vuelo:
+        if vuelo.get("numero_vuelo", "").strip().upper() == numero_vuelo.strip().upper():
             return vuelo
-    return -1
+    
+    return None
+
 
 def reescribir_vuelos(vuelos):
     try:
@@ -399,7 +407,38 @@ def mostrar_mapa_terminal():
         pass
     finally:
         curses.endwin()
-# Start of Selection
+
+
+def reservar_asiento(numero_vuelo):
+    """Permite modificar un vuelo para hacer efectiva una reserva"""
+    try:
+        vuelos = readFile(archivoVuelos)
+        
+        if not isinstance(numero_vuelo, str):
+            raise ValueError("El número de vuelo debe ser un string")
+            
+        for vuelo in vuelos:
+            if vuelo["numero_vuelo"] == numero_vuelo:
+                if vuelo["estado"] == "Arribado":
+                    print("No se pueden reservar asientos en vuelos ya arribados")
+                    return False
+                    
+                if vuelo["asientos_disponibles"] > 0:
+                    vuelo["asientos_disponibles"] -= 1
+                    writeFile(archivoVuelos, vuelos)
+                    print(f"Reserva exitosa. Quedan {vuelo['asientos_disponibles']} asientos disponibles.")
+                    return True
+                else:
+                    print("No hay asientos disponibles para este vuelo.")
+                    return False
+                    
+        print("Vuelo no encontrado.")
+        return False
+        
+    except Exception as e:
+        print(f"Error al procesar la reserva: {str(e)}")
+        return False
+    
 def revision_vuelos_fecha():
     """
     Realiza la revisión de los vuelos por fecha y actualiza las fechas de despegue y arribo si es necesario.
