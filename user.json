@@ -207,5 +207,21 @@
         "vuelos": [],
         "reservas": [],
         "tarjetas": []
+    },
+    {
+        "id": "fd6d1589-eccc-490b-a056-559f25f66d36",
+        "admin": false,
+        "usuario": "nachito",
+        "contrasenia": "nachito1234",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": [
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "nachito",
+                "fechavencimiento": "12/26",
+                "codigo": "123"
+            }
+        ]
     }
 ]
