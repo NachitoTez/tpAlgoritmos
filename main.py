@@ -64,6 +64,7 @@ def administrador():
         accion = opciones_admin.get(opcion)
         
         if accion:
+            limpiar_consola()
             accion()
         else:
             print("Opción inválida. Por favor, seleccione una opción válida.")
@@ -77,7 +78,6 @@ def cerrar_sesion():
     bloquear_teclado(1)
     limpiar_consola()
     main(False)
-	#modificar
 
 def consultante(aeropuertos, listaUsuario):
     """Listado de funciones disponibles Exclusivo de Consultante"""
@@ -263,7 +263,7 @@ def menu_reservas(user, aeropuertos, listaUsuario):
        print()
    
    opciones_reservas = {
-       "1": lambda: repositorio_reservas.reservar_vuelo(user),
+       "1": lambda: repositorio_reservas.reservar_vuelo(),
        "2": lambda: repositorio_usuarios.consultarReserva(user),
        "3": lambda: repositorio_usuarios.cancelarReserva(user),
        "4": lambda: repositorio_reservas.reservaSalaVIP(user, aeropuertos, listaUsuario),
@@ -441,5 +441,5 @@ def main(primera_vez=True):
         accion()
     else:
         print("Opción inválida. Por favor, seleccione una opción válida.")
-revision_vuelos_fecha()
+revision_vuelos_fecha(None)
 main(True)

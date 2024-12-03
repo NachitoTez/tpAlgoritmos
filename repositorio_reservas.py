@@ -6,7 +6,7 @@ from colorama import Fore, init
 #por ahora, solo vamos a poder hacer reservas de vuelos disponibles. Para el 100 podríamos intentar elegir por fecha, destino y demás
 
 
-def reservar_vuelo(user):
+def reservar_vuelo():
     """Permite al usuario reservar un vuelo de la lista de vuelos disponibles."""
     limpiar_consola()
     vuelos_disponibles = filtrar_vuelos_asientos_disponibles()
@@ -36,6 +36,8 @@ def reservar_vuelo(user):
 
         if reserva_exitosa:
             print(f"¡Reserva confirmada para el vuelo {numero_vuelo}!")
+            print(Fore.LIGHTRED_EX + "Presione enter para salir", flush=True)
+            input()
         else:
             print("No se pudo completar la reserva.")
 
