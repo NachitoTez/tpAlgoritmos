@@ -36,8 +36,7 @@ def filtrar_vuelos(key, valor, listaVuelos = None):
     """Funcion General para poder filtrar nuestra lista de vuelos segun la key que querramos visualizar
     Parametro: key (Numero de vuelo, Aerolinea, etc) y valor (input del user).
     Return: Lista filtrada de vuelos"""
-    if listaVuelos is None:
-        listaVuelos = get_vuelos()
+    listaVuelos = get_vuelos()
     lista = list(filter(lambda vuelo: vuelo.get(key) == valor, listaVuelos))
     return lista
 
@@ -59,7 +58,7 @@ def mostrar_vuelos_por_aerolinea(vuelosLista=None):
     aerolinea = input("Ingrese la aerolínea que desea visualizar: \n").title()
     vuelos = filtrar_vuelos("aerolinea", aerolinea, vuelosLista)
     if len(vuelos) == 0:
-        print(Fore.LIGHTRED_EX + f"No se encontró ninguna aerolinea con el nombre '{aerolinea}", flush=True)
+        print(Fore.LIGHTRED_EX + f"No se encontró ninguna aerolinea con el nombre {aerolinea}", flush=True)
     print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
 
 def mostrar_vuelos_por_origen(vuelosLista=None):

@@ -45,7 +45,7 @@
     },
     {
         "numero_vuelo": "AA4465",
-        "aerolinea": "Aerolineas argentinas",
+        "aerolinea": "Aerolineas Argentinas",
         "origen": "EZE",
         "destino": "CDG",
         "estado": "En horario",
@@ -56,7 +56,7 @@
     },
     {
         "numero_vuelo": "AA6789",
-        "aerolinea": "Aerolineas argentinas",
+        "aerolinea": "Aerolineas Argentinas",
         "origen": "CDM",
         "destino": "AEP",
         "estado": "En horario",
@@ -67,7 +67,7 @@
     },
     {
         "numero_vuelo": "AA6669",
-        "aerolinea": "Aerolineas argentinas",
+        "aerolinea": "Aerolineas Argentinas",
         "origen": "CDG",
         "destino": "LHR",
         "estado": "En horario",
@@ -78,7 +78,7 @@
     },
     {
         "numero_vuelo": "AA6664",
-        "aerolinea": "Aerolineas argentinas",
+        "aerolinea": "Aerolineas Argentinas",
         "origen": "CDM",
         "destino": "LHR",
         "estado": "En horario",
@@ -89,7 +89,7 @@
     },
     {
         "numero_vuelo": "AA6661",
-        "aerolinea": "Aerolineas argentinas",
+        "aerolinea": "Aerolineas Argentinas",
         "origen": "CDM",
         "destino": "LHR",
         "estado": "En horario",
