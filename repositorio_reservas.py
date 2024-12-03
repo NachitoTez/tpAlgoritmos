@@ -125,6 +125,7 @@ def reservaSalaVIP(user, aeropuertos, listaUsuario):
             print(f"❌ Error inesperado: {e}")
 
     print("Reserva realizada con éxito")
+    input("Presione una tecla para volver atras...")
     return True
 
 	
@@ -204,6 +205,7 @@ def reservaEstacionamiento(user, aeropuertos, listaUsuario):
                                             flag = True
                                             reserva = True
                                     print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
+                                    input("Presione una tecla para volver atras...")
                                 else:
                                     print("Fondos insuficientes")
                                     break

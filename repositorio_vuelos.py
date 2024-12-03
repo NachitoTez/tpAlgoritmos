@@ -421,7 +421,7 @@ def filtrar_vuelos_asientos_disponibles(vuelosLista=None):
 
 
 def calcular_posicion_vuelo(vuelo):
-    """Calcula la posición actual del vuelo basado en el tiempo transcurrido"""
+    """Calcula la posición actual del vuelo basado en el tiempo transcurrido y la escala del mapa"""
     ahora = datetime.now()
     despegue = datetime.strptime(vuelo["despegue"], "%Y-%m-%d %H:%M:%S")
     arribo = datetime.strptime(vuelo["arribo"], "%Y-%m-%d %H:%M:%S")
@@ -434,11 +434,24 @@ def calcular_posicion_vuelo(vuelo):
     tiempo_transcurrido = (ahora - despegue).total_seconds()
     
     if tiempo_total > 0:
+        # Calculamos la posición interpolada
         x = origen["posicion"][0] + ((destino["posicion"][0] - origen["posicion"][0]) / tiempo_total) * tiempo_transcurrido
         y = origen["posicion"][1] + ((destino["posicion"][1] - origen["posicion"][1]) / tiempo_total) * tiempo_transcurrido
-        return [x, y]
-    else:
-        return None
+        
+        # Encontrar los límites del mapa
+        x_min = min(a["posicion"][0] for a in aeropuertos)
+        x_max = max(a["posicion"][0] for a in aeropuertos)
+        y_min = min(a["posicion"][1] for a in aeropuertos)
+        y_max = max(a["posicion"][1] for a in aeropuertos)
+        
+        # Escalar las coordenadas
+        margen = 2
+        altura_maxima, ancho_maximo = curses.LINES - 5, curses.COLS - 2
+        x_escalada = int(((x - x_min) / (x_max - x_min)) * (ancho_maximo - 2*margen)) + margen
+        y_escalada = int(((y - y_min) / (y_max - y_min)) * (altura_maxima - 2*margen)) + margen
+        
+        return [x_escalada, y_escalada]
+    return None
 
 def inicializar_terminal():
     """Configura la pantalla de curses y los colores"""
@@ -461,31 +474,65 @@ def dibujar_borde(stdscr, ancho_maximo, altura_maxima):
         stdscr.addstr(i, ancho_maximo-1, "│")
 
 def dibujar_aeropuertos(stdscr, aeropuertos, ancho_maximo, altura_maxima):
-    """Dibuja los aeropuertos en el mapa"""
+    """Dibuja los aeropuertos en el mapa escalando sus coordenadas al tamaño de la pantalla"""
+    # Encontrar los límites del mapa
+    x_min = min(aeropuerto["posicion"][0] for aeropuerto in aeropuertos)
+    x_max = max(aeropuerto["posicion"][0] for aeropuerto in aeropuertos)
+    y_min = min(aeropuerto["posicion"][1] for aeropuerto in aeropuertos)
+    y_max = max(aeropuerto["posicion"][1] for aeropuerto in aeropuertos)
+    
+    # Agregar un pequeño margen
+    margen = 2
+    
     for aeropuerto in aeropuertos:
-        ancho, altura = aeropuerto["posicion"]
-        if 0 <= altura < altura_maxima-1 and 0 <= ancho < ancho_maximo-1:
+        x, y = aeropuerto["posicion"]
+        
+        # Escalar las coordenadas al tamaño de la pantalla
+        x_escalada = int(((x - x_min) / (x_max - x_min)) * (ancho_maximo - 2*margen)) + margen
+        y_escalada = int(((y - y_min) / (y_max - y_min)) * (altura_maxima - 2*margen)) + margen
+        
+        try:
             stdscr.attron(curses.color_pair(2))
-            stdscr.addstr(altura, ancho, "◉")
-            if altura < altura_maxima-2:
-                stdscr.addstr(altura, ancho + 2, f"{aeropuerto['codigo']}")
+            stdscr.addstr(y_escalada, x_escalada, "◉")
+            # Dibujar el código del aeropuerto a la derecha del símbolo
+            if x_escalada + 2 < ancho_maximo - len(aeropuerto["codigo"]):
+                stdscr.addstr(y_escalada, x_escalada + 2, f"{aeropuerto['codigo']}")
             stdscr.attroff(curses.color_pair(2))
+        except curses.error:
+            continue  # Ignorar errores de dibujado fuera de pantalla
 
 def dibujar_vuelos(stdscr, ancho_maximo, altura_maxima):
     """Dibuja los vuelos en tránsito y devuelve la cantidad en vuelo"""
     vuelos = filtrar_vuelos_en_curso()
+    vuelos_dibujados = 0
+    
     if len(vuelos) > 0:
         for vuelo in vuelos:
             pos = calcular_posicion_vuelo(vuelo)
             if pos:
                 ancho, altura = pos
-                if 0 <= altura < altura_maxima-1 and 0 <= ancho < ancho_maximo-1:
+                # Ajustamos las coordenadas para que queden dentro del mapa
+                ancho_ajustado = max(1, min(int(ancho), ancho_maximo-2))
+                altura_ajustada = max(1, min(int(altura), altura_maxima-2))
+                
+                try:
                     stdscr.attron(curses.color_pair(1))
-                    stdscr.addstr(int(altura), int(ancho), "✈")
-                    if altura < altura_maxima-2:
-                        stdscr.addstr(int(altura) + 1, int(ancho), vuelo["numero_vuelo"][:4])
+                    # Dibujamos el avión
+                    stdscr.addstr(altura_ajustada, ancho_ajustado, "✈")
+                    
+                    # Dibujamos el número de vuelo completo debajo si hay espacio
+                    if altura_ajustada < altura_maxima-2:
+                        numero_vuelo = vuelo["numero_vuelo"]  # Quitamos el slice [:4]
+                        # Centramos el número respecto al avión
+                        pos_x = max(1, min(ancho_ajustado - len(numero_vuelo)//2, ancho_maximo-len(numero_vuelo)-1))
+                        stdscr.addstr(altura_ajustada + 1, pos_x, numero_vuelo)
+                    
                     stdscr.attroff(curses.color_pair(1))
-    return len(vuelos)
+                    vuelos_dibujados += 1
+                except curses.error:
+                    continue  # Ignoramos errores de dibujado fuera de pantalla
+                    
+    return vuelos_dibujados
 
 
 def mostrar_leyenda(stdscr, altura_maxima, vuelos_en_transito):

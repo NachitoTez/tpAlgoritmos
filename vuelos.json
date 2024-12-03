@@ -24,7 +24,7 @@
     {
         "numero_vuelo": "UA8764",
         "aerolinea": "United Airlines",
-        "origen": "EZE",
+        "origen": "LHR",
         "destino": "IAH",
         "estado": "En horario",
         "despegue": "2024-12-03 17:25:26",
@@ -35,11 +35,11 @@
     {
         "numero_vuelo": "BA4321",
         "aerolinea": "British Airways",
-        "origen": "EZE",
-        "destino": "LHR",
-        "estado": "Retrasado",
-        "despegue": "2024-12-03 17:25:26",
-        "arribo": "2024-12-09 17:25:26",
+        "origen": "IAH",
+        "destino": "CDG",
+        "estado": "En horario",
+        "despegue": "2024-12-03 11:25:26",
+        "arribo": "2024-12-04 03:25:26",
         "avion": 5,
         "asientos_disponibles": 15
     },
@@ -49,7 +49,7 @@
         "origen": "EZE",
         "destino": "CDG",
         "estado": "En horario",
-        "despegue": "2024-12-03 17:25:26",
+        "despegue": "2024-12-03 11:25:26",
         "arribo": "2024-12-09 17:25:26",
         "avion": 6,
         "asientos_disponibles": 50
@@ -64,5 +64,38 @@
         "arribo": "2024-12-21 20:11:00",
         "avion": 5,
         "asientos_disponibles": 330
+    },
+    {
+        "numero_vuelo": "AA6669",
+        "aerolinea": "Aerolineas argentinas",
+        "origen": "CDG",
+        "destino": "LHR",
+        "estado": "En horario",
+        "despegue": "2024-12-03 15:20:00",
+        "arribo": "2024-12-04 02:12:00",
+        "avion": 3,
+        "asientos_disponibles": 396
+    },
+    {
+        "numero_vuelo": "AA6664",
+        "aerolinea": "Aerolineas argentinas",
+        "origen": "CDM",
+        "destino": "LHR",
+        "estado": "En horario",
+        "despegue": "2024-12-03 15:20:00",
+        "arribo": "2024-12-04 02:12:00",
+        "avion": 3,
+        "asientos_disponibles": 396
+    },
+    {
+        "numero_vuelo": "AA6661",
+        "aerolinea": "Aerolineas argentinas",
+        "origen": "CDM",
+        "destino": "LHR",
+        "estado": "En horario",
+        "despegue": "2024-12-03 23:20:00",
+        "arribo": "2024-12-04 02:12:00",
+        "avion": 3,
+        "asientos_disponibles": 396
     }
 ]
