@@ -3,7 +3,7 @@ from repositorio_aeropuertos import get_aeropuerto_por_nombre, cargar_aeropuerto
 from repositorio_aviones import avion_asignado, mostrar_aviones, get_aviones
 from os import system
 import re, json #regex
-from utils import validar_input, readFile, writeFile, ingresar_fecha_y_hora, bloquear_teclado
+from utils import validar_input, readFile, writeFile, ingresar_fecha_y_hora, bloquear_teclado, limpiar_consola
 import curses
 from tabulate import tabulate
 
@@ -407,6 +407,7 @@ def mostrar_mapa_terminal():
         pass
     finally:
         curses.endwin()
+        limpiar_consola()
 
 
 def reservar_asiento(numero_vuelo):

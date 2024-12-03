@@ -3,7 +3,7 @@ import repositorio_usuarios
 from repositorio_vuelos import mostrar_mapa_terminal, ingresar_vuelo, mostrar_vuelos, modificacion_vuelo, eliminar_vuelo, filtrar_vuelos_asientos_disponibles, get_vuelos, revision_vuelos_fecha
 from utils import validar_input, limpiar_consola
 from repositorio_aeropuertos import get_aeropuertos
-from repositorio_usuarios import getDataUser, usuarios
+from repositorio_usuarios import getDataUser, usuarios, validar_usuario_registrado
 from utils import ingresar_fecha_y_hora, randonAprobado, writeFile, bloquear_teclado, readFile, calcularPrecioEstacionamiento
 from repositorio_pagos import tieneTarjeta, registrarTarjeta
 import random
@@ -30,19 +30,6 @@ def cerrar_sesion():
 		limpiar_consola()
 		main()
 
-def imprimible_menu_regreso(funcion):
-	bandera = False
-	volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
-	while not bandera:    
-		if volver == "0":
-			bandera = True
-			funcion()
-		elif volver == "-1":
-			print("Muchas gracias")
-			bandera = True
-		else:
-			print("Seleccione un valor valido")
-			volver = input("seleccione 0 para volver al menu anterior o -1 para salir del sistema: ")
 
 def administrador():
 	"""Listado de funciones disponibles que se pueden ejecutar Exclusivo de Administradores"""
@@ -108,7 +95,7 @@ def menu_opciones_principal(aeropuertos, listaUsuario):
     opciones_principal = {
         "1": lambda: menu_vuelos(aeropuertos, listaUsuario),
         "2": lambda: menu_reservas(user, aeropuertos, listaUsuario),
-		"3": lambda: registrarTarjeta(user),
+        "3": lambda: registrarTarjeta(user),
         "4": lambda: cerrar_sesion()
     }
     
@@ -118,12 +105,14 @@ def menu_opciones_principal(aeropuertos, listaUsuario):
         accion = opciones_principal.get(opcion)
         
         if accion:
+            limpiar_consola()
             accion()
             bandera = True
         else:
             print("Opción inválida. Por favor, seleccione una opción válida.")
+    input("Presione una tecla para volver atras...")
+    consultante(aeropuertos, listaUsuario)
 
-    imprimible_menu_regreso(lambda: consultante(aeropuertos, listaUsuario))
 
 # Submenú de vuelos
 def menu_vuelos(aeropuertos, listaUsuario):
@@ -150,6 +139,7 @@ def menu_vuelos(aeropuertos, listaUsuario):
         accion = opciones_vuelos.get(opcion)
         
         if accion:
+            limpiar_consola()
             accion()
             bandera = True
         else:
@@ -184,6 +174,7 @@ def menu_reservas(user, aeropuertos, listaUsuario):
         accion = opciones_reservas.get(opcion)
         
         if accion:
+            limpiar_consola()
             accion()
             bandera = True
         else:

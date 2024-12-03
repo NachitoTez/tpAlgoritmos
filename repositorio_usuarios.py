@@ -10,8 +10,6 @@ usuarios = readFile(archivoUser)
 
 
 
-
-
 codigos_admin = [415465, 11123, 999846] #Codigos que debe tener al momento de registrarse un nuevo admin para validar el registro
 userLoguin = {}  #Diccionario que se actualiza con el usuario y contrasenia ingresado.
 
@@ -189,3 +187,4 @@ def cancelarReserva(user):
         cancelar_reserva_por_tipo(user, "salavip", usuarios)
     elif opcion == "2":
         cancelar_reserva_por_tipo(user, "estacionamiento", usuarios)
+

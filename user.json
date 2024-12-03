@@ -129,6 +129,12 @@
                 "nombretitular": "guido",
                 "fechavencimiento": "12/29",
                 "codigo": "444"
+            },
+            {
+                "numerotareja": "1234567894123654",
+                "nombretitular": "guido cont",
+                "fechavencimiento": "12/29",
+                "codigo": "666"
             }
         ]
     },
