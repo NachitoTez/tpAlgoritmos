@@ -92,10 +92,10 @@ def consultante(aeropuertos, listaUsuario):
     print()
 	    
     opciones = [
-        (f"{Fore.LIGHTGREEN_EX}1. Vuelos{Fore.RESET} ✈️"),
-        (f"{Fore.LIGHTMAGENTA_EX}2. Reservas{Fore.RESET} 🎟️"),
-        (f"{Fore.LIGHTBLUE_EX}3. Registrar tarjeta{Fore.RESET}  💳"),
-        (f"{Fore.RED}4. Cerrar sesión{Fore.RESET} ❌")
+        (f"{Fore.LIGHTGREEN_EX}1) Vuelos{Fore.RESET} ✈️"),
+        (f"{Fore.LIGHTMAGENTA_EX}2) Reservas{Fore.RESET} 🎟️"),
+        (f"{Fore.LIGHTBLUE_EX}3) Registrar tarjeta{Fore.RESET}  💳"),
+        (f"{Fore.RED}4) Cerrar sesión{Fore.RESET} ❌")
     ]
     
     for opcion in opciones:
