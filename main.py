@@ -220,6 +220,7 @@ def mostrar_vuelos(aeropuertos, listaUsuario):
         accion = opciones_vuelos.get(opcion)
         
         if accion:
+            limpiar_consola()
             accion()
             if opcion == "8":
                 return

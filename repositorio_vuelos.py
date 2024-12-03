@@ -41,7 +41,6 @@ def filtrar_vuelos(key, valor, listaVuelos = vuelosLista):
 
 
 def mostrar_vuelo_por_numero(vuelosLista=vuelosLista):
-    limpiar_consola()
     numero_vuelo = ingreso_numero_vuelo(vuelosLista, True)
     vuelo = get_vuelo(numero_vuelo, vuelosLista)
     if vuelo is None:
@@ -52,18 +51,25 @@ def mostrar_vuelo_por_numero(vuelosLista=vuelosLista):
 def mostrar_vuelos_por_aerolinea(vuelosLista=vuelosLista):
     aerolinea = input("Ingrese la aerolínea que desea visualizar: \n").title()
     vuelos = filtrar_vuelos("aerolinea", aerolinea, vuelosLista)
+    if len(vuelos) == 0:
+        print(Fore.LIGHTRED_EX + f"No se encontró ninguna aerolinea con el nombre '{aerolinea}", flush=True)
     print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
 
 def mostrar_vuelos_por_origen(vuelosLista=vuelosLista):
     print("Ingrese el código de aeropuerto de origen que desea filtrar 'XXX': ")
     aeropuerto = validacion_aeropuerto()
     vuelos = filtrar_vuelos("origen", aeropuerto, vuelosLista)
+    if(aeropuerto == "Reintento"):
+        print(Fore.LIGHTRED_EX + f"No se encontró ningun aeropuerto con el nombre indicado", flush=True)
     print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
+
 
 def mostrar_vuelos_por_destino(vuelosLista=vuelosLista):
     print("Ingrese el código de aeropuerto de destino que desea filtrar 'XXX': ")
     aeropuerto = validacion_aeropuerto()
     vuelos = filtrar_vuelos("destino", aeropuerto, vuelosLista)
+    if(aeropuerto == "Reintento"):
+        print(Fore.LIGHTRED_EX + f"No se encontró ningun aeropuerto con el nombre indicado", flush=True)
     print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
 
 def mostrar_vuelos_por_estado(vuelosLista=vuelosLista):
@@ -74,14 +80,19 @@ def mostrar_vuelos_por_estado(vuelosLista=vuelosLista):
     estado = validar_input(3)
     estados = {"1": "En horario", "2": "Retrasado", "3": "Cancelado"}
     vuelos = filtrar_vuelos("estado", estados[estado], vuelosLista)
+    if len(vuelos) == 0:
+        print(Fore.LIGHTRED_EX + "No hay vuelos disponibles con ese estado", flush=True)
     print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
 
 def mostrar_vuelos_con_asientos(vuelosLista=vuelosLista):
-    limpiar_consola()
     vuelos = filtrar_vuelos_asientos_disponibles(vuelosLista)
+    if len(vuelos) == 0:
+        print(Fore.LIGHTRED_EX + "No hay vuelos con asientos disponibles disponibles", flush=True)
     print(tabulate(vuelos, headers="keys", tablefmt="fancy_grid"))
 
 def mostrar_todos_vuelos(vuelosLista=vuelosLista):
+    if len(vuelosLista) == 0:
+        print(Fore.LIGHTRED_EX + "No hay vuelos disponibles", flush=True)
     print(tabulate(vuelosLista, headers="keys", tablefmt="fancy_grid"))
 
 
