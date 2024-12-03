@@ -53,6 +53,7 @@ def validar_usuario_registrado(usuario, contrasenia, privilegio):
 def inicio_sesion(privilegio):
     """Funcion principal de inicio de sesion llamada desde el main, la misma recibe por parámetro que tipo de usuario esta intentando iniciar sesión, admin o no.
     Devuelve True en caso de inicio de sesion y False si la misma no fue exitosa"""
+    limpiar_consola()
     usuario = input("Ingrese su nombre de usuario: ").lower()
     contrasenia = input("Ingrese su contraseña de usuario: ")
     CANTIDAD_INTENTOS = 3
