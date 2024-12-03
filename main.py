@@ -26,10 +26,10 @@ init(autoreset=True)
 listaAeropuertos = get_aeropuertos()
 
 
-def administrador(listaDeVuelos=None):
+def administrador():
     """Listado de funciones disponibles que se pueden ejecutar. Exclusivo de Administradores"""
     limpiar_consola()
-    
+    listaDeVuelos=get_vuelos()
     titulo = "MENÚ DE ADMINISTRADOR"
     titulo_centrado = centrar_texto(titulo)
     print(Fore.LIGHTBLUE_EX + titulo_centrado + Fore.RESET)
@@ -53,7 +53,7 @@ def administrador(listaDeVuelos=None):
     opciones_admin = {
         "1": lambda: ingresar_vuelo(listaDeVuelos),
         "2": lambda: modificacion_vuelo(listaDeVuelos),
-        "3": lambda: mostrar_vuelos(listaDeVuelos),
+        "3": lambda: mostrar_vuelos(get_aeropuertos(), usuarios),
         "4": lambda: eliminar_vuelo(listaDeVuelos),
         "5": lambda: cerrar_sesion()
     }
@@ -65,9 +65,10 @@ def administrador(listaDeVuelos=None):
         
         if accion:
             accion()
-            break
         else:
             print("Opción inválida. Por favor, seleccione una opción válida.")
+        if opcion != "5":
+            administrador()
 
 def cerrar_sesion():
     """Función para manejar el cierre de sesión"""
@@ -129,8 +130,8 @@ def menu_opciones_principal(aeropuertos, listaUsuario):
             bandera = True
         else:
             print("Opción inválida. Por favor, seleccione una opción válida.")
-    input("Presione una tecla para volver atras...")
-    consultante(aeropuertos, listaUsuario)
+        if opcion != "4":
+            consultante(aeropuertos, listaUsuario)
 
 
 # Submenú de vuelos

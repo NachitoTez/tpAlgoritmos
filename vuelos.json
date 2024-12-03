@@ -44,17 +44,6 @@
         "asientos_disponibles": 15
     },
     {
-        "numero_vuelo": "AA1234",
-        "aerolinea": "Aerolineas Argentinas",
-        "origen": "EZE",
-        "destino": "AEP",
-        "estado": "En horario",
-        "despegue": "2024-12-03 17:25:26",
-        "arribo": "2024-12-09 17:25:26",
-        "avion": 4,
-        "asientos_disponibles": 0
-    },
-    {
         "numero_vuelo": "AA4465",
         "aerolinea": "Aerolineas argentinas",
         "origen": "EZE",
@@ -68,7 +57,7 @@
     {
         "numero_vuelo": "AA6789",
         "aerolinea": "Aerolineas argentinas",
-        "origen": "CDG",
+        "origen": "CDM",
         "destino": "AEP",
         "estado": "En horario",
         "despegue": "2024-12-20 22:15:00",

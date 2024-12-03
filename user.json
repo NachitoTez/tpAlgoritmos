@@ -113,14 +113,6 @@
                 "codigo": "MDQ",
                 "fecha": "2024-12-10 22:32:00",
                 "salavip": "MDQ VIP"
-            },
-            {
-                "aeropuerto": "Buenos Aires",
-                "codigo": "EZE",
-                "fechainicio": "2025-12-11 11:11:00",
-                "fechafin": "2025-12-12 11:11:00",
-                "estacionamiento": "D5",
-                "precio": 10.0
             }
         ],
         "tarjetas": [
@@ -135,6 +127,12 @@
                 "nombretitular": "guido cont",
                 "fechavencimiento": "12/29",
                 "codigo": "666"
+            },
+            {
+                "numerotareja": "4444555566667777",
+                "nombretitular": "guidole",
+                "fechavencimiento": "12/29",
+                "codigo": "333"
             }
         ]
     },
@@ -229,5 +227,23 @@
                 "codigo": "123"
             }
         ]
+    },
+    {
+        "id": "b6b7b005-02a3-4b65-8360-57af56803420",
+        "admin": false,
+        "usuario": "fran",
+        "contrasenia": "fran123",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
+    },
+    {
+        "id": "7c1d6cb3-3560-4f09-9aa0-06c00b58d925",
+        "admin": true,
+        "usuario": "mili",
+        "contrasenia": "mili123",
+        "vuelos": [],
+        "reservas": [],
+        "tarjetas": []
     }
 ]

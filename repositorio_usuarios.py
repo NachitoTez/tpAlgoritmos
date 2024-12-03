@@ -25,14 +25,21 @@ def validar_codigos_admin():
     con alguno de los códigos validadores que le permitan registrarse como tal.
     Devuelve True en caso de que haya sido exitosa la validación"""
     MAXIMO_INTENTOS_CODIGOS_ADMIN = 3
-    validacion = int(input("Ingrese el código de administrador para poder registrarse: "))
-    intentos = 1
-    while validacion not in codigos_admin and intentos < MAXIMO_INTENTOS_CODIGOS_ADMIN:
-        validacion = int(input("Código incorrecto, ingréselo nuevamente: "))
+    intentos = 0
+    while intentos < MAXIMO_INTENTOS_CODIGOS_ADMIN:
+        intentos_restantes = MAXIMO_INTENTOS_CODIGOS_ADMIN - intentos
+        validacion = input(f"Ingrese el código de administrador para poder registrarse (intentos restantes: {intentos_restantes}): ")
+        try:
+            validacion = int(validacion)
+            if validacion in codigos_admin:
+                return True
+        except ValueError:
+            print("Código incorrecto, ingréselo nuevamente (debe ser un número).")
         intentos += 1
-    if intentos == MAXIMO_INTENTOS_CODIGOS_ADMIN and validacion not in codigos_admin:
-        return False
-    return True
+        
+    print("Se ha alcanzado el límite máximo de intentos. No se puede registrar como administrador.")
+    input("Presione una tecla para volver atras...")
+    return False
 
 def validar_usuario_registrado(usuario, contrasenia, privilegio):
     """Función encargada de validar si el usuario que intenta ingresar al sistema esta registrado.
@@ -117,14 +124,14 @@ def consultarReserva(user):
     Returns:
         None. Imprime por pantalla las reservas encontradas en formato tabular.
     """
-    print("Ingrese que tipo de reserva desea consultar:")
+    print("Ingrese qué tipo de reserva desea consultar:")
     print("1. Sala VIP")
     print("2. Estacionamiento")
     opcion = validar_input(2)
     if opcion == "1":
         reservas_salavip = [reserva for reserva in user["reservas"] if "salavip" in reserva]
         if(len(reservas_salavip) == 0):
-            print("No hay reservas de sala vip para consultar")
+            print("No hay reservas de sala VIP para consultar")
         else:
             print(tabulate(reservas_salavip, headers="keys", tablefmt="fancy_grid"))
     elif opcion == "2":
@@ -133,6 +140,7 @@ def consultarReserva(user):
             print("No hay reservas de estacionamiento para consultar")
         else:
             print(tabulate(reservas_estacionamiento, headers="keys", tablefmt="fancy_grid"))
+    input("Presione una tecla para volver atras...")
 
 def cancelar_reserva_por_tipo(user, tipo_reserva, usuarios):
     """
