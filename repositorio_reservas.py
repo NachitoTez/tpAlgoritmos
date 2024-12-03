@@ -1,7 +1,8 @@
 import random
 from repositorio_pagos import tieneTarjeta
 from repositorio_vuelos import filtrar_vuelos_asientos_disponibles, reservar_asiento
-from utils import ingresar_fecha_y_hora, randonAprobado, readFile, writeFile, limpiar_consola
+from utils import ingresar_fecha_y_hora, randonAprobado, readFile, writeFile, limpiar_consola, calcularPrecioEstacionamiento
+from colorama import Fore, init
 #por ahora, solo vamos a poder hacer reservas de vuelos disponibles. Para el 100 podríamos intentar elegir por fecha, destino y demás
 
 
@@ -49,32 +50,48 @@ def reservaSalaVIP(user, aeropuertos, listaUsuario):
     bandera = False
     banderaReserva = False
     seleccionSala = 0
-    salaValida = False
     archivoUser = "user.json"
 
     while not bandera:
-        for index, aeropuerto in enumerate(aeropuertos):
-            print(index + 1, aeropuerto["codigo"], aeropuerto["ciudad"])
+        try:
+            # Selección del aeropuerto
+            seleccion = None
+            while seleccion is None:
+                try:
+                    print("\nSeleccione un aeropuerto:")
+                    for index, aeropuerto in enumerate(aeropuertos):
+                        print(f"{Fore.LIGHTMAGENTA_EX}{index + 1}){Fore.WHITE} {aeropuerto['codigo'] + '-' + aeropuerto['ciudad']} {Fore.RESET} 🛬")
+                    
+                    seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
+                    if not (1 <= seleccion <= len(aeropuertos)):
+                        print("❌ Por favor, seleccione un número de aeropuerto válido.")
+                        seleccion = None
+                except ValueError:
+                    print("❌ Entrada inválida. Ingrese solo números.")
 
-        seleccion = int(input("Seleccione el aeropuerto donde se encuentra o quiere reservar: "))
-        if 1 <= seleccion <= len(aeropuertos):
+            limpiar_consola()
+            
+            # Selección de la sala VIP
             if "salavip" in aeropuertos[seleccion - 1]:
-                for ind, salaVIP in enumerate(aeropuertos[seleccion - 1]["salavip"]):
-                    if salaVIP["reservados"] < salaVIP["capacidad"]:
-                        print(ind + 1, "Nombre: ", salaVIP["nombre"], "Precio: ", salaVIP["precio"])
-
-                while not salaValida:
+                seleccionSala = None
+                while seleccionSala is None:
                     try:
+                        for ind, salaVIP in enumerate(aeropuertos[seleccion - 1]["salavip"]):
+                            if salaVIP["reservados"] < salaVIP["capacidad"]:
+                                print(f"{Fore.LIGHTMAGENTA_EX}{ind + 1}){Fore.WHITE} {'Nombre: ' + salaVIP['nombre'] + ' Precio: ' + salaVIP['precio']} {Fore.RESET} 🌟")
+
                         seleccionSala = int(input("Seleccione la sala: "))
-                        if 1 <= seleccionSala <= len(aeropuertos[seleccion - 1]["salavip"]):
-                            salaValida = True
-                        else:
-                            print("Por favor, ingrese un número de sala válido.")
+                        if not (1 <= seleccionSala <= len(aeropuertos[seleccion - 1]["salavip"])):
+                            print("❌ Por favor, ingrese un número de sala válido.")
+                            seleccionSala = None
                     except ValueError:
-                        print("Entrada no válida. Por favor, ingrese un número.")
+                        print("❌ Entrada inválida. Ingrese solo números.")
 
+                limpiar_consola()
+                print(f"{Fore.LIGHTMAGENTA_EX}Sala seleccionada: {aeropuertos[seleccion - 1]['salavip'][seleccionSala - 1]['nombre']} 🌟")
+
+                # Ingreso de fecha y hora
                 fecha = ingresar_fecha_y_hora("fecha y hora de reserva")
-
                 reservar = {
                     "aeropuerto": aeropuertos[seleccion - 1]["ciudad"],
                     "codigo": aeropuertos[seleccion - 1]["codigo"],
@@ -82,7 +99,8 @@ def reservaSalaVIP(user, aeropuertos, listaUsuario):
                     "salavip": aeropuertos[seleccion - 1]["salavip"][seleccionSala - 1]["nombre"]
                 }
 
-                print("Debe seleccionar o registrar una tarjeta para realizar el pago")
+                # Selección o registro de tarjeta
+                print("Debe seleccionar o registrar una tarjeta para realizar el pago 💳")
                 while not banderaReserva:
                     tarjeta = tieneTarjeta(user)
                     if tarjeta:
@@ -92,18 +110,20 @@ def reservaSalaVIP(user, aeropuertos, listaUsuario):
                             for usuario in listaUsuario:
                                 if usuario["id"] == user["id"]:
                                     usuario["reservas"].append(reservar)
-                                    listaUsuarioActualizado = readFile(archivoUser)
-                                    writeFile(archivoUser, listaUsuarioActualizado, None)
+                                    writeFile(archivoUser, listaUsuario, None)
                                     bandera = True
                                     banderaReserva = valida
                         else:
-                            print("Fondos insuficientes")
+                            print("❌ Fondos insuficientes")
                     else:
-                        print("Ocurrió un problema")
-        else:
-            print("Seleccione un aeropuerto correctamente.")
+                        print("❌ Ocurrió un problema")
+            else:
+                print("El aeropuerto seleccionado no tiene salas VIP disponibles.")
+        except Exception as e:
+            print(f"❌ Error inesperado: {e}")
 
-    print("Reserva realizada con éxito", user)
+    print("Reserva realizada con éxito")
+    return True
 
 	
 def reservaEstacionamiento(user, aeropuertos, listaUsuario):
@@ -112,77 +132,85 @@ def reservaEstacionamiento(user, aeropuertos, listaUsuario):
     fechas_rango = []
     archivoUser = "user.json"
     
-    while not flag:    
-        # Mostrar aeropuertos disponibles
-        for idx, aeropuerto in enumerate(aeropuertos):
-            print(f"{idx + 1}. {aeropuerto['codigo']} - {aeropuerto['ciudad']}")
-        
-        # Seleccionar aeropuerto
-        seleccion = int(input("Seleccione el aeropuerto donde quiere reservar: "))
-        if 1 <= seleccion <= len(aeropuertos):
-            aeropuerto_seleccionado = aeropuertos[seleccion - 1]
-            
-            if "estacionamiento" in aeropuerto_seleccionado:
-                estacionamiento = aeropuerto_seleccionado["estacionamiento"]
-                
-                fechaInicio = ingresar_fecha_y_hora("fecha y hora de inicio de estacionamiento")
-                fechaFin = ingresar_fecha_y_hora("fecha y hora de fin de estacionamiento")
-                while fechaFin <= fechaInicio:
-                    print("La fecha de fin de estacionamiento debe ser posterior a la de inicio. Intente nuevamente.\n")
+    while not flag:
+        try:    
+            # Mostrar aeropuertos disponibles
+            for idx, aeropuerto in enumerate(aeropuertos):
+                print(f"{Fore.LIGHTMAGENTA_EX}{idx + 1}){Fore.WHITE} {aeropuerto["codigo"] + "-" + aeropuerto["ciudad"]} {Fore.RESET} 🛬")
+
+            # Seleccionar aeropuerto
+            seleccion = int(input("Seleccione el aeropuerto donde quiere reservar: "))
+            if 1 <= seleccion <= len(aeropuertos):
+                aeropuerto_seleccionado = aeropuertos[seleccion - 1]
+
+                if "estacionamiento" in aeropuerto_seleccionado:
+                    estacionamiento = aeropuerto_seleccionado["estacionamiento"]
+                    limpiar_consola()
+                    print(f"{Fore.LIGHTMAGENTA_EX}Aeropuerto seleccionado: {aeropuerto["codigo"] + "-" + aeropuerto["ciudad"]} 🛬")
+
+                    fechaInicio = ingresar_fecha_y_hora("fecha y hora de inicio de estacionamiento")
                     fechaFin = ingresar_fecha_y_hora("fecha y hora de fin de estacionamiento")
-                # Lista de fechas en el rango		
-                fechas_rango.append(fechaInicio)
-                    
+                    while fechaFin <= fechaInicio:
+                        print("La fecha de fin de estacionamiento debe ser posterior a la de inicio. Intente nuevamente.\n")
+                        fechaFin = ingresar_fecha_y_hora("fecha y hora de fin de estacionamiento")
+                    # Lista de fechas en el rango		
+                    fechas_rango.append(fechaInicio)
 
-                # Verificar disponibilidad en todas las fechas del rango
-                lugares_disponibles = []
-                for letra, capacidad in estacionamiento["lugares"].items():
-                    for i in range(1, capacidad + 1):
-                        lugar = f"{letra}{i}"
-                        # Verificar que el lugar esté disponible en todas las fechas del rango
-                        lugar_disponible = all(
-                            lugar not in estacionamiento["reservados"].get(fecha, [])
-                            for fecha in fechas_rango
-                        )
-                        if lugar_disponible:
-                            lugares_disponibles.append(lugar)
 
-                if lugares_disponibles:
-                    lugarSeleccionado = random.choice(lugares_disponibles)
-                    reservar = {
-                        "aeropuerto": aeropuerto_seleccionado["ciudad"],
-                        "codigo": aeropuerto_seleccionado["codigo"],
-                        "fechainicio": str(fechaInicio),
-                        "fechafin": str(fechaFin),
-                        "estacionamiento": lugarSeleccionado
-                    }
-                    
-                    print("Debe seleccionar o registrar una tarjeta para realizar el pago")
-                    while not reserva:
-                        tarjeta = tieneTarjeta(user)
-                        if tarjeta:
-                            valida = randonAprobado()
-                            if valida:
-                                # Corregir la lógica de guardado de reservas
-                                for fecha in fechas_rango:
-                                    if fecha not in estacionamiento["reservados"]:
-                                        estacionamiento["reservados"][fecha] = []
-                                    estacionamiento["reservados"][fecha].append(lugarSeleccionado)
-                                
-                                for usuario in listaUsuario:
-                                    if usuario["id"] == user["id"]:
-                                        usuario["reservas"].append(reservar)
-                                        writeFile(archivoUser, listaUsuario, None)
-                                        flag = True
-                                        reserva = True
-                                print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
-                            else:
-                                print("Fondos insuficientes")
-                                break
+                    # Verificar disponibilidad en todas las fechas del rango
+                    lugares_disponibles = []
+                    for letra, capacidad in estacionamiento["lugares"].items():
+                        for i in range(1, capacidad + 1):
+                            lugar = f"{letra}{i}"
+                            # Verificar que el lugar esté disponible en todas las fechas del rango
+                            lugar_disponible = all(
+                                lugar not in estacionamiento["reservados"].get(fecha, [])
+                                for fecha in fechas_rango
+                            )
+                            if lugar_disponible:
+                                lugares_disponibles.append(lugar)
+
+                    if lugares_disponibles:
+                        lugarSeleccionado = random.choice(lugares_disponibles)
+                        precio = round(calcularPrecioEstacionamiento(fechaInicio, fechaFin, 10.0), 2)
+                        reservar = {
+                            "aeropuerto": aeropuerto_seleccionado["ciudad"],
+                            "codigo": aeropuerto_seleccionado["codigo"],
+                            "fechainicio": str(fechaInicio),
+                            "fechafin": str(fechaFin),
+                            "lugar": lugarSeleccionado,
+                            "estacionamiento": True,
+                            "precio": precio
+                        }
+
+                        print("Debe seleccionar o registrar una tarjeta para realizar el pago")
+                        while not reserva:
+                            tarjeta = tieneTarjeta(user)
+                            if tarjeta:
+                                valida = randonAprobado()
+                                if valida:
+                                    # Corregir la lógica de guardado de reservas
+                                    for fecha in fechas_rango:
+                                        if fecha not in estacionamiento["reservados"]:
+                                            estacionamiento["reservados"][fecha] = []
+                                        estacionamiento["reservados"][fecha].append(lugarSeleccionado)
+
+                                    for usuario in listaUsuario:
+                                        if usuario["id"] == user["id"]:
+                                            usuario["reservas"].append(reservar)
+                                            writeFile(archivoUser, listaUsuario, None)
+                                            flag = True
+                                            reserva = True
+                                    print(f"Lugar {lugarSeleccionado} reservado para {user['usuario']} desde {fechaInicio} hasta {fechaFin}")
+                                else:
+                                    print("Fondos insuficientes")
+                                    break
+                    else:
+                        print(f"No hay lugares disponibles para el rango de fechas {fechaInicio} a {fechaFin}")
                 else:
-                    print(f"No hay lugares disponibles para el rango de fechas {fechaInicio} a {fechaFin}")
+                    print("Este aeropuerto no tiene estacionamiento disponible.")
             else:
-                print("Este aeropuerto no tiene estacionamiento disponible.")
-        else:
-            print("Selección inválida. Por favor, elija un aeropuerto válido.")
-
+                print("Selección inválida. Por favor, elija un aeropuerto válido.")   
+        except ValueError:
+            print("Por favor, ingrese una opcion valida")
+    return True

@@ -72,32 +72,38 @@ def ingresar_fecha_y_hora(tipo):
     """Función para ingresar fecha y hora y validar los ingresos.
     Recibe por parametro un string si es "fecha y hora de despegue" o "fecha y hora de arribo"
     devuelve la fecha completa"""
-    print(f"Ingrese la {tipo}:")
-    bandera = True
-    while bandera:
-            bandera = False
-            anio = int(input("Año (AAAA): \n"))
-            if anio < 2024 or anio > 2025:
-                print("Por favor ingrese un año válido entre 2024 y 2025")
-                bandera = True
-    
-    print("Mes (1-12): ")
-    mes = int(validar_input(12))
-    dias = cantidad_dias(anio, mes)
-    print(f"Día (1-{dias}):")
-    dia = int(validar_input(dias))
-    print("Hora (0-23):")
-    hora = int(validar_input(23, 0))
-    print("Minutos (0-59):")
-    minutos = int(validar_input(59, 0))
-    
-    fecha_hora = datetime(anio, mes, dia, hora, minutos)
-    
-    # Validar que la fecha no sea anterior a la actual
-    if fecha_hora < datetime.now():
-        print("La fecha ingresada es anterior a la fecha actual")
-        return ingresar_fecha_y_hora(tipo)
-    return fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
+    terminoLaFuncion = False
+    while not terminoLaFuncion:
+        try:
+            print(f"Ingrese la {tipo}:")
+            bandera = True
+            while bandera:
+                bandera = False
+                anio = int(input("Año (AAAA): \n"))
+                if anio < 2024 or anio > 2025:
+                    print("Por favor ingrese un año válido entre 2024 y 2025")
+                    bandera = True
+
+            print("Mes (1-12): ")
+            mes = int(validar_input(12))
+            dias = cantidad_dias(anio, mes)
+            print(f"Día (1-{dias}):")
+            dia = int(validar_input(dias))
+            print("Hora (0-23):")
+            hora = int(validar_input(23, 0))
+            print("Minutos (0-59):")
+            minutos = int(validar_input(59, 0))
+
+            fecha_hora = datetime(anio, mes, dia, hora, minutos)
+
+            # Validar que la fecha no sea anterior a la actual
+            if fecha_hora < datetime.now():
+                print("La fecha ingresada es anterior a la fecha actual")
+                return ingresar_fecha_y_hora(tipo)
+            terminoLaFuncion = True
+            return fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
+        except:
+             print("Dato ingresado, no valido, ingrese solo numeros")
 
 def bloquear_teclado(tiempo):
     if name == "nt":  # Windows

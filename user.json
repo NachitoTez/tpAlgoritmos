@@ -26,7 +26,8 @@
                 "codigo": "CDG",
                 "fechainicio": "2026-12-12 00:00:00",
                 "fechafin": "2026-12-15 00:00:00",
-                "estacionamiento": "B18"
+                "lugar": "B18",
+                "estacionamiento": true
             },
             {
                 "aeropuerto": "Paris",
@@ -75,6 +76,13 @@
                 "codigo": "IAH",
                 "fecha": "2025-12-01 20:05:00",
                 "salavip": "IAH Executive"
+            },
+            {
+                "aeropuerto": "Buenos Aires",
+                "codigo": "EZE",
+                "fechainicio": "2025-12-01 01:01:00",
+                "fechafin": "2025-12-05 06:00:00",
+                "estacionamiento": "D10"
             }
         ],
         "tarjetas": [
@@ -89,6 +97,12 @@
                 "nombretitular": "Frank",
                 "fechavencimiento": "12/27",
                 "codigo": "159"
+            },
+            {
+                "numerotareja": "1111111111111111",
+                "nombretitular": "aaaa",
+                "fechavencimiento": "12/25",
+                "codigo": "258"
             }
         ]
     },
@@ -99,7 +113,146 @@
         "contrasenia": "playstation",
         "vuelos": [],
         "reservas": [],
-        "tarjetas": []
+        "tarjetas": [
+            {
+                "numerotareja": "3030459879654128",
+                "nombretitular": "Carlos",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlos",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlos",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlos",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlos",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            },
+            {
+                "numerotareja": "1234567890987654",
+                "nombretitular": "Carlosa",
+                "fechavencimiento": "09/29",
+                "codigo": "258"
+            }
+        ]
     },
     {
         "id": "f7vb9d80-771e-4e6f-863d-b8fafcff506e",
@@ -113,6 +266,14 @@
                 "codigo": "MDQ",
                 "fecha": "2024-12-10 22:32:00",
                 "salavip": "MDQ VIP"
+            },
+            {
+                "aeropuerto": "Buenos Aires",
+                "codigo": "EZE",
+                "fechainicio": "2025-12-11 11:11:00",
+                "fechafin": "2025-12-12 11:11:00",
+                "estacionamiento": "D5",
+                "precio": 10.0
             }
         ],
         "tarjetas": [
@@ -200,8 +361,52 @@
         "usuario": "franchu",
         "contrasenia": "123456",
         "vuelos": [],
-        "reservas": [],
-        "tarjetas": []
+        "reservas": [
+            {
+                "aeropuerto": "Ciudad de M\u00c3\u00a9xico",
+                "codigo": "CDM",
+                "fechainicio": "2025-05-01 01:01:00",
+                "fechafin": "2025-06-01 01:01:00",
+                "lugar": "B16",
+                "estacionamiento": true,
+                "precio": 310.0
+            },
+            {
+                "aeropuerto": "Houston",
+                "codigo": "IAH",
+                "fecha": "2025-01-01 01:01:00",
+                "salavip": "IAH Business"
+            },
+            {
+                "aeropuerto": "Ciudad de M\u00c3\u00a9xico",
+                "codigo": "CDM",
+                "fecha": "2025-01-01 01:01:00",
+                "salavip": "CDM Gold"
+            },
+            {
+                "aeropuerto": "Paris",
+                "codigo": "CDG",
+                "fecha": "2025-01-01 01:01:00",
+                "salavip": "CDG Premium"
+            },
+            {
+                "aeropuerto": "London",
+                "codigo": "LHR",
+                "fechainicio": "2025-01-01 01:01:00",
+                "fechafin": "2025-02-02 02:02:00",
+                "lugar": "D15",
+                "estacionamiento": true,
+                "precio": 320.42
+            }
+        ],
+        "tarjetas": [
+            {
+                "numerotareja": "1235648965758942",
+                "nombretitular": "Franchu",
+                "fechavencimiento": "06/29",
+                "codigo": "245"
+            }
+        ]
     },
     {
         "id": "f7bd9d80-771e-4e6f-863d-k9fafcff506e",

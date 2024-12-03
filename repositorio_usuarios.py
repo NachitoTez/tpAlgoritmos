@@ -128,14 +128,15 @@ def consultarReserva(user):
     print("1. Sala VIP")
     print("2. Estacionamiento")
     opcion = validar_input(2)
+    userUpdate = actualizaUsuario(user)
     if opcion == "1":
-        reservas_salavip = [reserva for reserva in user["reservas"] if "salavip" in reserva]
+        reservas_salavip = [reserva for reserva in userUpdate["reservas"] if "salavip" in reserva]
         if(len(reservas_salavip) == 0):
             print("No hay reservas de sala VIP para consultar")
         else:
             print(tabulate(reservas_salavip, headers="keys", tablefmt="fancy_grid"))
     elif opcion == "2":
-        reservas_estacionamiento = [reserva for reserva in user["reservas"] if "estacionamiento" in reserva]
+        reservas_estacionamiento = [reserva for reserva in userUpdate["reservas"] if "estacionamiento" in reserva]
         if(len(reservas_estacionamiento) == 0):
             print("No hay reservas de estacionamiento para consultar")
         else:
@@ -197,3 +198,8 @@ def cancelarReserva(user):
     elif opcion == "2":
         cancelar_reserva_por_tipo(user, "estacionamiento", usuarios)
 
+def actualizaUsuario(user):
+    listaUsuarios = readFile(archivoUser)
+    for usuario in listaUsuarios:
+        if user["id"] == usuario["id"]:  
+            return usuario

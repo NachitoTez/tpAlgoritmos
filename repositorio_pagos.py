@@ -6,8 +6,8 @@ archivoUser = "user.json"
 usuarios = readFile(archivoUser)
 
 def actualizaUsuario(user):
-    Listausuarios = readFile(archivoUser)
-    for usuario in Listausuarios:
+    listaUsuarios = readFile(archivoUser)
+    for usuario in listaUsuarios:
         if user["id"] == usuario["id"]:  
             return usuario
 
