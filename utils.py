@@ -1,6 +1,10 @@
-from datetime import datetime
+import curses
+from datetime import datetime, time
 import random
+import shutil
+import sys
 from time import sleep
+from colorama import Fore
 from keyboard import block_key, unblock_key
 from os import system, name
 import json
@@ -96,9 +100,11 @@ def ingresar_fecha_y_hora(tipo):
     return fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
 
 def bloquear_teclado(tiempo):
-    block_key('*')
+    if name == "nt":  # Windows
+        block_key('*')
     sleep(tiempo)
-    unblock_key('*')
+    if name == "nt":  # Windows
+        unblock_key('*')
 
 def calcularPrecioEstacionamiento(fecha_inicio, fecha_fin, tarifa_por_dia):
     """
@@ -115,3 +121,40 @@ def calcularPrecioEstacionamiento(fecha_inicio, fecha_fin, tarifa_por_dia):
         raise ValueError("La fecha de fin debe ser posterior a la fecha de inicio.")
 
     return valor_total
+
+def escribir_lento(texto, delay=0.05, color=Fore.WHITE):
+    """
+    Función para hacer que el texto se escriba pausado.
+    """
+    for letra in texto:
+        print(color + letra, end="", flush=True)
+        bloquear_teclado(delay)
+    print()
+
+def centrar_texto(ascii_art):
+    """
+    Función para hacer que el texto se centre en la terminal.
+    """
+    terminal_width = shutil.get_terminal_size().columns
+    lineas_centradas = [
+        linea.center(terminal_width) for linea in ascii_art.splitlines()
+    ]
+    return "\n".join(lineas_centradas)
+
+def escribir_ascii_lento(ascii_art, delay=0.001, color=Fore.LIGHTBLACK_EX):
+    for linea in ascii_art.splitlines():
+        escribir_lento(linea , delay, color)
+
+def imprimible_menu_regreso(funcion):
+	bandera = False
+	volver = input("seleccione 0 para volver al menu principal o -1 para salir del sistema: ")
+	while not bandera:    
+		if volver == "0":
+			bandera = True
+			funcion()
+		elif volver == "-1":
+			print("Muchas gracias")
+			bandera = True
+		else:
+			print("Seleccione un valor valido")
+			volver = input("seleccione 0 para volver al menu principal o -1 para salir del sistema: ")

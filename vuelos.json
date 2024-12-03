@@ -4,7 +4,7 @@
         "aerolinea": "United Airlines",
         "origen": "EZE",
         "destino": "CDM",
-        "estado": "Arribado",
+        "estado": "En horario",
         "despegue": "2024-12-03 17:25:26",
         "arribo": "2024-12-09 17:25:26",
         "avion": 2,
@@ -15,11 +15,11 @@
         "aerolinea": "United Airlines",
         "origen": "EZE",
         "destino": "IAH",
-        "estado": "Arribado",
+        "estado": "En horario",
         "despegue": "2024-12-03 17:25:26",
         "arribo": "2024-12-09 17:25:26",
         "avion": 6,
-        "asientos_disponibles": 11
+        "asientos_disponibles": 2
     },
     {
         "numero_vuelo": "UA8764",
@@ -52,7 +52,7 @@
         "despegue": "2024-12-03 17:25:26",
         "arribo": "2024-12-09 17:25:26",
         "avion": 4,
-        "asientos_disponibles": 3
+        "asientos_disponibles": 0
     },
     {
         "numero_vuelo": "AA4465",
